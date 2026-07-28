@@ -2,6 +2,7 @@ import express from "express";
 import securityMiddleware from "./middlewares/security.middleware.js";
 import GoogleMiddleware from "./middlewares/googleOauth.middleware.js";
 import authRoutes from "./modules/auth/auth.route.js";
+import groundRoutes from "./modules/ground/ground.route.js";
 import errorHandler from "./middlewares/errorHandler.middleware.js";
 export default function createApp() {
   const app = express();
@@ -10,6 +11,7 @@ export default function createApp() {
   GoogleMiddleware();
 
   app.use("/api/user", authRoutes);
+  app.use("/api/grounds", groundRoutes);
 
   app.use(errorHandler);
   return app;
