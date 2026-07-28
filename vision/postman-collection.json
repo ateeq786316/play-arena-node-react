@@ -1,0 +1,109 @@
+{
+  "info": {
+    "name": "PlayArena API",
+    "description": "PlayArena Backend API Tests — Auto-generated after each module implementation",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+  },
+  "item": [
+    {
+      "name": "Auth",
+      "item": [
+        {
+          "name": "Register",
+          "request": {
+            "method": "POST",
+            "header": [{"key": "Content-Type", "value": "application/json"}],
+            "body": {"mode": "raw", "raw": "{\"name\": \"Test User\",\"email\": \"test@test.com\",\"password\": \"Pass123!\",\"mobile\": \"03001234567\"}"},
+            "url": {"raw": "http://localhost:3000/api/user/register", "host": ["http://localhost:3000"], "path": ["api", "user", "register"]}
+          }
+        },
+        {
+          "name": "Verify OTP",
+          "request": {
+            "method": "POST",
+            "header": [{"key": "Content-Type", "value": "application/json"}],
+            "body": {"mode": "raw", "raw": "{\"email\": \"test@test.com\",\"otp\": \"123456\"}"},
+            "url": {"raw": "http://localhost:3000/api/user/verify-otp", "host": ["http://localhost:3000"], "path": ["api", "user", "verify-otp"]}
+          }
+        },
+        {
+          "name": "Resend OTP",
+          "request": {
+            "method": "POST",
+            "header": [{"key": "Content-Type", "value": "application/json"}],
+            "body": {"mode": "raw", "raw": "{\"email\": \"test@test.com\"}"},
+            "url": {"raw": "http://localhost:3000/api/user/resend-otp", "host": ["http://localhost:3000"], "path": ["api", "user", "resend-otp"]}
+          }
+        },
+        {
+          "name": "Login",
+          "request": {
+            "method": "POST",
+            "header": [{"key": "Content-Type", "value": "application/json"}],
+            "body": {"mode": "raw", "raw": "{\"email\": \"test@test.com\",\"password\": \"Pass123!\"}"},
+            "url": {"raw": "http://localhost:3000/api/user/login", "host": ["http://localhost:3000"], "path": ["api", "user", "login"]}
+          }
+        },
+        {
+          "name": "Refresh Token (cookie)",
+          "request": {
+            "method": "POST",
+            "header": [],
+            "url": {"raw": "http://localhost:3000/api/user/refresh", "host": ["http://localhost:3000"], "path": ["api", "user", "refresh"]}
+          }
+        },
+        {
+          "name": "Get Profile",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {"raw": "http://localhost:3000/api/user/profile", "host": ["http://localhost:3000"], "path": ["api", "user", "profile"]}
+          }
+        },
+        {
+          "name": "Update Profile",
+          "request": {
+            "method": "PATCH",
+            "header": [{"key": "Content-Type", "value": "application/json"}],
+            "body": {"mode": "raw", "raw": "{\"name\": \"Updated Name\"}"},
+            "url": {"raw": "http://localhost:3000/api/user/profile", "host": ["http://localhost:3000"], "path": ["api", "user", "profile"]}
+          }
+        },
+        {
+          "name": "Logout",
+          "request": {
+            "method": "POST",
+            "header": [],
+            "url": {"raw": "http://localhost:3000/api/user/logout", "host": ["http://localhost:3000"], "path": ["api", "user", "logout"]}
+          }
+        },
+        {
+          "name": "Forgot Password",
+          "request": {
+            "method": "POST",
+            "header": [{"key": "Content-Type", "value": "application/json"}],
+            "body": {"mode": "raw", "raw": "{\"email\": \"test@test.com\"}"},
+            "url": {"raw": "http://localhost:3000/api/user/forgot-password", "host": ["http://localhost:3000"], "path": ["api", "user", "forgot-password"]}
+          }
+        },
+        {
+          "name": "Reset Password (GET token)",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {"raw": "http://localhost:3000/api/user/reset-password/TOKEN", "host": ["http://localhost:3000"], "path": ["api", "user", "reset-password", "TOKEN"]}
+          }
+        },
+        {
+          "name": "Update Password (JWT auth)",
+          "request": {
+            "method": "POST",
+            "header": [{"key": "Content-Type", "value": "application/json"}],
+            "body": {"mode": "raw", "raw": "{\"password\": \"NewPass123!\"}"},
+            "url": {"raw": "http://localhost:3000/api/user/update-password", "host": ["localhost:3000"], "path": ["api", "user", "update-password"]}
+          }
+        }
+      ]
+    }
+  ]
+}

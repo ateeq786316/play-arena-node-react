@@ -6,7 +6,7 @@ node_modules/
 
 # Build / Generated
 dist/
-src/generated/
+**/src/generated/
 
 # IDE
 .vscode/
@@ -24,6 +24,12 @@ logs/
 
 # Testing
 coverage/
+
+# Temp files
+stderr.txt
+stdout.txt
+test-api.mjs
+test-*.mjs
 
 # Misc
 .blackboxrules
