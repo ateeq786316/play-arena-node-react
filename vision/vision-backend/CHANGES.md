@@ -52,3 +52,28 @@
 ### 2026-07-28 — Auth Security Fixes
 - Changed `/update-password` from URL param to JWT-based auth (prevents userId tampering)
 - Changed `/refresh` to read refreshToken from cookie first, fall back to body
+
+### 2026-07-29 — Ground Module Implementation
+- Extended Prisma schema with 8 new models: Region, City, Ground, Court, GroundSchedule, GroundSetting, GroundImage, GroundAccess, GroundInvite
+- Added AccessRole enum (owner, manager, staff) and InviteStatus enum (pending, accepted, rejected, expired)
+- Added `role` field to User model (default "player")
+- Ran migration `add-ground-module` — database in sync
+- Created `src/repository/ground.repo.js` — full CRUD for all ground entities
+- Created `src/modules/ground/ground.service.js` — business logic with RBAC checks
+- Created `src/modules/ground/ground.controller.js` — 18 endpoints
+- Created `src/modules/ground/ground.route.js` — all routes registered with authMiddleware
+- Registered `/api/grounds` routes in app.js
+- Ground endpoints: create, read, update, delete, list (public), featured, my-grounds (auth)
+- Court endpoints: CRUD per ground with manager-level access
+- Schedule endpoints: upsert, list, delete per dayOfWeek
+- Setting endpoints: upsert per ground (owner-only)
+- Region/City endpoints: list regions with nested cities
+- Image endpoints: add/remove ground images
+- Invite endpoints: invite staff (owner-only)
+### 2026-07-29 — Created requirement.md Master Spec
+- Created `vision/vision-backend/requirement.md` — comprehensive single-source-of-truth for all 14 backend modules
+- Captured all endpoints (done + not started), business rules, DB models, screen mappings
+- Mapped full implementation order (Phase 2→13)
+- Verified current status: 2/14 modules done (Auth ✅, Ground ✅), ~30/120+ endpoints implemented
+- Updated from vision/project-scope.md, over-all-observation.md, screens-spec.md
+- Added module-by-module endpoint tables, state machines, RBAC rules, Pakistan-specific context

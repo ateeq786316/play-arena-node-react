@@ -21,7 +21,8 @@ PlayArena backend is built with **Express + PostgreSQL (Prisma ORM)** + Node.js.
 ## Phase 2 — Core Modules
 
 - [x] Authentication & User Management (OTP, JWT refresh, password reset, profile, logout)
-- [ ] Ground Discovery & Booking Engine
+- [x] Ground Discovery Module (Ground CRUD, Courts, Schedules, Settings, RBAC, Regions/Cities)
+- [ ] Booking Engine
 - [ ] Teams & Matchmaking (ELO system)
 - [ ] Tournaments & Brackets
 - [ ] Finance & Cash Management

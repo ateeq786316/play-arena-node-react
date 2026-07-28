@@ -49,7 +49,8 @@ vision/
     ├── CHANGES.md            # Log of every change made
     ├── STEPS.md              # Step-by-step progress tracker
     ├── TESTING.md            # Testing strategy, cases, and results
-    └── COMMANDS.md           # User-defined commands (editable by user)
+    ├── COMMANDS.md           # User-defined commands (editable by user)
+    └── requirement.md        # Master spec — all module reqs, endpoints, business rules
 ```
 
 ---

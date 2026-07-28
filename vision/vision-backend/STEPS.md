@@ -26,8 +26,9 @@
 - [x] nodemailer SMTP email sending
 
 ### Other Modules
-- [ ] User module (profile, search)
-- [ ] Ground module (CRUD, courts, schedules)
+- [x] User module (profile, search, role field added)
+- [x] Ground module (CRUD, courts, schedules, settings, RBAC, regions/cities)
+- [x] Created requirement.md — master spec consolidating all module requirements
 - [ ] Booking module (create, state machine, conflict detection)
 - [ ] Finance module (payments, cash sessions)
 - [ ] Teams module (CRUD, roster, invites)
