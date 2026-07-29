@@ -24,6 +24,44 @@
 
 15. **Structured commit prefixes** — All commits must use a prefix tag with the 4-word summary: `feat:`, `fix:`, `docs:`, `test:`, `refactor:`, `chore:`. (e.g. `feat: add user search endpoint`, `fix: booking conflict detection`, `test: write finance module tests`).
 
+16. **Controllers are thin, services have logic** — Controllers only parse request data and call services. Zero business logic in controllers.
+
+17. **All DB queries go through repositories** — Services must never call `prisma.*` directly. The repo layer is the single source of truth for data access.
+
+18. **Use asyncHandler on every route** — Wrap every route handler with `asyncHandler` from `src/utils/asyncHandler.js`. Never use try/catch in controllers.
+
+19. **Correct HTTP status codes** — `201` on create, `200` on read/update, `204` on delete. Never return 200 for everything.
+
+20. **Soft delete everywhere** — Never use SQL `DELETE`. Always set `deletedAt` on rows that need removal. Filter `deletedAt: null` in all repo queries.
+
+21. **Use Pino logger, never console.log** — All logging (info, warn, error, debug) goes through the logger module at `src/config/logger.js`.
+
+22. **Transactional integrity for multi-table writes** — Use `prisma.$transaction` when writing to 2+ related tables in one operation.
+
+23. **Consistent file naming** — Files: `kebab-case.js`. Classes: `PascalCase`. Exports: `default` for main class, named for utilities.
+
+24. **Audit destructive actions** — Every delete, status change, or role update must create an `AuditLog` entry.
+
+25. **Zod over express-validator for new endpoints** — Prefer Zod schemas for validation. They're composable, reusable, and can type-check.
+
+26. **Index your query columns** — Every `@@index` in Prisma must cover the `where`, `orderBy`, and `join` columns used in repo queries. Check before writing migrations.
+
+27. **One concern per file** — One class per file. No utility grab-bags. A repo file has one repo class, a service has one service class.
+
+28. **Never mock what you don't own** — Mock only `prisma` and `env`. Never mock `fs`, `crypto`, `jwt`, `bcrypt` directly — mock the module that wraps them.
+
+29. **Always use `@@map` for table names** — Every model must have `@@map("snake_case")`. Never let Prisma auto-generate table names.
+
+30. **Return 409 for duplicate/conflict, not 400** — Unique constraint violations, double-booking, duplicate ratings → 409 Conflict. Validation errors → 400.
+
+31. **`deletedAt` filter is the repo's job** — Every `findMany`/`findUnique` on soft-deletable models must include `deletedAt: null` in the `where` clause at the repo layer.
+
+32. **Migration names describe the change, not the module** — Name migrations by what they do (e.g. `add_is_verified_to_grounds`), not `add_admin_module`.
+
+33. **Keep .env.example in sync** — Every new env var must be added to `.env.example` immediately. Never let `.env.example` fall behind.
+
+34. **No circular imports** — Never import from a module into its own repository or vice versa. Flow: route → controller → service → repo. One direction only.
+
 
 
 ## Commands I Must Follow
