@@ -32,7 +32,7 @@ PlayArena backend is built with **Express + PostgreSQL (Prisma ORM)** + Node.js.
 - [x] Ratings + Leaderboard
 - [x] Admin Panel (users, grounds, teams, finance, audit, reference data)
 - [ ] Admin Panel
-- [ ] File Upload (S3)
+- [x] File Upload (S3)
 
 ## Phase 3 — Testing & Hardening
 

@@ -241,6 +241,10 @@ vi.mock("../src/config/env.js", () => {
       GOOGLE_CLIENT_ID: "test",
       GOOGLE_CLIENT_SECRET: "test",
       GOOGLE_CALLBACK_URL: "http://localhost:3000/api/auth/google/callback",
+      AWS_REGION: "eu-north-1",
+      AWS_ACCESS_KEY_ID: "test-key",
+      AWS_SECRET_ACCESS_KEY: "test-secret",
+      S3_BUCKET: "test-bucket",
     },
   };
 });

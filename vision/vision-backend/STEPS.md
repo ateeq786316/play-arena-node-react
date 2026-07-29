@@ -38,7 +38,7 @@
 - [x] Chat module (REST + WebSocket with Socket.IO)
 - [x] Notifications module (CRUD + WebSocket)
 - [x] Admin module (users, grounds, finance, audit)
-- [ ] Upload module (S3, MIME validation)
+- [x] Upload module (S3, MIME validation)
 - [ ] Health module (DB ping)
 
 ## Step 3 — Testing

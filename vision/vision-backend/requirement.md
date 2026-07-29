@@ -22,11 +22,11 @@
 | Notifications | ✅ Complete | 5/5 | CRUD, WebSocket, event-driven |
 | Ratings | ✅ Complete | 5/5 | Peer reviews, leaderboard, player stats |
 | Admin | ✅ Complete | 15/15 | Users, grounds, finance, audit, reference data CRUD |
-| Upload | ❌ Not started | 0/6 | S3 with MIME/size validation |
+| Upload | ✅ Complete | 6/6 | S3 with MIME/size validation |
 | Health | ❌ Not started | 0/1 | DB ping with latency |
 | Email | ❌ Not started | 0/0 | SMTP with nodemailer (exists but no separate module) |
 
-**Total: 11/14 modules complete, ~120/159+ endpoints implemented**
+**Total: 12/14 modules complete, ~126/165+ endpoints implemented**
 
 ---
 
@@ -376,9 +376,9 @@ Cash, JazzCash, Easypaisa, Bank Transfer, Credit/Debit Card
 
 ---
 
-### 2.12 Upload Module ❌ (NOT STARTED)
+### 2.12 Upload Module ✅ (COMPLETE)
 
-**Endpoints Needed:**
+**Endpoints:**
 | Method | Path | Auth | MIME | Max Size |
 |--------|------|------|------|----------|
 | POST | /api/upload | JWT | Default | Default |

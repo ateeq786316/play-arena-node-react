@@ -89,6 +89,14 @@
 - [x] Rating floor — min 100
 - [ ] Inactivity decay — 2 ELO/week after 30 days (needs cron job)
 
+### Upload Module
+- [x] Upload valid file — Returns S3 URL with correct type/folder
+- [x] Upload no file — Throws validation error
+- [x] Upload invalid mime type — Throws validation error
+- [x] Upload file too large — Throws size limit error
+- [x] Upload PDF for booking-proof — Accepted (pdf allowed for bookings)
+- [x] Upload PDF for avatar — Rejected (pdf not allowed for avatars)
+
 ### Admin Module
 - [x] Get users — Paginated list for super_admin
 - [x] Get users non-admin — Throws unauthorized
@@ -172,6 +180,7 @@
 | 2026-07-29 | Notifications — All endpoints | 9 | 9 | 0 | Paginated list, unread count, markAsRead, markAllAsRead, soft delete, create |
 | 2026-07-29 | Ratings — All endpoints | 12 | 12 | 0 | submitRating (validation), leaderboard (global/sport), playerStats (found/empty), recordPlayerStats (captain check) |
 | 2026-07-29 | Admin — All endpoints | 9 | 9 | 0 | super_admin RBAC, users/grounds/teams pagination, verify/suspend with audit, platform finance, audit logs |
+| 2026-07-29 | Upload — All endpoints | 6 | 6 | 0 | MIME validation, size limits, type-specific rules, pdf whitelist |
 
 ---
 
@@ -198,6 +207,7 @@ npm run test:watch  # Watch mode
 | `tests/notification.test.js` | Unit (mocked DB) | Paginated list, unread count, markAsRead, markAllAsRead, soft delete, create |
 | `tests/rating.test.js` | Unit (mocked DB) | Submit rating, leaderboard, player stats, record player stats |
 | `tests/admin.test.js` | Unit (mocked DB) | Users, grounds, teams, finance, audit — super_admin RBAC |
+| `tests/upload.test.js` | Unit (mocked S3) | File validation, MIME whitelist, size limits, type-specific rules |
 
 ---
 

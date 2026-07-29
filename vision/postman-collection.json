@@ -1007,6 +1007,35 @@
           "request": {"method": "POST", "header": [{"key": "Content-Type", "value": "application/json"}], "body": {"mode": "raw", "raw": "{\"name\": \"New Method\",\"slug\": \"new-method\"}"}, "url": {"raw": "http://localhost:3000/api/admin/payment-methods", "host": ["localhost:3000"], "path": ["api", "admin", "payment-methods"]}}
         }
       ]
+    },
+    {
+      "name": "Upload",
+      "item": [
+        {
+          "name": "Upload Avatar (Auth)",
+          "request": {"method": "POST", "header": [], "url": {"raw": "http://localhost:3000/api/upload/avatar", "host": ["localhost:3000"], "path": ["api", "upload", "avatar"]}}
+        },
+        {
+          "name": "Upload Ground Image (Auth/Owner)",
+          "request": {"method": "POST", "header": [], "url": {"raw": "http://localhost:3000/api/upload/ground-image/GROUND_ID", "host": ["localhost:3000"], "path": ["api", "upload", "ground-image", "GROUND_ID"]}}
+        },
+        {
+          "name": "Upload Booking Proof (Auth/Staff)",
+          "request": {"method": "POST", "header": [], "url": {"raw": "http://localhost:3000/api/upload/booking-proof/GROUND_ID", "host": ["localhost:3000"], "path": ["api", "upload", "booking-proof", "GROUND_ID"]}}
+        },
+        {
+          "name": "Upload Tournament Poster (Auth)",
+          "request": {"method": "POST", "header": [], "url": {"raw": "http://localhost:3000/api/upload/tournament-poster", "host": ["localhost:3000"], "path": ["api", "upload", "tournament-poster"]}}
+        },
+        {
+          "name": "Upload Team Logo (Auth)",
+          "request": {"method": "POST", "header": [], "url": {"raw": "http://localhost:3000/api/upload/team-logo", "host": ["localhost:3000"], "path": ["api", "upload", "team-logo"]}}
+        },
+        {
+          "name": "Upload General (Auth)",
+          "request": {"method": "POST", "header": [], "url": {"raw": "http://localhost:3000/api/upload/general", "host": ["localhost:3000"], "path": ["api", "upload", "general"]}}
+        }
+      ]
     }
   ]
 }

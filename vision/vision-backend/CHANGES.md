@@ -212,5 +212,16 @@
 - Updated `tests/setup.js` — added auditLog, city, sportCategory, paymentMethod mocks; added count to user/ground/team, findUnique to paymentMethod
 - Updated Postman collection with all 12 admin endpoint groups
 
+### 2026-07-29 — Upload Module Implementation
+- Installed `@aws-sdk/client-s3`, `@aws-sdk/lib-storage`, `multer`
+- Created `src/config/upload/s3.js` — S3Client singleton (reads from env)
+- Created `src/repository/upload.repo.js` — PutObjectCommand (upload) and DeleteObjectCommand (delete) to S3
+- Created `src/modules/upload/upload.service.js` — 6 upload types (avatar, booking-proof, ground-image, team-logo, tournament-poster, general) each with MIME whitelist and size limits (5MB images, 10MB PDF). Ground-scoped uploads for ground-image and booking-proof with RBAC check
+- Created `src/modules/upload/upload.controller.js` — 3 handlers (generic upload, ground-scoped upload, avatar upload with auto-update user.avatar)
+- Created `src/modules/upload/upload.route.js` — 5 routes with multer memoryStorage, 10MB limit, authMiddleware
+- Updated `src/app.js` — registered /api/upload
+- Created `tests/upload.test.js` — 6 tests (valid upload, no file, invalid mime, too large, pdf in booking-proof, pdf rejected in avatar)
+- Updated Postman collection with upload endpoints
+
 ### 2026-07-29 — Updated Anchored Summary
 - Bumped total: 8/14 modules done, 150+ tests, 49+ Prisma models
