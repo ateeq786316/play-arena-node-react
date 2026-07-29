@@ -1,7 +1,7 @@
 # PlayArena Backend — Development Plan
 
 > Status: In Progress
-> Last Updated: 2026-07-28
+> Last Updated: 2026-07-29
 
 ---
 
@@ -22,7 +22,7 @@ PlayArena backend is built with **Express + PostgreSQL (Prisma ORM)** + Node.js.
 
 - [x] Authentication & User Management (OTP, JWT refresh, password reset, profile, logout)
 - [x] Ground Discovery Module (Ground CRUD, Courts, Schedules, Settings, RBAC, Regions/Cities)
-- [ ] Booking Engine
+- [x] Booking Engine
 - [ ] Teams & Matchmaking (ELO system)
 - [ ] Tournaments & Brackets
 - [ ] Finance & Cash Management

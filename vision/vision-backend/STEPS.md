@@ -29,7 +29,7 @@
 - [x] User module (profile, search, role field added)
 - [x] Ground module (CRUD, courts, schedules, settings, RBAC, regions/cities)
 - [x] Created requirement.md — master spec consolidating all module requirements
-- [ ] Booking module (create, state machine, conflict detection)
+- [x] Booking module (create, state machine, conflict detection, walk-in, payments, slots) ✅
 - [ ] Finance module (payments, cash sessions)
 - [ ] Teams module (CRUD, roster, invites)
 - [ ] Matchmaking module (challenges, ELO, scoring)

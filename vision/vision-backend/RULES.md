@@ -6,7 +6,7 @@
 
 2. **Document before doing** — Every change must be recorded in CHANGES.md BEFORE implementation begins.
 
-3. **Test after every change** — After any implementation, update TESTING.md with results.
+3. **Write and run tests after every API** — After implementing every single endpoint/module, immediately write unit/integration tests using vitest + supertest. Run `npm test` to verify. Then update TESTING.md with results. Never move to the next module without passing tests.
 
 4. **Never skip documentation** — No code change is complete without its corresponding MD update.
 
@@ -14,7 +14,7 @@
 
 6. **Keep RULES.md in memory** — Re-read this file at the start of every session/task.
 
-7. **Maintain Postman collection** — After implementing each module/endpoint, add its test request to `vision/postman-collection.json`. Update the file BEFORE moving to the next task.
+7. **Must update Postman after every API** — After creating every single endpoint, immediately add its test request to `vision/postman-collection.json`. Never move to the next endpoint without the Postman entry. The Postman collection must always be in sync with the implemented endpoints.
 
 ---
 
@@ -32,7 +32,8 @@
 
 ### Post-Development
 - `Update PROJECT_STATUS.md` — reflect new backend state in root vision
-- `Run tests` — verify everything works before declaring done
+- `Write tests` — create unit/integration tests for the new module in `playarena-backend/tests/`
+- `Run tests` — `npm test` must pass before declaring done
 
 ---
 

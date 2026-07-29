@@ -77,3 +77,15 @@
 - Verified current status: 2/14 modules done (Auth ✅, Ground ✅), ~30/120+ endpoints implemented
 - Updated from vision/project-scope.md, over-all-observation.md, screens-spec.md
 - Added module-by-module endpoint tables, state machines, RBAC rules, Pakistan-specific context
+
+### 2026-07-29 — Booking Module Implementation
+- Extended Prisma schema with Booking, BookingFinance, BookingPayment models
+- Added BookingStatus enum (6 states) and PaymentStatus enum (4 states)
+- Added booking relations to User, Ground, Court models
+- Ran migration `add-booking-module` — database in sync
+- Created `src/repository/booking.repo.js` — full CRUD with conflict detection, finance/payment queries, idempotency key lookup
+- Created `src/modules/booking/booking.service.js` — 6-status state machine, deposit calculation, slot conflict detection with serialized transactions, walk-in booking (auto-approved), payment recording with aggregate channel tracking, slot availability grid generation
+- Created `src/modules/booking/booking.controller.js` — 10 endpoint handlers
+- Created `src/modules/booking/booking.route.js` — booking routes under `/api/bookings`
+- Registered walk-in + ground bookings under `/api/grounds/:groundId/` in app.js
+- Booking endpoints: create, my-bookings, detail, cancel, walkin, ground-bookings, status-update, record-payment, finance-detail, slots-availability
