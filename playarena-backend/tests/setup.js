@@ -1,0 +1,86 @@
+import { vi } from "vitest";
+
+vi.mock("../src/database/db.js", () => {
+  const mockPrisma = {
+    booking: {
+      create: vi.fn(),
+      findUnique: vi.fn(),
+      findFirst: vi.fn(),
+      findMany: vi.fn(),
+      update: vi.fn(),
+    },
+    bookingFinance: {
+      create: vi.fn(),
+      findUnique: vi.fn(),
+      upsert: vi.fn(),
+      update: vi.fn(),
+      aggregate: vi.fn(),
+    },
+    bookingPayment: {
+      create: vi.fn(),
+      findUnique: vi.fn(),
+      findMany: vi.fn(),
+      aggregate: vi.fn(),
+    },
+    court: {
+      findUnique: vi.fn(),
+      findMany: vi.fn(),
+    },
+    ground: {
+      findUnique: vi.fn(),
+      findMany: vi.fn(),
+    },
+    groundAccess: {
+      findUnique: vi.fn(),
+    },
+    groundSchedule: {
+      findMany: vi.fn(),
+    },
+    $transaction: vi.fn((fn) => fn(mockPrisma)),
+    $disconnect: vi.fn(),
+    $connect: vi.fn(),
+  };
+  return { default: mockPrisma };
+});
+
+vi.mock("../src/config/env.js", () => {
+  return {
+    default: {
+      PORT: 3000,
+      DATABASE_URL: "postgresql://test:test@localhost:5432/test",
+      JWT_SECRET: "test-secret-key-that-is-at-least-32-chars-long!!",
+      JWT_EXPIRES_IN: "7d",
+      ACCESSTOKEN: "test-access-token-secret-key-1234567890",
+      REFRESHTOKEN: "test-refresh-token-secret-key-12345678",
+      BOOKING_EXPIRY_MINUTES: 30,
+      SMTP_HOST: "smtp.gmail.com",
+      SMTP_PORT: 587,
+      SMTP_USER: "test@test.com",
+      SMTP_PASS: "testpass",
+      SMTP_FROM: "test@test.com",
+      NODE_ENV: "test",
+      LOG_LEVEL: "silent",
+      CORS_ORIGIN: "*",
+      GOOGLE_CLIENT_ID: "test",
+      GOOGLE_CLIENT_SECRET: "test",
+      GOOGLE_CALLBACK_URL: "http://localhost:3000/api/auth/google/callback",
+    },
+  };
+});
+
+vi.mock("../src/config/logger.js", () => {
+  return {
+    default: {
+      info: vi.fn(),
+      error: vi.fn(),
+      warn: vi.fn(),
+      debug: vi.fn(),
+    },
+  };
+});
+
+vi.mock("../src/config/nodemailer.js", () => {
+  return {
+    default: vi.fn().mockResolvedValue({ messageId: "test" }),
+  };
+});

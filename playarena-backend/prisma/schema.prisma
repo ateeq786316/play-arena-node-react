@@ -25,6 +25,22 @@ enum InviteStatus {
   expired
 }
 
+enum BookingStatus {
+  pending_payment_verification
+  approved
+  rejected
+  expired
+  cancelled
+  completed
+}
+
+enum PaymentStatus {
+  unpaid
+  partial
+  paid
+  overpaid
+}
+
 model User {
   id           String       @id @default(uuid()) @db.Uuid
   name         String?
@@ -47,6 +63,8 @@ model User {
   groundAccess    GroundAccess[]
   groundInvites   GroundInvite[]
   settingUpdates  GroundSetting[] @relation("SettingUpdater")
+  bookings        Booking[]
+  payments        BookingPayment[]
 
   @@map("users")
 }
@@ -105,6 +123,7 @@ model Ground {
   images     GroundImage[]
   access     GroundAccess[]
   invites    GroundInvite[]
+  bookings   Booking[]
 
   @@map("grounds")
 }
@@ -125,7 +144,8 @@ model Court {
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
 
-  ground Ground @relation(fields: [groundId], references: [id])
+  ground   Ground    @relation(fields: [groundId], references: [id])
+  bookings Booking[]
 
   @@map("courts")
 }
@@ -216,4 +236,68 @@ model GroundInvite {
   user   User?  @relation(fields: [userId], references: [id])
 
   @@map("ground_invites")
+}
+
+model Booking {
+  id            String        @id @default(uuid()) @db.Uuid
+  groundId      String        @db.Uuid
+  courtId       String        @db.Uuid
+  playerId      String        @db.Uuid
+  date          DateTime      @db.Date
+  startTime     String
+  endTime       String
+  totalAmount   Decimal       @db.Decimal(12, 2)
+  depositAmount Decimal?      @db.Decimal(12, 2)
+  status        BookingStatus @default(pending_payment_verification)
+  playerName    String?
+  playerPhone   String?
+  cancelledAt   DateTime?
+  deletedAt     DateTime?
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  ground  Ground         @relation(fields: [groundId], references: [id])
+  court   Court          @relation(fields: [courtId], references: [id])
+  player  User           @relation(fields: [playerId], references: [id])
+  finance BookingFinance?
+  payments BookingPayment[]
+
+  @@index([groundId, status])
+  @@index([courtId, date, startTime, endTime])
+  @@index([playerId, status])
+  @@map("bookings")
+}
+
+model BookingFinance {
+  bookingId       String        @id @db.Uuid
+  totalAmount     Decimal       @db.Decimal(12, 2)
+  onlineReceived  Decimal       @default(0) @db.Decimal(12, 2)
+  offlineReceived Decimal       @default(0) @db.Decimal(12, 2)
+  paymentStatus   PaymentStatus @default(unpaid)
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  booking Booking @relation(fields: [bookingId], references: [id])
+
+  @@map("booking_finance")
+}
+
+model BookingPayment {
+  id               String   @id @default(uuid()) @db.Uuid
+  bookingId        String   @db.Uuid
+  amount           Decimal  @db.Decimal(12, 2)
+  channel          String
+  paymentMethod    String
+  idempotencyKey   String   @unique
+  recordedById     String   @db.Uuid
+
+  createdAt DateTime @default(now())
+
+  booking  Booking @relation(fields: [bookingId], references: [id])
+  recorder User    @relation(fields: [recordedById], references: [id])
+
+  @@index([bookingId])
+  @@map("booking_payments")
 }

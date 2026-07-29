@@ -14,7 +14,7 @@
             "method": "POST",
             "header": [{"key": "Content-Type", "value": "application/json"}],
             "body": {"mode": "raw", "raw": "{\"name\": \"Test User\",\"email\": \"test@test.com\",\"password\": \"Pass123!\",\"mobile\": \"03001234567\"}"},
-            "url": {"raw": "http://localhost:3000/api/user/register", "host": ["http://localhost:3000"], "path": ["api", "user", "register"]}
+            "url": {"raw": "http://localhost:3000/api/user/register", "host": ["localhost:3000"], "path": ["api", "user", "register"]}
           }
         },
         {
@@ -23,7 +23,7 @@
             "method": "POST",
             "header": [{"key": "Content-Type", "value": "application/json"}],
             "body": {"mode": "raw", "raw": "{\"email\": \"test@test.com\",\"otp\": \"123456\"}"},
-            "url": {"raw": "http://localhost:3000/api/user/verify-otp", "host": ["http://localhost:3000"], "path": ["api", "user", "verify-otp"]}
+            "url": {"raw": "http://localhost:3000/api/user/verify-otp", "host": ["localhost:3000"], "path": ["api", "user", "verify-otp"]}
           }
         },
         {
@@ -32,7 +32,7 @@
             "method": "POST",
             "header": [{"key": "Content-Type", "value": "application/json"}],
             "body": {"mode": "raw", "raw": "{\"email\": \"test@test.com\"}"},
-            "url": {"raw": "http://localhost:3000/api/user/resend-otp", "host": ["http://localhost:3000"], "path": ["api", "user", "resend-otp"]}
+            "url": {"raw": "http://localhost:3000/api/user/resend-otp", "host": ["localhost:3000"], "path": ["api", "user", "resend-otp"]}
           }
         },
         {
@@ -41,7 +41,7 @@
             "method": "POST",
             "header": [{"key": "Content-Type", "value": "application/json"}],
             "body": {"mode": "raw", "raw": "{\"email\": \"test@test.com\",\"password\": \"Pass123!\"}"},
-            "url": {"raw": "http://localhost:3000/api/user/login", "host": ["http://localhost:3000"], "path": ["api", "user", "login"]}
+            "url": {"raw": "http://localhost:3000/api/user/login", "host": ["localhost:3000"], "path": ["api", "user", "login"]}
           }
         },
         {
@@ -49,7 +49,7 @@
           "request": {
             "method": "POST",
             "header": [],
-            "url": {"raw": "http://localhost:3000/api/user/refresh", "host": ["http://localhost:3000"], "path": ["api", "user", "refresh"]}
+            "url": {"raw": "http://localhost:3000/api/user/refresh", "host": ["localhost:3000"], "path": ["api", "user", "refresh"]}
           }
         },
         {
@@ -57,7 +57,7 @@
           "request": {
             "method": "GET",
             "header": [],
-            "url": {"raw": "http://localhost:3000/api/user/profile", "host": ["http://localhost:3000"], "path": ["api", "user", "profile"]}
+            "url": {"raw": "http://localhost:3000/api/user/profile", "host": ["localhost:3000"], "path": ["api", "user", "profile"]}
           }
         },
         {
@@ -66,7 +66,7 @@
             "method": "PATCH",
             "header": [{"key": "Content-Type", "value": "application/json"}],
             "body": {"mode": "raw", "raw": "{\"name\": \"Updated Name\"}"},
-            "url": {"raw": "http://localhost:3000/api/user/profile", "host": ["http://localhost:3000"], "path": ["api", "user", "profile"]}
+            "url": {"raw": "http://localhost:3000/api/user/profile", "host": ["localhost:3000"], "path": ["api", "user", "profile"]}
           }
         },
         {
@@ -74,7 +74,7 @@
           "request": {
             "method": "POST",
             "header": [],
-            "url": {"raw": "http://localhost:3000/api/user/logout", "host": ["http://localhost:3000"], "path": ["api", "user", "logout"]}
+            "url": {"raw": "http://localhost:3000/api/user/logout", "host": ["localhost:3000"], "path": ["api", "user", "logout"]}
           }
         },
         {
@@ -83,7 +83,7 @@
             "method": "POST",
             "header": [{"key": "Content-Type", "value": "application/json"}],
             "body": {"mode": "raw", "raw": "{\"email\": \"test@test.com\"}"},
-            "url": {"raw": "http://localhost:3000/api/user/forgot-password", "host": ["http://localhost:3000"], "path": ["api", "user", "forgot-password"]}
+            "url": {"raw": "http://localhost:3000/api/user/forgot-password", "host": ["localhost:3000"], "path": ["api", "user", "forgot-password"]}
           }
         },
         {
@@ -91,7 +91,7 @@
           "request": {
             "method": "GET",
             "header": [],
-            "url": {"raw": "http://localhost:3000/api/user/reset-password/TOKEN", "host": ["http://localhost:3000"], "path": ["api", "user", "reset-password", "TOKEN"]}
+            "url": {"raw": "http://localhost:3000/api/user/reset-password/TOKEN", "host": ["localhost:3000"], "path": ["api", "user", "reset-password", "TOKEN"]}
           }
         },
         {
@@ -101,6 +101,260 @@
             "header": [{"key": "Content-Type", "value": "application/json"}],
             "body": {"mode": "raw", "raw": "{\"password\": \"NewPass123!\"}"},
             "url": {"raw": "http://localhost:3000/api/user/update-password", "host": ["localhost:3000"], "path": ["api", "user", "update-password"]}
+          }
+        }
+      ]
+    },
+    {
+      "name": "Grounds",
+      "item": [
+        {
+          "name": "List Regions",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {"raw": "http://localhost:3000/api/grounds/regions", "host": ["localhost:3000"], "path": ["api", "grounds", "regions"]}
+          }
+        },
+        {
+          "name": "List Featured Grounds",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {"raw": "http://localhost:3000/api/grounds/featured", "host": ["localhost:3000"], "path": ["api", "grounds", "featured"]}
+          }
+        },
+        {
+          "name": "List All Grounds",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {"raw": "http://localhost:3000/api/grounds", "host": ["localhost:3000"], "path": ["api", "grounds"]}
+          }
+        },
+        {
+          "name": "Get Ground By ID",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {"raw": "http://localhost:3000/api/grounds/GROUND_ID", "host": ["localhost:3000"], "path": ["api", "grounds", "GROUND_ID"]}
+          }
+        },
+        {
+          "name": "Create Ground (Auth)",
+          "request": {
+            "method": "POST",
+            "header": [{"key": "Content-Type", "value": "application/json"}],
+            "body": {"mode": "raw", "raw": "{\"name\": \"Islamabad Cricket Ground\",\"address\": \"F-8, Islamabad\",\"cityId\": \"CITY_UUID\",\"regionId\": \"REGION_UUID\",\"description\": \"A premium cricket ground\",\"contactPhone\": \"051-1234567\"}"},
+            "url": {"raw": "http://localhost:3000/api/grounds", "host": ["localhost:3000"], "path": ["api", "grounds"]}
+          }
+        },
+        {
+          "name": "Update Ground (Auth)",
+          "request": {
+            "method": "PATCH",
+            "header": [{"key": "Content-Type", "value": "application/json"}],
+            "body": {"mode": "raw", "raw": "{\"name\": \"Updated Ground Name\"}"},
+            "url": {"raw": "http://localhost:3000/api/grounds/GROUND_ID", "host": ["localhost:3000"], "path": ["api", "grounds", "GROUND_ID"]}
+          }
+        },
+        {
+          "name": "Delete Ground (Auth)",
+          "request": {
+            "method": "DELETE",
+            "header": [],
+            "url": {"raw": "http://localhost:3000/api/grounds/GROUND_ID", "host": ["localhost:3000"], "path": ["api", "grounds", "GROUND_ID"]}
+          }
+        },
+        {
+          "name": "My Grounds (Auth)",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {"raw": "http://localhost:3000/api/grounds/my", "host": ["localhost:3000"], "path": ["api", "grounds", "my"]}
+          }
+        },
+        {
+          "name": "List Courts",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {"raw": "http://localhost:3000/api/grounds/GROUND_ID/courts", "host": ["localhost:3000"], "path": ["api", "grounds", "GROUND_ID", "courts"]}
+          }
+        },
+        {
+          "name": "Create Court (Auth)",
+          "request": {
+            "method": "POST",
+            "header": [{"key": "Content-Type", "value": "application/json"}],
+            "body": {"mode": "raw", "raw": "{\"name\": \"Main Cricket Pitch\",\"sportType\": \"cricket\",\"basePrice\": 5000,\"pricePerHour\": 2000,\"maxPlayers\": 22}"},
+            "url": {"raw": "http://localhost:3000/api/grounds/GROUND_ID/courts", "host": ["localhost:3000"], "path": ["api", "grounds", "GROUND_ID", "courts"]}
+          }
+        },
+        {
+          "name": "Update Court (Auth)",
+          "request": {
+            "method": "PATCH",
+            "header": [{"key": "Content-Type", "value": "application/json"}],
+            "body": {"mode": "raw", "raw": "{\"pricePerHour\": 2500}"},
+            "url": {"raw": "http://localhost:3000/api/grounds/courts/COURT_ID", "host": ["localhost:3000"], "path": ["api", "grounds", "courts", "COURT_ID"]}
+          }
+        },
+        {
+          "name": "Delete Court (Auth)",
+          "request": {
+            "method": "DELETE",
+            "header": [],
+            "url": {"raw": "http://localhost:3000/api/grounds/courts/COURT_ID", "host": ["localhost:3000"], "path": ["api", "grounds", "courts", "COURT_ID"]}
+          }
+        },
+        {
+          "name": "List Schedules",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {"raw": "http://localhost:3000/api/grounds/GROUND_ID/schedules", "host": ["localhost:3000"], "path": ["api", "grounds", "GROUND_ID", "schedules"]}
+          }
+        },
+        {
+          "name": "Upsert Schedule (Auth)",
+          "request": {
+            "method": "PUT",
+            "header": [{"key": "Content-Type", "value": "application/json"}],
+            "body": {"mode": "raw", "raw": "{\"openTime\": \"06:00\",\"closeTime\": \"22:00\",\"slotDuration\": 60}"},
+            "url": {"raw": "http://localhost:3000/api/grounds/GROUND_ID/schedules/0", "host": ["localhost:3000"], "path": ["api", "grounds", "GROUND_ID", "schedules", "0"]}
+          }
+        },
+        {
+          "name": "Delete Schedule (Auth)",
+          "request": {
+            "method": "DELETE",
+            "header": [],
+            "url": {"raw": "http://localhost:3000/api/grounds/GROUND_ID/schedules/0", "host": ["localhost:3000"], "path": ["api", "grounds", "GROUND_ID", "schedules", "0"]}
+          }
+        },
+        {
+          "name": "Update Settings (Auth)",
+          "request": {
+            "method": "PATCH",
+            "header": [{"key": "Content-Type", "value": "application/json"}],
+            "body": {"mode": "raw", "raw": "{\"allowOnlineBooking\": true,\"requireDeposit\": true,\"depositPercentage\": 25.0}"},
+            "url": {"raw": "http://localhost:3000/api/grounds/GROUND_ID/settings", "host": ["localhost:3000"], "path": ["api", "grounds", "GROUND_ID", "settings"]}
+          }
+        },
+        {
+          "name": "Add Image (Auth)",
+          "request": {
+            "method": "POST",
+            "header": [{"key": "Content-Type", "value": "application/json"}],
+            "body": {"mode": "raw", "raw": "{\"url\": \"https://example.com/image.jpg\",\"isPrimary\": true}"},
+            "url": {"raw": "http://localhost:3000/api/grounds/GROUND_ID/images", "host": ["localhost:3000"], "path": ["api", "grounds", "GROUND_ID", "images"]}
+          }
+        },
+        {
+          "name": "Remove Image (Auth)",
+          "request": {
+            "method": "DELETE",
+            "header": [],
+            "url": {"raw": "http://localhost:3000/api/grounds/GROUND_ID/images/IMAGE_ID", "host": ["localhost:3000"], "path": ["api", "grounds", "GROUND_ID", "images", "IMAGE_ID"]}
+          }
+        },
+        {
+          "name": "Invite Staff (Auth)",
+          "request": {
+            "method": "POST",
+            "header": [{"key": "Content-Type", "value": "application/json"}],
+            "body": {"mode": "raw", "raw": "{\"userId\": \"USER_UUID\",\"accessRole\": \"manager\"}"},
+            "url": {"raw": "http://localhost:3000/api/grounds/GROUND_ID/invites", "host": ["localhost:3000"], "path": ["api", "grounds", "GROUND_ID", "invites"]}
+          }
+        }
+      ]
+    },
+    {
+      "name": "Bookings",
+      "item": [
+        {
+          "name": "Create Booking (Auth)",
+          "request": {
+            "method": "POST",
+            "header": [{"key": "Content-Type", "value": "application/json"}],
+            "body": {"mode": "raw", "raw": "{\"groundId\": \"GROUND_UUID\",\"courtId\": \"COURT_UUID\",\"date\": \"2026-08-01\",\"startTime\": \"10:00\",\"endTime\": \"12:00\"}"},
+            "url": {"raw": "http://localhost:3000/api/bookings", "host": ["localhost:3000"], "path": ["api", "bookings"]}
+          }
+        },
+        {
+          "name": "My Bookings (Auth)",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {"raw": "http://localhost:3000/api/bookings/my", "host": ["localhost:3000"], "path": ["api", "bookings", "my"]}
+          }
+        },
+        {
+          "name": "Get Booking By ID (Auth)",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {"raw": "http://localhost:3000/api/bookings/BOOKING_ID", "host": ["localhost:3000"], "path": ["api", "bookings", "BOOKING_ID"]}
+          }
+        },
+        {
+          "name": "Cancel Booking (Auth)",
+          "request": {
+            "method": "PATCH",
+            "header": [],
+            "url": {"raw": "http://localhost:3000/api/bookings/BOOKING_ID/cancel", "host": ["localhost:3000"], "path": ["api", "bookings", "BOOKING_ID", "cancel"]}
+          }
+        },
+        {
+          "name": "Update Booking Status (Auth/Staff)",
+          "request": {
+            "method": "PATCH",
+            "header": [{"key": "Content-Type", "value": "application/json"}],
+            "body": {"mode": "raw", "raw": "{\"status\": \"approved\"}"},
+            "url": {"raw": "http://localhost:3000/api/bookings/BOOKING_ID/status", "host": ["localhost:3000"], "path": ["api", "bookings", "BOOKING_ID", "status"]}
+          }
+        },
+        {
+          "name": "Record Payment (Auth/Staff)",
+          "request": {
+            "method": "POST",
+            "header": [{"key": "Content-Type", "value": "application/json"}],
+            "body": {"mode": "raw", "raw": "{\"amount\": 2000,\"channel\": \"cash\",\"paymentMethod\": \"cash\",\"idempotencyKey\": \"UNIQUE_KEY_123\"}"},
+            "url": {"raw": "http://localhost:3000/api/bookings/BOOKING_ID/payment", "host": ["localhost:3000"], "path": ["api", "bookings", "BOOKING_ID", "payment"]}
+          }
+        },
+        {
+          "name": "Get Booking Finance (Auth/Staff)",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {"raw": "http://localhost:3000/api/bookings/BOOKING_ID/finance", "host": ["localhost:3000"], "path": ["api", "bookings", "BOOKING_ID", "finance"]}
+          }
+        },
+        {
+          "name": "Get Court Slots (Public)",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {"raw": "http://localhost:3000/api/bookings/courts/COURT_ID/slots?date=2026-08-01", "host": ["localhost:3000"], "path": ["api", "bookings", "courts", "COURT_ID", "slots"]}
+          }
+        },
+        {
+          "name": "Walk-in Booking (Auth/Staff)",
+          "request": {
+            "method": "POST",
+            "header": [{"key": "Content-Type", "value": "application/json"}],
+            "body": {"mode": "raw", "raw": "{\"courtId\": \"COURT_UUID\",\"date\": \"2026-08-01\",\"startTime\": \"14:00\",\"endTime\": \"15:00\",\"playerName\": \"Walk-in Player\",\"playerPhone\": \"03007654321\"}"},
+            "url": {"raw": "http://localhost:3000/api/grounds/GROUND_ID/walkin", "host": ["localhost:3000"], "path": ["api", "grounds", "GROUND_ID", "walkin"]}
+          }
+        },
+        {
+          "name": "Ground Bookings List (Auth/Staff)",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {"raw": "http://localhost:3000/api/grounds/GROUND_ID/bookings", "host": ["localhost:3000"], "path": ["api", "grounds", "GROUND_ID", "bookings"]}
           }
         }
       ]
