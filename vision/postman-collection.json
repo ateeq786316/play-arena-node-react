@@ -846,6 +846,51 @@
           }
         }
       ]
+    },
+    {
+      "name": "Notifications",
+      "item": [
+        {
+          "name": "Get Notifications (Auth)",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {"raw": "http://localhost:3000/api/notifications", "host": ["localhost:3000"], "path": ["api", "notifications"]}
+          }
+        },
+        {
+          "name": "Get Unread Count (Auth)",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {"raw": "http://localhost:3000/api/notifications/unread-count", "host": ["localhost:3000"], "path": ["api", "notifications", "unread-count"]}
+          }
+        },
+        {
+          "name": "Mark as Read (Auth)",
+          "request": {
+            "method": "PATCH",
+            "header": [],
+            "url": {"raw": "http://localhost:3000/api/notifications/NOTIF_ID/read", "host": ["localhost:3000"], "path": ["api", "notifications", "NOTIF_ID", "read"]}
+          }
+        },
+        {
+          "name": "Mark All as Read (Auth)",
+          "request": {
+            "method": "PATCH",
+            "header": [],
+            "url": {"raw": "http://localhost:3000/api/notifications/read-all", "host": ["localhost:3000"], "path": ["api", "notifications", "read-all"]}
+          }
+        },
+        {
+          "name": "Delete Notification (Auth)",
+          "request": {
+            "method": "DELETE",
+            "header": [],
+            "url": {"raw": "http://localhost:3000/api/notifications/NOTIF_ID", "host": ["localhost:3000"], "path": ["api", "notifications", "NOTIF_ID"]}
+          }
+        }
+      ]
     }
   ]
 }

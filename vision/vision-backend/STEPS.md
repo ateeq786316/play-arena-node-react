@@ -36,7 +36,7 @@
 - [x] Tournaments module (bracket gen, standings, registration, scoring) ✅
 - [ ] Ratings module (peer reviews, leaderboards)
 - [x] Chat module (REST + WebSocket with Socket.IO)
-- [ ] Notifications module (CRUD + WebSocket)
+- [x] Notifications module (CRUD + WebSocket)
 - [ ] Admin module (users, grounds, finance, audit)
 - [ ] Upload module (S3, MIME validation)
 - [ ] Health module (DB ping)

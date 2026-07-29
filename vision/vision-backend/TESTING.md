@@ -89,6 +89,17 @@
 - [x] Rating floor — min 100
 - [ ] Inactivity decay — 2 ELO/week after 30 days (needs cron job)
 
+### Notifications Module
+- [x] Get notifications — Paginated list with total/page/limit/totalPages
+- [x] Get notifications with bad params — Clamp page to min 1, limit to max 50
+- [x] Get unread count — Returns count of unread (readAt=null, deletedAt=null)
+- [x] Mark as read — Sets readAt when found
+- [x] Mark as read not found — Throws 404
+- [x] Mark all as read — Updates all unread for user
+- [x] Delete notification — Soft delete (sets deletedAt)
+- [x] Delete not found — Throws 404
+- [x] Create notification — Creates record + emits via socket
+
 ### Chat Module
 - [x] Get messages — Returns paginated messages with cursor
 - [x] Get messages without access — Throws unauthorized
@@ -133,6 +144,7 @@
 | 2026-07-29 | Tournaments — All endpoints | 29 | 29 | 0 | CRUD, bracket gen (3 formats), registration, standings, match results |
 | 2026-07-29 | Finance — All endpoints | 14 | 14 | 0 | Payment methods, cash sessions (open/close/variance), ground finance, reports |
 | 2026-07-29 | Chat — All endpoints | 9 | 9 | 0 | Messages (cursor pagination, access control), send message (validation), mark as read, unread counts |
+| 2026-07-29 | Notifications — All endpoints | 9 | 9 | 0 | Paginated list, unread count, markAsRead, markAllAsRead, soft delete, create |
 
 ---
 
@@ -156,6 +168,7 @@ npm run test:watch  # Watch mode
 | `tests/tournament.test.js` | Unit (mocked DB) | CRUD, bracket gen (knockout/round_robin/group_knockout), registration, standings, match results |
 | `tests/finance.test.js` | Unit (mocked DB) | Payment methods, ground finance, cash sessions (open/close/variance), reports |
 | `tests/chat.test.js` | Unit (mocked DB) | Messages, cursor pagination, send message, mark as read, unread counts |
+| `tests/notification.test.js` | Unit (mocked DB) | Paginated list, unread count, markAsRead, markAllAsRead, soft delete, create |
 
 ---
 

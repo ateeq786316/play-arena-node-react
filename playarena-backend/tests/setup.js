@@ -165,6 +165,12 @@ vi.mock("../src/database/db.js", () => {
       findMany: vi.fn(),
       upsert: vi.fn(),
     },
+    notification: {
+      create: vi.fn(),
+      findMany: vi.fn(),
+      count: vi.fn(),
+      updateMany: vi.fn(),
+    },
     $transaction: vi.fn((fn) => fn(mockPrisma)),
     $disconnect: vi.fn(),
     $connect: vi.fn(),
@@ -211,5 +217,14 @@ vi.mock("../src/config/logger.js", () => {
 vi.mock("../src/config/nodemailer.js", () => {
   return {
     default: vi.fn().mockResolvedValue({ messageId: "test" }),
+  };
+});
+
+vi.mock("../src/socket/socket.js", () => {
+  const mockEmit = vi.fn();
+  const mockTo = vi.fn(() => ({ emit: mockEmit }));
+  return {
+    getNotificationNamespace: vi.fn(() => ({ to: mockTo })),
+    setupSocket: vi.fn(),
   };
 });

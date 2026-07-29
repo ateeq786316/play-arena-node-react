@@ -169,5 +169,19 @@
 - Updated `tests/setup.js` — added mock methods for chatMessage, chatParticipant, unreadCount
 - Updated Postman collection with 4 chat endpoints
 
+### 2026-07-29 — Notifications Module Implementation
+- Extended Prisma schema with Notification model (id, userId, type, title, message, data, readAt, deletedAt)
+- Added notifications relation to User model
+- Ran migration `add-notifications-module` — database in sync
+- Created `src/repository/notification.repo.js` — paginated list, unread count, markAsRead/markAllAsRead, soft delete, create
+- Created `src/modules/notification/notification.service.js` — 5 REST operations + createNotification with socket emit
+- Created `src/modules/notification/notification.controller.js` — 5 endpoint handlers
+- Created `src/modules/notification/notification.route.js` — 5 routes under `/api/notifications`
+- Updated `src/socket/socket.js` — added /notifications namespace with auto-join user rooms, exported getNotificationNamespace for service use
+- Updated `src/app.js` — registered /api/notifications routes
+- Created `tests/notification.test.js` — 9 tests (get paginated, clamp params, unread count, markAsRead found/not-found, markAllAsRead, soft delete, create)
+- Updated `tests/setup.js` — added notification mock + socket module mock
+- Updated Postman collection with 5 notification endpoints
+
 ### 2026-07-29 — Updated Anchored Summary
 - Bumped total: 8/14 modules done, 150+ tests, 49+ Prisma models

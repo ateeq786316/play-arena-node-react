@@ -11,6 +11,7 @@ import matchRoutes from "./modules/match/match.route.js";
 import tournamentRoutes from "./modules/tournament/tournament.route.js";
 import financeRoutes from "./modules/finance/finance.route.js";
 import chatRoutes from "./modules/chat/chat.route.js";
+import notificationRoutes from "./modules/notification/notification.route.js";
 import asyncHandler from "./utils/asyncHandler.js";
 import authMiddleware from "./middlewares/auth.middleware.js";
 import errorHandler from "./middlewares/errorHandler.middleware.js";
@@ -33,6 +34,7 @@ export default function createApp() {
   app.use("/api/tournaments", tournamentRoutes);
   app.use("/api/finance", financeRoutes);
   app.use("/api/chat", chatRoutes);
+  app.use("/api/notifications", notificationRoutes);
 
   app.post("/api/grounds/:groundId/walkin", authMiddleware, asyncHandler(bookingController.walkinBooking.bind(bookingController)));
 

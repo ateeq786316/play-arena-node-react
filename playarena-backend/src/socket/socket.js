@@ -4,6 +4,12 @@ import env from "../config/env.js";
 import ChatRepo from "../repository/chat.repo.js";
 import logger from "../config/logger.js";
 
+let notificationNamespace = null;
+
+export function getNotificationNamespace() {
+  return notificationNamespace;
+}
+
 export function setupSocket(server) {
   const io = new Server(server, {
     cors: { origin: env.CORS_ORIGIN || "*", methods: ["GET", "POST"] },
@@ -76,6 +82,25 @@ export function setupSocket(server) {
         isTyping: !!isTyping,
       });
     });
+  });
+
+  notificationNamespace = io.of("/notifications");
+
+  notificationNamespace.use((socket, next) => {
+    const token = socket.handshake.auth?.token || socket.handshake.query?.token;
+    if (!token) return next(new Error("Authentication required"));
+
+    try {
+      const decoded = jwt.verify(token, env.ACCESSTOKEN);
+      socket.userId = decoded.id;
+      next();
+    } catch {
+      next(new Error("Invalid token"));
+    }
+  });
+
+  notificationNamespace.on("connection", (socket) => {
+    socket.join(`user:${socket.userId}`);
   });
 
   return io;
