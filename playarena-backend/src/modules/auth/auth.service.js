@@ -160,7 +160,7 @@ export default class AuthService {
     if (!user) throw new error.NOTFOUNDERROR("user not found");
 
     const rawToken = token.generateRawToken(user.id);
-    const link = `http://localhost:3000/api/user/reset-password/${rawToken}`;
+    const link = `${env.CORS_ORIGIN === "*" ? "http://localhost:3000" : env.CORS_ORIGIN.split(",")[0].trim()}/api/user/reset-password/${rawToken}`;
 
     try {
       await sendEmail(email, "Reset your password", resetPasswordEmail(link));
