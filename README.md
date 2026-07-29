@@ -51,19 +51,23 @@ play-arena-node-react/
 
 ## ✨ Features
 
-### ✅ Done
-- **Auth** — Register, Login, Google OAuth, OTP email verification, JWT refresh, forgot/reset password, profile management
-- **DB** — PostgreSQL with Prisma ORM, migrations, auto-generated type-safe client
+### ✅ Done (6/14 Modules — 82+ Endpoints)
+- **Auth** — Register, Login, Google OAuth, OTP verification, JWT refresh, forgot/reset password, profile
+- **Grounds** — CRUD, courts, schedules, settings, RBAC (owner/manager/staff), regions/cities, invites
+- **Bookings** — 6-state machine, slot conflict detection, deposit system, walk-in, payment idempotency
+- **Teams** — CRUD, roster, invites, join requests, captaincy transfer, ELO ratings, rating history
+- **Matchmaking** — Challenges, dual-confirmation scoring, ELO (K-factor, floor 100), match lifecycle
+- **Tournaments** — Knockout (seeded with byes), round-robin, group+knockout, bracket gen, standings
 
 ### 🔜 Planned
-- **Grounds** — CRUD, courts, schedules, availability grid
-- **Bookings** — State machine, slot conflict detection, walk-in, deposit system
-- **Teams** — CRUD, roster, invites, ELO ratings
-- **Matchmaking** — Challenges, dual-confirmation scoring
-- **Tournaments** — Knockout & round-robin brackets
 - **Finance** — Payment recording, cash sessions, reports
-- **Chat & Notifications** — WebSocket (Socket.IO)
+- **Chat** — REST + WebSocket (Socket.IO)
+- **Notifications** — In-app + email + WebSocket
+- **Ratings** — Peer reviews, leaderboards
 - **Admin Panel** — Users, grounds, finance, audit logs
+- **Upload** — S3 with MIME/size validation
+- **Health** — DB ping with latency
+- **Email** — Dedicated module
 
 ---
 
@@ -106,22 +110,19 @@ http://localhost:3000/api/user
 
 | Method | Endpoint | Auth | Description |
 |--------|----------|------|-------------|
-| POST | `/register` | ❌ | Create account + send OTP |
-| POST | `/verify-otp` | ❌ | Verify email with OTP |
-| POST | `/resend-otp` | ❌ | Resend verification OTP |
-| POST | `/login` | ❌ | Login with email + password |
-| POST | `/refresh` | ❌ | Refresh JWT tokens (cookie) |
-| POST | `/logout` | ❌ | Clear auth cookies |
-| GET | `/profile` | ✅ | Get current user profile |
-| PATCH | `/profile` | ✅ | Update name/avatar |
-| GET | `/google` | ❌ | Google OAuth login |
-| POST | `/forgot-password` | ❌ | Send password reset email |
-| GET | `/reset-password/:token` | ❌ | Verify reset token |
-| POST | `/update-password` | ✅ | Change password (JWT) |
+> Full endpoint reference in `vision/vision-backend/requirement.md` and `vision/postman-collection.json`.
 
-> 📬 Import `vision/postman-collection.json` into Postman for all test requests.
+**Modules registered at:** `/api/user`, `/api/grounds`, `/api/bookings`, `/api/teams`, `/api/matches`, `/api/tournaments`
 
 ---
+
+## 🧪 Tests
+
+```bash
+cd playarena-backend
+npm test        # 136 tests across 6 files
+npm run test:watch
+```
 
 ## 📁 Project Docs
 
@@ -133,6 +134,8 @@ http://localhost:3000/api/user
 | `vision/vision-backend/PLAN.md` | Backend dev plan |
 | `vision/vision-backend/CHANGES.md` | Change log |
 | `vision/vision-backend/STEPS.md` | Step tracker |
+| `vision/vision-backend/TESTING.md` | Test strategy & history |
+| `vision/vision-backend/RULES.md` | Coding rules |
 
 ---
 

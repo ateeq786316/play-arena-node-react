@@ -33,7 +33,7 @@
 - [ ] Finance module (payments, cash sessions)
 - [x] Teams module (CRUD, roster, invites, join requests, captaincy) ✅
 - [x] Matchmaking module (challenges, ELO, scoring, dual-confirmation) ✅
-- [ ] Tournaments module (bracket generation, registration)
+- [x] Tournaments module (bracket gen, standings, registration, scoring) ✅
 - [ ] Ratings module (peer reviews, leaderboards)
 - [ ] Chat module (REST + WebSocket)
 - [ ] Notifications module (CRUD + WebSocket)

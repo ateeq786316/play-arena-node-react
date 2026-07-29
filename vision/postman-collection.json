@@ -630,6 +630,112 @@
           }
         }
       ]
+    },
+    {
+      "name": "Tournaments",
+      "item": [
+        {
+          "name": "Create Tournament (Auth)",
+          "request": {
+            "method": "POST",
+            "header": [{"key": "Content-Type", "value": "application/json"}],
+            "body": {"mode": "raw", "raw": "{\"name\": \"Champions Cup\",\"sport\": \"cricket\",\"format\": \"knockout\",\"maxTeams\": 8,\"minTeams\": 4,\"description\": \"Annual championship\"}"},
+            "url": {"raw": "http://localhost:3000/api/tournaments", "host": ["localhost:3000"], "path": ["api", "tournaments"]}
+          }
+        },
+        {
+          "name": "List Tournaments (Public)",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {"raw": "http://localhost:3000/api/tournaments", "host": ["localhost:3000"], "path": ["api", "tournaments"]}
+          }
+        },
+        {
+          "name": "My Tournaments (Auth)",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {"raw": "http://localhost:3000/api/tournaments/my", "host": ["localhost:3000"], "path": ["api", "tournaments", "my"]}
+          }
+        },
+        {
+          "name": "Tournament Detail (Public)",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {"raw": "http://localhost:3000/api/tournaments/TOURNAMENT_ID", "host": ["localhost:3000"], "path": ["api", "tournaments", "TOURNAMENT_ID"]}
+          }
+        },
+        {
+          "name": "Update Tournament (Auth/Owner)",
+          "request": {
+            "method": "PATCH",
+            "header": [{"key": "Content-Type", "value": "application/json"}],
+            "body": {"mode": "raw", "raw": "{\"name\": \"Updated Cup\",\"description\": \"Updated description\"}"},
+            "url": {"raw": "http://localhost:3000/api/tournaments/TOURNAMENT_ID", "host": ["localhost:3000"], "path": ["api", "tournaments", "TOURNAMENT_ID"]}
+          }
+        },
+        {
+          "name": "Delete Tournament (Auth/Owner)",
+          "request": {
+            "method": "DELETE",
+            "header": [],
+            "url": {"raw": "http://localhost:3000/api/tournaments/TOURNAMENT_ID", "host": ["localhost:3000"], "path": ["api", "tournaments", "TOURNAMENT_ID"]}
+          }
+        },
+        {
+          "name": "Register Team (Auth/Captain)",
+          "request": {
+            "method": "POST",
+            "header": [{"key": "Content-Type", "value": "application/json"}],
+            "body": {"mode": "raw", "raw": "{\"teamId\": \"TEAM_ID\"}"},
+            "url": {"raw": "http://localhost:3000/api/tournaments/TOURNAMENT_ID/register", "host": ["localhost:3000"], "path": ["api", "tournaments", "TOURNAMENT_ID", "register"]}
+          }
+        },
+        {
+          "name": "Withdraw Team (Auth)",
+          "request": {
+            "method": "POST",
+            "header": [{"key": "Content-Type", "value": "application/json"}],
+            "body": {"mode": "raw", "raw": "{\"teamId\": \"TEAM_ID\"}"},
+            "url": {"raw": "http://localhost:3000/api/tournaments/TOURNAMENT_ID/withdraw", "host": ["localhost:3000"], "path": ["api", "tournaments", "TOURNAMENT_ID", "withdraw"]}
+          }
+        },
+        {
+          "name": "Generate Bracket (Auth/Owner)",
+          "request": {
+            "method": "POST",
+            "header": [],
+            "url": {"raw": "http://localhost:3000/api/tournaments/TOURNAMENT_ID/generate-bracket", "host": ["localhost:3000"], "path": ["api", "tournaments", "TOURNAMENT_ID", "generate-bracket"]}
+          }
+        },
+        {
+          "name": "Get Bracket (Public)",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {"raw": "http://localhost:3000/api/tournaments/TOURNAMENT_ID/bracket", "host": ["localhost:3000"], "path": ["api", "tournaments", "TOURNAMENT_ID", "bracket"]}
+          }
+        },
+        {
+          "name": "Get Standings (Public)",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {"raw": "http://localhost:3000/api/tournaments/TOURNAMENT_ID/standings", "host": ["localhost:3000"], "path": ["api", "tournaments", "TOURNAMENT_ID", "standings"]}
+          }
+        },
+        {
+          "name": "Enter Match Result (Auth/Owner)",
+          "request": {
+            "method": "POST",
+            "header": [{"key": "Content-Type", "value": "application/json"}],
+            "body": {"mode": "raw", "raw": "{\"score1\": 3,\"score2\": 1}"},
+            "url": {"raw": "http://localhost:3000/api/tournaments/TOURNAMENT_ID/matches/MATCH_ID/result", "host": ["localhost:3000"], "path": ["api", "tournaments", "TOURNAMENT_ID", "matches", "MATCH_ID", "result"]}
+          }
+        }
+      ]
     }
   ]
 }

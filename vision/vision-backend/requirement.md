@@ -16,7 +16,7 @@
 | Booking | ✅ Complete | 10/10 | State machine, conflict detection, deposit, walk-in, availability |
 | Teams | ✅ Complete | 20/20 | CRUD, roster, invites, join requests, captaincy, ratings |
 | Matchmaking | ✅ Complete | 11/11 | Challenges, match lifecycle, ELO, dual-confirmation scoring |
-| Tournaments | ❌ Not started | 0/12 | CRUD, bracket gen, registration, standings |
+| Tournaments | ✅ Complete | 11/11 | CRUD, bracket gen (knockout/round_robin/group_knockout), registration, standings |
 | Finance | ❌ Not started | 0/10 | Payments, idempotency, cash sessions, payment methods |
 | Chat | ❌ Not started | 0/4 | Messages (REST), WebSocket gateway |
 | Notifications | ❌ Not started | 0/5 | CRUD, WebSocket, event-driven |
@@ -26,7 +26,7 @@
 | Health | ❌ Not started | 0/1 | DB ping with latency |
 | Email | ❌ Not started | 0/0 | SMTP with nodemailer (exists but no separate module) |
 
-**Total: 5/14 modules complete, ~71/120+ endpoints implemented**
+**Total: 6/14 modules complete, ~82/130+ endpoints implemented**
 
 ---
 
@@ -207,7 +207,7 @@ approved → cancelled (player)
 
 ---
 
-### 2.6 Tournaments Module ❌ (NOT STARTED)
+### 2.6 Tournaments Module ✅ (COMPLETE)
 
 **Endpoints Needed:**
 | Method | Path | Auth | Description |
@@ -447,24 +447,24 @@ Cash, JazzCash, Easypaisa, Bank Transfer, Credit/Debit Card
 | 8 | GroundAccess | ✅ Done | Ground |
 | 9 | GroundInvite | ✅ Done | Ground |
 | 10 | Court | ✅ Done | Ground |
-| 11 | Booking | ❌ | Booking |
-| 12 | BookingFinance | ❌ | Booking |
-| 13 | BookingPayment | ❌ | Finance |
+| 11 | Booking | ✅ Done | Booking |
+| 12 | BookingFinance | ✅ Done | Booking |
+| 13 | BookingPayment | ✅ Done | Finance |
 | 14 | PaymentMethod | ❌ | Finance |
 | 15 | GroundPaymentMethod | ❌ | Finance |
 | 16 | RegionPaymentMethod | ❌ | Finance |
 | 17 | CashSession | ❌ | Finance |
 | 18 | CashSessionPayment | ❌ | Finance |
-| 19 | Team | ❌ | Teams |
-| 20 | TeamMember | ❌ | Teams |
-| 21 | TeamInvite | ❌ | Teams |
-| 22 | JoinRequest | ❌ | Teams |
-| 23 | TeamRatingHistory | ❌ | Teams |
-| 24 | MatchRequest | ❌ | Matchmaking |
-| 25 | TeamMatch | ❌ | Matchmaking |
-| 26 | Tournament | ❌ | Tournaments |
-| 27 | TournamentMatch | ❌ | Tournaments |
-| 28 | TournamentTeam | ❌ | Tournaments |
+| 19 | Team | ✅ Done | Teams |
+| 20 | TeamMember | ✅ Done | Teams |
+| 21 | TeamInvite | ✅ Done | Teams |
+| 22 | JoinRequest | ✅ Done | Teams |
+| 23 | TeamRatingHistory | ✅ Done | Teams |
+| 24 | MatchRequest | ✅ Done | Matchmaking |
+| 25 | TeamMatch | ✅ Done | Matchmaking |
+| 26 | Tournament | ✅ Done | Tournaments |
+| 27 | TournamentMatch | ✅ Done | Tournaments |
+| 28 | TournamentTeam | ✅ Done | Tournaments |
 | 29 | MatchRating | ❌ | Ratings |
 | 30 | PlayerStat | ❌ | Ratings |
 | 31 | PlayerMatchStat | ❌ | Ratings |
@@ -490,11 +490,11 @@ Cash, JazzCash, Easypaisa, Bank Transfer, Credit/Debit Card
 
 ```
 Phase 1: Auth ✅ → Ground ✅
-Phase 2: Booking ← YOU ARE HERE
-Phase 3: Finance + Cash
-Phase 4: Teams + SportCategory
-Phase 5: Matchmaking (requires Teams + Courts)
-Phase 6: Tournaments (requires Teams + Courts)
+Phase 2: Booking ✅
+Phase 3: Teams + SportCategory ✅
+Phase 4: Matchmaking ✅
+Phase 5: Tournaments ✅
+Phase 6: Finance + Cash
 Phase 7: Ratings + Leaderboard (requires Matchmaking)
 Phase 8: Chat + Notifications (WebSocket)
 Phase 9: Admin + Audit

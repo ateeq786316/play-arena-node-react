@@ -115,3 +115,22 @@
 - Registered `/api/matches` in app.js
 - Created `tests/match.test.js` — 15 tests, all passing
 - Match endpoints: create challenge, sent/received challenges, accept/reject/cancel challenge, list matches, match detail, submit score (dual-confirmation), start match, cancel match
+
+### 2026-07-29 — Tournaments Module Implementation
+- Extended Prisma schema with Tournament, TournamentTeam, TournamentMatch models + enums (TournamentFormat, TournamentStatus, TournamentMatchStatus)
+- Added TournamentFormat enum: knockout, round_robin, group_knockout
+- Added TournamentStatus enum: upcoming, registration_open, registration_closed, ongoing, completed, cancelled
+- Added TournamentMatchStatus enum: scheduled, in_progress, completed, cancelled
+- Ran migration `add-tournament-module` — database in sync
+- Created `src/repository/tournament.repo.js` — CRUD for tournament, teams, matches
+- Created `src/modules/tournament/tournament.service.js`:
+  - Bracket generation: knockout (single elimination with seeding + byes), round_robin (all vs all), group_knockout (round robin per group)
+  - Knockout advancement: winners auto-advance to next round
+  - Standings tracking: points (win=3, draw=1), played/won/lost/drawn/goals
+  - Registration flow with capacity check, duplicate prevention, tournament owner exemption
+  - Ownership checks on all mutation endpoints
+- Created `src/modules/tournament/tournament.controller.js` — 12 endpoint handlers
+- Created `src/modules/tournament/tournament.route.js` — 12 routes under `/api/tournaments`
+- Registered `/api/tournaments` in app.js
+- Created `tests/tournament.test.js` — 29 tests, all passing
+- Tournament endpoints: create, list, my, detail, update, delete, register team, withdraw team, bracket, standings, enter match result, generate bracket

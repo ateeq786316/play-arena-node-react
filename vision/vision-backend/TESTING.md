@@ -83,6 +83,21 @@
 - [x] Rating floor — min 100
 - [ ] Inactivity decay — 2 ELO/week after 30 days (needs cron job)
 
+### Tournaments Module
+- [x] Create tournament — name, sport, format required, invalid format rejected
+- [x] List tournaments — Public, with sport/status/format filters
+- [x] My tournaments — Owner filter
+- [x] Tournament detail — Returns teams + counts
+- [x] Update/delete — Owner-only, non-owner rejected
+- [x] Register team — Checks registration_open status, capacity, duplicates, owner exemption
+- [x] Withdraw team — Blocked on completed/cancelled tournaments
+- [x] Generate knockout bracket — Seeded single elimination with byes
+- [x] Generate round robin — Every team plays every other
+- [x] Generate group+knockout — Round robin per group
+- [x] Enter match result — Owner-only, scores required, auto-advance knockout winners
+- [x] Standings — Points (W=3, D=1, L=0) sorted by points
+- [x] Bracket view — Returns format, teams, and matches
+
 ---
 
 ## Test Results
@@ -99,6 +114,7 @@
 | 2026-07-29 | Booking — All endpoints | 16 | 16 | 0 | Create, conflict, state machine, walk-in, cancel, payment, slots |
 | 2026-07-29 | Teams — All endpoints | 27 | 27 | 0 | CRUD, invites, join requests, captaincy, members, stats |
 | 2026-07-29 | Matchmaking — All endpoints | 15 | 15 | 0 | Challenges, accept/reject, dual-confirmation scoring, ELO calc, match lifecycle |
+| 2026-07-29 | Tournaments — All endpoints | 29 | 29 | 0 | CRUD, bracket gen (3 formats), registration, standings, match results |
 
 ---
 
@@ -119,11 +135,12 @@ npm run test:watch  # Watch mode
 | `tests/booking.test.js` | Unit (mocked DB) | Create, conflict, state machine, walk-in, cancel, payments, slots |
 | `tests/team.test.js` | Unit (mocked DB) | CRUD, invites, join requests, captaincy, members, stats |
 | `tests/match.test.js` | Unit (mocked DB) | Challenges, dual-confirmation scoring, ELO, match lifecycle |
+| `tests/tournament.test.js` | Unit (mocked DB) | CRUD, bracket gen (knockout/round_robin/group_knockout), registration, standings, match results |
 
 ---
 
 ## Coverage Goals
 
-- Unit test coverage (current): Auth 100%, Ground 100%, Booking 100%
+- Unit test coverage (current): Auth 100%, Ground 100%, Booking 100%, Team 100%, Matchmaking 100%, Tournaments 100%
 - Integration test coverage: Pending (needs test DB setup)
 - Critical paths: Auth 100%, Ground 100%, Booking 100%

@@ -61,6 +61,28 @@ enum MatchRequestStatus {
   expired
 }
 
+enum TournamentFormat {
+  knockout
+  round_robin
+  group_knockout
+}
+
+enum TournamentStatus {
+  upcoming
+  registration_open
+  registration_closed
+  ongoing
+  completed
+  cancelled
+}
+
+enum TournamentMatchStatus {
+  scheduled
+  in_progress
+  completed
+  cancelled
+}
+
 enum MatchStatus {
   scheduled
   in_progress
@@ -487,4 +509,82 @@ model TeamMatch {
   @@index([opponentTeamId])
   @@index([status])
   @@map("team_matches")
+}
+
+model Tournament {
+  id                String            @id @default(uuid()) @db.Uuid
+  name              String
+  sport             String
+  format            TournamentFormat
+  status            TournamentStatus  @default(upcoming)
+  groundId          String?           @db.Uuid
+  maxTeams          Int               @default(16)
+  minTeams          Int               @default(4)
+  registrationStarts DateTime?
+  registrationEnds  DateTime?
+  startDate         DateTime?
+  endDate           DateTime?
+  description       String?
+  rules             String?
+  ownerId           String            @db.Uuid
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  teams  TournamentTeam[]
+  matches TournamentMatch[]
+
+  @@index([sport])
+  @@index([status])
+  @@index([ownerId])
+  @@map("tournaments")
+}
+
+model TournamentTeam {
+  id           String   @id @default(uuid()) @db.Uuid
+  tournamentId String   @db.Uuid
+  teamId       String   @db.Uuid
+  seed         Int?
+  group        String?
+  points       Int      @default(0)
+  played       Int      @default(0)
+  won          Int      @default(0)
+  lost         Int      @default(0)
+  drawn        Int      @default(0)
+  goalsFor     Int      @default(0)
+  goalsAgainst Int      @default(0)
+
+  registeredAt DateTime @default(now())
+
+  tournament Tournament @relation(fields: [tournamentId], references: [id], onDelete: Cascade)
+
+  @@unique([tournamentId, teamId])
+  @@index([tournamentId])
+  @@map("tournament_teams")
+}
+
+model TournamentMatch {
+  id              String                @id @default(uuid()) @db.Uuid
+  tournamentId    String                @db.Uuid
+  round           Int
+  matchIndex      Int
+  team1Id         String?               @db.Uuid
+  team2Id         String?               @db.Uuid
+  winnerId        String?               @db.Uuid
+  score1          Int?
+  score2          Int?
+  status          TournamentMatchStatus @default(scheduled)
+  scheduledDate   DateTime?
+  groundId        String?               @db.Uuid
+  courtId         String?               @db.Uuid
+  playedAt        DateTime?
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  tournament Tournament @relation(fields: [tournamentId], references: [id], onDelete: Cascade)
+
+  @@index([tournamentId, round])
+  @@index([tournamentId, status])
+  @@map("tournament_matches")
 }

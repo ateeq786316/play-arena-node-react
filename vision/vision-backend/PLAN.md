@@ -25,7 +25,7 @@ PlayArena backend is built with **Express + PostgreSQL (Prisma ORM)** + Node.js.
 - [x] Booking Engine
 - [x] Teams Module (CRUD, invites, join requests, captaincy, ELO)
 - [x] Matchmaking (challenges, scoring, ELO system)
-- [ ] Tournaments & Brackets
+- [x] Tournaments & Brackets
 - [ ] Finance & Cash Management
 - [ ] Chat & Notifications (WebSocket)
 - [ ] Admin Panel
