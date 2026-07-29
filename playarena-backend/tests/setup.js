@@ -69,6 +69,36 @@ vi.mock("../src/database/db.js", () => {
     region: {
       findMany: vi.fn(),
     },
+    team: {
+      create: vi.fn(),
+      findUnique: vi.fn(),
+      findMany: vi.fn(),
+      update: vi.fn(),
+    },
+    teamMember: {
+      create: vi.fn(),
+      findUnique: vi.fn(),
+      update: vi.fn(),
+      delete: vi.fn(),
+    },
+    teamInvite: {
+      create: vi.fn(),
+      findUnique: vi.fn(),
+      update: vi.fn(),
+    },
+    joinRequest: {
+      create: vi.fn(),
+      findUnique: vi.fn(),
+      findMany: vi.fn(),
+      update: vi.fn(),
+    },
+    teamRatingHistory: {
+      create: vi.fn(),
+      findMany: vi.fn(),
+    },
+    sportCategory: {
+      findMany: vi.fn(),
+    },
     $transaction: vi.fn((fn) => fn(mockPrisma)),
     $disconnect: vi.fn(),
     $connect: vi.fn(),

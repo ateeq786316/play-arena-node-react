@@ -5,6 +5,7 @@ import authRoutes from "./modules/auth/auth.route.js";
 import groundRoutes from "./modules/ground/ground.route.js";
 import bookingRoutes from "./modules/booking/booking.route.js";
 import BookingController from "./modules/booking/booking.controller.js";
+import teamRoutes from "./modules/team/team.route.js";
 import asyncHandler from "./utils/asyncHandler.js";
 import authMiddleware from "./middlewares/auth.middleware.js";
 import errorHandler from "./middlewares/errorHandler.middleware.js";
@@ -20,6 +21,7 @@ export default function createApp() {
   app.use("/api/user", authRoutes);
   app.use("/api/grounds", groundRoutes);
   app.use("/api/bookings", bookingRoutes);
+  app.use("/api/teams", teamRoutes);
 
   app.post("/api/grounds/:groundId/walkin", authMiddleware, asyncHandler(bookingController.walkinBooking.bind(bookingController)));
 
