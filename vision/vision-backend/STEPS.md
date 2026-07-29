@@ -31,7 +31,7 @@
 - [x] Created requirement.md — master spec consolidating all module requirements
 - [x] Booking module (create, state machine, conflict detection, walk-in, payments, slots) ✅
 - [ ] Finance module (payments, cash sessions)
-- [ ] Teams module (CRUD, roster, invites)
+- [x] Teams module (CRUD, roster, invites, join requests, captaincy) ✅
 - [ ] Matchmaking module (challenges, ELO, scoring)
 - [ ] Tournaments module (bracket generation, registration)
 - [ ] Ratings module (peer reviews, leaderboards)

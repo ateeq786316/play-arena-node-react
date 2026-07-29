@@ -358,6 +358,183 @@
           }
         }
       ]
+    },
+    {
+      "name": "Teams",
+      "item": [
+        {
+          "name": "List Sport Categories (Public)",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {"raw": "http://localhost:3000/api/teams/sports", "host": ["localhost:3000"], "path": ["api", "teams", "sports"]}
+          }
+        },
+        {
+          "name": "List Teams (Public)",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {"raw": "http://localhost:3000/api/teams?sport=cricket", "host": ["localhost:3000"], "path": ["api", "teams"]}
+          }
+        },
+        {
+          "name": "Create Team (Auth)",
+          "request": {
+            "method": "POST",
+            "header": [{"key": "Content-Type", "value": "application/json"}],
+            "body": {"mode": "raw", "raw": "{\"name\": \"Islamabad Strikers\",\"sport\": \"cricket\",\"description\": \"A competitive cricket team\"}"},
+            "url": {"raw": "http://localhost:3000/api/teams", "host": ["localhost:3000"], "path": ["api", "teams"]}
+          }
+        },
+        {
+          "name": "My Teams (Auth)",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {"raw": "http://localhost:3000/api/teams/my", "host": ["localhost:3000"], "path": ["api", "teams", "my"]}
+          }
+        },
+        {
+          "name": "Get Team By ID (Auth)",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {"raw": "http://localhost:3000/api/teams/TEAM_ID", "host": ["localhost:3000"], "path": ["api", "teams", "TEAM_ID"]}
+          }
+        },
+        {
+          "name": "Update Team (Auth/Captain)",
+          "request": {
+            "method": "PATCH",
+            "header": [{"key": "Content-Type", "value": "application/json"}],
+            "body": {"mode": "raw", "raw": "{\"name\": \"Updated Team Name\"}"},
+            "url": {"raw": "http://localhost:3000/api/teams/TEAM_ID", "host": ["localhost:3000"], "path": ["api", "teams", "TEAM_ID"]}
+          }
+        },
+        {
+          "name": "Delete Team (Auth/Captain)",
+          "request": {
+            "method": "DELETE",
+            "header": [],
+            "url": {"raw": "http://localhost:3000/api/teams/TEAM_ID", "host": ["localhost:3000"], "path": ["api", "teams", "TEAM_ID"]}
+          }
+        },
+        {
+          "name": "Get Team Members (Auth/Member)",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {"raw": "http://localhost:3000/api/teams/TEAM_ID/members", "host": ["localhost:3000"], "path": ["api", "teams", "TEAM_ID", "members"]}
+          }
+        },
+        {
+          "name": "Update Member Role (Auth/Captain)",
+          "request": {
+            "method": "PATCH",
+            "header": [{"key": "Content-Type", "value": "application/json"}],
+            "body": {"mode": "raw", "raw": "{\"role\": \"co_captain\"}"},
+            "url": {"raw": "http://localhost:3000/api/teams/TEAM_ID/members/USER_ID", "host": ["localhost:3000"], "path": ["api", "teams", "TEAM_ID", "members", "USER_ID"]}
+          }
+        },
+        {
+          "name": "Remove Member (Auth/Captain)",
+          "request": {
+            "method": "DELETE",
+            "header": [],
+            "url": {"raw": "http://localhost:3000/api/teams/TEAM_ID/members/USER_ID", "host": ["localhost:3000"], "path": ["api", "teams", "TEAM_ID", "members", "USER_ID"]}
+          }
+        },
+        {
+          "name": "Leave Team (Auth/Member)",
+          "request": {
+            "method": "DELETE",
+            "header": [],
+            "url": {"raw": "http://localhost:3000/api/teams/TEAM_ID/members/me", "host": ["localhost:3000"], "path": ["api", "teams", "TEAM_ID", "members", "me"]}
+          }
+        },
+        {
+          "name": "Transfer Captaincy (Auth/Captain)",
+          "request": {
+            "method": "PATCH",
+            "header": [],
+            "url": {"raw": "http://localhost:3000/api/teams/TEAM_ID/transfer-captaincy/USER_ID", "host": ["localhost:3000"], "path": ["api", "teams", "TEAM_ID", "transfer-captaincy", "USER_ID"]}
+          }
+        },
+        {
+          "name": "Invite Player (Auth/Captain)",
+          "request": {
+            "method": "POST",
+            "header": [{"key": "Content-Type", "value": "application/json"}],
+            "body": {"mode": "raw", "raw": "{\"targetUserId\": \"USER_UUID\"}"},
+            "url": {"raw": "http://localhost:3000/api/teams/TEAM_ID/invite", "host": ["localhost:3000"], "path": ["api", "teams", "TEAM_ID", "invite"]}
+          }
+        },
+        {
+          "name": "Accept Invite (Auth)",
+          "request": {
+            "method": "POST",
+            "header": [],
+            "url": {"raw": "http://localhost:3000/api/teams/join/TEAM_ID", "host": ["localhost:3000"], "path": ["api", "teams", "join", "TEAM_ID"]}
+          }
+        },
+        {
+          "name": "Reject Invite (Auth)",
+          "request": {
+            "method": "DELETE",
+            "header": [],
+            "url": {"raw": "http://localhost:3000/api/teams/join/TEAM_ID", "host": ["localhost:3000"], "path": ["api", "teams", "join", "TEAM_ID"]}
+          }
+        },
+        {
+          "name": "Request to Join (Auth)",
+          "request": {
+            "method": "POST",
+            "header": [],
+            "url": {"raw": "http://localhost:3000/api/teams/TEAM_ID/join-request", "host": ["localhost:3000"], "path": ["api", "teams", "TEAM_ID", "join-request"]}
+          }
+        },
+        {
+          "name": "List Join Requests (Auth/Captain)",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {"raw": "http://localhost:3000/api/teams/TEAM_ID/join-requests", "host": ["localhost:3000"], "path": ["api", "teams", "TEAM_ID", "join-requests"]}
+          }
+        },
+        {
+          "name": "Accept Join Request (Auth/Captain)",
+          "request": {
+            "method": "POST",
+            "header": [],
+            "url": {"raw": "http://localhost:3000/api/teams/TEAM_ID/join-requests/USER_ID/accept", "host": ["localhost:3000"], "path": ["api", "teams", "TEAM_ID", "join-requests", "USER_ID", "accept"]}
+          }
+        },
+        {
+          "name": "Reject Join Request (Auth/Captain)",
+          "request": {
+            "method": "POST",
+            "header": [],
+            "url": {"raw": "http://localhost:3000/api/teams/TEAM_ID/join-requests/USER_ID/reject", "host": ["localhost:3000"], "path": ["api", "teams", "TEAM_ID", "join-requests", "USER_ID", "reject"]}
+          }
+        },
+        {
+          "name": "Get Team Stats (Auth/Member)",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {"raw": "http://localhost:3000/api/teams/TEAM_ID/stats", "host": ["localhost:3000"], "path": ["api", "teams", "TEAM_ID", "stats"]}
+          }
+        },
+        {
+          "name": "Get Rating History (Auth/Member)",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {"raw": "http://localhost:3000/api/teams/TEAM_ID/rating-history", "host": ["localhost:3000"], "path": ["api", "teams", "TEAM_ID", "rating-history"]}
+          }
+        }
+      ]
     }
   ]
 }

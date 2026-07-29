@@ -57,6 +57,17 @@
 - [ ] Cash session open/close/reconcile
 - [ ] Variance calculation
 
+### Teams Module
+- [x] Create team — Name+sport required, creator becomes captain
+- [x] Get/list teams — Public list, member-only detail, my-teams filter
+- [x] Update/delete team — Captain/co-captain only
+- [x] Members CRUD — Get roster, update role, remove member, leave team
+- [x] Transfer captaincy — Old captain→co_captain, target→captain
+- [x] Invite player — Captain/co-captain, duplicate member check
+- [x] Join request — Create, list, accept/reject (captain only)
+- [x] Team stats — Members count, ELO
+- [x] Sport categories — List active
+
 ### ELO Rating
 - [ ] Expected score calculation
 - [ ] Rating update after match
@@ -77,6 +88,7 @@
 | 2026-07-29 | Auth — All endpoints | 25 | 25 | 0 | Register, login, OTP, refresh, profile, password reset, Google |
 | 2026-07-29 | Ground — All endpoints | 24 | 24 | 0 | CRUD, courts, schedules, settings, RBAC, invites, regions |
 | 2026-07-29 | Booking — All endpoints | 16 | 16 | 0 | Create, conflict, state machine, walk-in, cancel, payment, slots |
+| 2026-07-29 | Teams — All endpoints | 27 | 27 | 0 | CRUD, invites, join requests, captaincy, members, stats |
 
 ---
 
@@ -95,6 +107,7 @@ npm run test:watch  # Watch mode
 | `tests/auth.test.js` | Unit (mocked DB) | Register, login, OTP, refresh, profile, password reset |
 | `tests/ground.test.js` | Unit (mocked DB) | CRUD, courts, schedules, settings, RBAC, regions |
 | `tests/booking.test.js` | Unit (mocked DB) | Create, conflict, state machine, walk-in, cancel, payments, slots |
+| `tests/team.test.js` | Unit (mocked DB) | CRUD, invites, join requests, captaincy, members, stats |
 
 ---
 

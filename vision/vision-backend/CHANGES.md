@@ -89,3 +89,16 @@
 - Created `src/modules/booking/booking.route.js` — booking routes under `/api/bookings`
 - Registered walk-in + ground bookings under `/api/grounds/:groundId/` in app.js
 - Booking endpoints: create, my-bookings, detail, cancel, walkin, ground-bookings, status-update, record-payment, finance-detail, slots-availability
+
+### 2026-07-29 — Teams Module Implementation
+- Extended Prisma schema with 6 new models: SportCategory, Team, TeamMember, TeamInvite, JoinRequest, TeamRatingHistory
+- Added TeamRole enum (captain, co_captain, player) and JoinRequestStatus enum (pending, accepted, rejected)
+- Added team relations to User model (ownedTeams, teamMemberships, teamInvites, sentInvites, joinRequests)
+- Ran migration `add-teams-module` — database in sync
+- Created `src/repository/team.repo.js` — full CRUD for all 6 team entities
+- Created `src/modules/team/team.service.js` — RBAC (captain/co-captain/player), invites, join requests, transfer captaincy
+- Created `src/modules/team/team.controller.js` — 20 endpoint handlers
+- Created `src/modules/team/team.route.js` — 21 routes under `/api/teams`
+- Registered `/api/teams` in app.js
+- Created `tests/team.test.js` — 27 tests, all passing
+- Team endpoints: create, list, my-teams, detail, update, delete, members (get/update/remove), leave, transfer-captaincy, invite (send/accept/reject), join-request (create/list/accept/reject), stats, rating-history, sport-categories

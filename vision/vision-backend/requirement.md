@@ -136,7 +136,7 @@ approved → cancelled (player)
 
 ---
 
-### 2.4 Teams Module ❌ (NOT STARTED)
+### 2.4 Teams Module ✅ (COMPLETE)
 
 **Endpoints Needed:**
 | Method | Path | Auth | Description |
