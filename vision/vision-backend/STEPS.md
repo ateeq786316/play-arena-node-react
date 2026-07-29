@@ -37,7 +37,7 @@
 - [x] Ratings module (peer reviews, leaderboards)
 - [x] Chat module (REST + WebSocket with Socket.IO)
 - [x] Notifications module (CRUD + WebSocket)
-- [ ] Admin module (users, grounds, finance, audit)
+- [x] Admin module (users, grounds, finance, audit)
 - [ ] Upload module (S3, MIME validation)
 - [ ] Health module (DB ping)
 

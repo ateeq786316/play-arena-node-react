@@ -7,6 +7,7 @@ vi.mock("../src/database/db.js", () => {
       findUnique: vi.fn(),
       findMany: vi.fn(),
       update: vi.fn(),
+      count: vi.fn(),
     },
     bookingFinance: {
       create: vi.fn(),
@@ -40,6 +41,7 @@ vi.mock("../src/database/db.js", () => {
       findUnique: vi.fn(),
       findMany: vi.fn(),
       update: vi.fn(),
+      count: vi.fn(),
     },
     groundAccess: {
       create: vi.fn(),
@@ -69,12 +71,16 @@ vi.mock("../src/database/db.js", () => {
     },
     region: {
       findMany: vi.fn(),
+      create: vi.fn(),
+      update: vi.fn(),
+      delete: vi.fn(),
     },
     team: {
       create: vi.fn(),
       findUnique: vi.fn(),
       findMany: vi.fn(),
       update: vi.fn(),
+      count: vi.fn(),
     },
     teamMember: {
       create: vi.fn(),
@@ -182,6 +188,30 @@ vi.mock("../src/database/db.js", () => {
     playerMatchStat: {
       create: vi.fn(),
       findUnique: vi.fn(),
+    },
+    auditLog: {
+      create: vi.fn(),
+      findMany: vi.fn(),
+      count: vi.fn(),
+    },
+    city: {
+      findMany: vi.fn(),
+      create: vi.fn(),
+      update: vi.fn(),
+      delete: vi.fn(),
+    },
+    sportCategory: {
+      findMany: vi.fn(),
+      create: vi.fn(),
+      update: vi.fn(),
+      delete: vi.fn(),
+    },
+    paymentMethod: {
+      findMany: vi.fn(),
+      findUnique: vi.fn(),
+      create: vi.fn(),
+      update: vi.fn(),
+      delete: vi.fn(),
     },
     $transaction: vi.fn((fn) => fn(mockPrisma)),
     $disconnect: vi.fn(),

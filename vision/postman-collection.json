@@ -938,6 +938,75 @@
           }
         }
       ]
+    },
+    {
+      "name": "Admin",
+      "item": [
+        {
+          "name": "List Users (Super Admin)",
+          "request": {"method": "GET", "header": [], "url": {"raw": "http://localhost:3000/api/admin/users", "host": ["localhost:3000"], "path": ["api", "admin", "users"]}}
+        },
+        {
+          "name": "User Detail (Super Admin)",
+          "request": {"method": "GET", "header": [], "url": {"raw": "http://localhost:3000/api/admin/users/USER_ID", "host": ["localhost:3000"], "path": ["api", "admin", "users", "USER_ID"]}}
+        },
+        {
+          "name": "List Grounds (Super Admin)",
+          "request": {"method": "GET", "header": [], "url": {"raw": "http://localhost:3000/api/admin/grounds", "host": ["localhost:3000"], "path": ["api", "admin", "grounds"]}}
+        },
+        {
+          "name": "Verify Ground (Super Admin)",
+          "request": {"method": "PATCH", "header": [], "url": {"raw": "http://localhost:3000/api/admin/grounds/GROUND_ID/verify", "host": ["localhost:3000"], "path": ["api", "admin", "grounds", "GROUND_ID", "verify"]}}
+        },
+        {
+          "name": "Suspend Ground (Super Admin)",
+          "request": {"method": "PATCH", "header": [], "url": {"raw": "http://localhost:3000/api/admin/grounds/GROUND_ID/suspend", "host": ["localhost:3000"], "path": ["api", "admin", "grounds", "GROUND_ID", "suspend"]}}
+        },
+        {
+          "name": "List Teams (Super Admin)",
+          "request": {"method": "GET", "header": [], "url": {"raw": "http://localhost:3000/api/admin/teams", "host": ["localhost:3000"], "path": ["api", "admin", "teams"]}}
+        },
+        {
+          "name": "Platform Finance (Super Admin)",
+          "request": {"method": "GET", "header": [], "url": {"raw": "http://localhost:3000/api/admin/finance", "host": ["localhost:3000"], "path": ["api", "admin", "finance"]}}
+        },
+        {
+          "name": "Audit Logs (Super Admin)",
+          "request": {"method": "GET", "header": [], "url": {"raw": "http://localhost:3000/api/admin/audit-logs", "host": ["localhost:3000"], "path": ["api", "admin", "audit-logs"]}}
+        },
+        {
+          "name": "List Regions",
+          "request": {"method": "GET", "header": [], "url": {"raw": "http://localhost:3000/api/admin/regions", "host": ["localhost:3000"], "path": ["api", "admin", "regions"]}}
+        },
+        {
+          "name": "Create Region",
+          "request": {"method": "POST", "header": [{"key": "Content-Type", "value": "application/json"}], "body": {"mode": "raw", "raw": "{\"name\": \"New Region\",\"code\": \"NR\"}"}, "url": {"raw": "http://localhost:3000/api/admin/regions", "host": ["localhost:3000"], "path": ["api", "admin", "regions"]}}
+        },
+        {
+          "name": "List Cities",
+          "request": {"method": "GET", "header": [], "url": {"raw": "http://localhost:3000/api/admin/cities", "host": ["localhost:3000"], "path": ["api", "admin", "cities"]}}
+        },
+        {
+          "name": "Create City",
+          "request": {"method": "POST", "header": [{"key": "Content-Type", "value": "application/json"}], "body": {"mode": "raw", "raw": "{\"name\": \"New City\",\"regionId\": \"REGION_ID\"}"}, "url": {"raw": "http://localhost:3000/api/admin/cities", "host": ["localhost:3000"], "path": ["api", "admin", "cities"]}}
+        },
+        {
+          "name": "List Sports",
+          "request": {"method": "GET", "header": [], "url": {"raw": "http://localhost:3000/api/admin/sports", "host": ["localhost:3000"], "path": ["api", "admin", "sports"]}}
+        },
+        {
+          "name": "Create Sport",
+          "request": {"method": "POST", "header": [{"key": "Content-Type", "value": "application/json"}], "body": {"mode": "raw", "raw": "{\"name\": \"New Sport\",\"slug\": \"new-sport\"}"}, "url": {"raw": "http://localhost:3000/api/admin/sports", "host": ["localhost:3000"], "path": ["api", "admin", "sports"]}}
+        },
+        {
+          "name": "List Payment Methods",
+          "request": {"method": "GET", "header": [], "url": {"raw": "http://localhost:3000/api/admin/payment-methods", "host": ["localhost:3000"], "path": ["api", "admin", "payment-methods"]}}
+        },
+        {
+          "name": "Create Payment Method",
+          "request": {"method": "POST", "header": [{"key": "Content-Type", "value": "application/json"}], "body": {"mode": "raw", "raw": "{\"name\": \"New Method\",\"slug\": \"new-method\"}"}, "url": {"raw": "http://localhost:3000/api/admin/payment-methods", "host": ["localhost:3000"], "path": ["api", "admin", "payment-methods"]}}
+        }
+      ]
     }
   ]
 }

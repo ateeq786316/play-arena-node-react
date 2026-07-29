@@ -89,6 +89,17 @@
 - [x] Rating floor — min 100
 - [ ] Inactivity decay — 2 ELO/week after 30 days (needs cron job)
 
+### Admin Module
+- [x] Get users — Paginated list for super_admin
+- [x] Get users non-admin — Throws unauthorized
+- [x] Get user detail — Returns user with counts
+- [x] Get grounds — Paginated with owner + counts
+- [x] Verify ground — Updates + creates audit log
+- [x] Suspend ground — Updates + creates audit log
+- [x] Get teams — Paginated with captain + member counts
+- [x] Get finance — Platform-wide aggregates
+- [x] Get audit logs — Paginated list
+
 ### Ratings Module
 - [x] Submit rating — Valid rating creates record
 - [x] Submit rating match not found — Throws 404
@@ -160,6 +171,7 @@
 | 2026-07-29 | Chat — All endpoints | 9 | 9 | 0 | Messages (cursor pagination, access control), send message (validation), mark as read, unread counts |
 | 2026-07-29 | Notifications — All endpoints | 9 | 9 | 0 | Paginated list, unread count, markAsRead, markAllAsRead, soft delete, create |
 | 2026-07-29 | Ratings — All endpoints | 12 | 12 | 0 | submitRating (validation), leaderboard (global/sport), playerStats (found/empty), recordPlayerStats (captain check) |
+| 2026-07-29 | Admin — All endpoints | 9 | 9 | 0 | super_admin RBAC, users/grounds/teams pagination, verify/suspend with audit, platform finance, audit logs |
 
 ---
 
@@ -185,6 +197,7 @@ npm run test:watch  # Watch mode
 | `tests/chat.test.js` | Unit (mocked DB) | Messages, cursor pagination, send message, mark as read, unread counts |
 | `tests/notification.test.js` | Unit (mocked DB) | Paginated list, unread count, markAsRead, markAllAsRead, soft delete, create |
 | `tests/rating.test.js` | Unit (mocked DB) | Submit rating, leaderboard, player stats, record player stats |
+| `tests/admin.test.js` | Unit (mocked DB) | Users, grounds, teams, finance, audit — super_admin RBAC |
 
 ---
 
