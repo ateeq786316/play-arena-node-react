@@ -52,10 +52,16 @@
 - [ ] Booking expiry auto-transition (needs cron job test)
 
 ### Finance Module
-- [ ] Payment recording with idempotency
-- [ ] Overpayment protection
-- [ ] Cash session open/close/reconcile
-- [ ] Variance calculation
+- [x] List payment methods — Active only, ordered by display
+- [x] Ground payment methods — Merged with global enabled/disabled status
+- [x] Toggle payment method — Owner-only, toggles isActive
+- [x] Ground finance summary — Booking + payment aggregates
+- [x] Ground finance report — Filterable by date range
+- [x] Open cash session — Staff+, one open session per ground enforced
+- [x] Close cash session — Variance = closingCash - expectedCash
+- [x] List cash sessions — Owner/manager only
+- [x] Payment recording with idempotency (in booking module)
+- [x] Overpayment protection (in booking module)
 
 ### Teams Module
 - [x] Create team — Name+sport required, creator becomes captain
@@ -82,6 +88,16 @@
 - [x] K-factor — 32 (<30 matches), 24 (30+ matches)
 - [x] Rating floor — min 100
 - [ ] Inactivity decay — 2 ELO/week after 30 days (needs cron job)
+
+### Chat Module
+- [x] Get messages — Returns paginated messages with cursor
+- [x] Get messages without access — Throws unauthorized
+- [x] Get messages via ground access — Allows staff via GroundAccess
+- [x] Send message — Valid content creates message
+- [x] Send empty message — Throws validation error
+- [x] Send message over 2000 chars — Throws validation error
+- [x] Mark as read — Resets unread count
+- [x] Get unread counts — Returns per-ground counts
 
 ### Tournaments Module
 - [x] Create tournament — name, sport, format required, invalid format rejected
@@ -115,6 +131,8 @@
 | 2026-07-29 | Teams — All endpoints | 27 | 27 | 0 | CRUD, invites, join requests, captaincy, members, stats |
 | 2026-07-29 | Matchmaking — All endpoints | 15 | 15 | 0 | Challenges, accept/reject, dual-confirmation scoring, ELO calc, match lifecycle |
 | 2026-07-29 | Tournaments — All endpoints | 29 | 29 | 0 | CRUD, bracket gen (3 formats), registration, standings, match results |
+| 2026-07-29 | Finance — All endpoints | 14 | 14 | 0 | Payment methods, cash sessions (open/close/variance), ground finance, reports |
+| 2026-07-29 | Chat — All endpoints | 9 | 9 | 0 | Messages (cursor pagination, access control), send message (validation), mark as read, unread counts |
 
 ---
 
@@ -136,6 +154,8 @@ npm run test:watch  # Watch mode
 | `tests/team.test.js` | Unit (mocked DB) | CRUD, invites, join requests, captaincy, members, stats |
 | `tests/match.test.js` | Unit (mocked DB) | Challenges, dual-confirmation scoring, ELO, match lifecycle |
 | `tests/tournament.test.js` | Unit (mocked DB) | CRUD, bracket gen (knockout/round_robin/group_knockout), registration, standings, match results |
+| `tests/finance.test.js` | Unit (mocked DB) | Payment methods, ground finance, cash sessions (open/close/variance), reports |
+| `tests/chat.test.js` | Unit (mocked DB) | Messages, cursor pagination, send message, mark as read, unread counts |
 
 ---
 

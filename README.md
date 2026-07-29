@@ -51,16 +51,14 @@ play-arena-node-react/
 
 ## ✨ Features
 
-### ✅ Done (6/14 Modules — 82+ Endpoints)
+### ✅ Done (7/14 Modules — 91+ Endpoints)
 - **Auth** — Register, Login, Google OAuth, OTP verification, JWT refresh, forgot/reset password, profile
 - **Grounds** — CRUD, courts, schedules, settings, RBAC (owner/manager/staff), regions/cities, invites
 - **Bookings** — 6-state machine, slot conflict detection, deposit system, walk-in, payment idempotency
 - **Teams** — CRUD, roster, invites, join requests, captaincy transfer, ELO ratings, rating history
 - **Matchmaking** — Challenges, dual-confirmation scoring, ELO (K-factor, floor 100), match lifecycle
 - **Tournaments** — Knockout (seeded with byes), round-robin, group+knockout, bracket gen, standings
-
-### 🔜 Planned
-- **Finance** — Payment recording, cash sessions, reports
+- **Finance** — Payment methods, cash sessions (open/close/variance), ground finance summaries, reports
 - **Chat** — REST + WebSocket (Socket.IO)
 - **Notifications** — In-app + email + WebSocket
 - **Ratings** — Peer reviews, leaderboards
@@ -112,7 +110,7 @@ http://localhost:3000/api/user
 |--------|----------|------|-------------|
 > Full endpoint reference in `vision/vision-backend/requirement.md` and `vision/postman-collection.json`.
 
-**Modules registered at:** `/api/user`, `/api/grounds`, `/api/bookings`, `/api/teams`, `/api/matches`, `/api/tournaments`
+**Modules registered at:** `/api/user`, `/api/grounds`, `/api/bookings`, `/api/teams`, `/api/matches`, `/api/tournaments`, `/api/finance`
 
 ---
 
@@ -120,7 +118,7 @@ http://localhost:3000/api/user
 
 ```bash
 cd playarena-backend
-npm test        # 136 tests across 6 files
+npm test        # 150 tests across 7 files
 npm run test:watch
 ```
 

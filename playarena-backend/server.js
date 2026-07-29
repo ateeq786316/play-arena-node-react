@@ -14,10 +14,11 @@ process.on("unhandledRejection", (reason) => {
 
 (async function startServer() {
   await connectDB();
-  const server = createApp().listen(env.PORT, () => {
+  const httpServer = createApp();
+  httpServer.listen(env.PORT, () => {
     logger.info({ port: env.PORT }, "Server is running");
   });
-  server.on("error", (error) => {
+  httpServer.on("error", (error) => {
     logger.error({ error: error.message }, "Server error");
   });
 })().catch((error) => {

@@ -736,6 +736,116 @@
           }
         }
       ]
+    },
+    {
+      "name": "Finance",
+      "item": [
+        {
+          "name": "List Payment Methods (Public)",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {"raw": "http://localhost:3000/api/finance/payment-methods", "host": ["localhost:3000"], "path": ["api", "finance", "payment-methods"]}
+          }
+        },
+        {
+          "name": "Ground Payment Methods (Auth)",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {"raw": "http://localhost:3000/api/finance/payment-methods/ground/GROUND_ID", "host": ["localhost:3000"], "path": ["api", "finance", "payment-methods", "ground", "GROUND_ID"]}
+          }
+        },
+        {
+          "name": "Toggle Payment Method (Auth/Owner)",
+          "request": {
+            "method": "PATCH",
+            "header": [],
+            "url": {"raw": "http://localhost:3000/api/finance/grounds/GROUND_ID/payment-methods/METHOD_ID", "host": ["localhost:3000"], "path": ["api", "finance", "grounds", "GROUND_ID", "payment-methods", "METHOD_ID"]}
+          }
+        },
+        {
+          "name": "Ground Finance Summary (Auth/Owner)",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {"raw": "http://localhost:3000/api/finance/grounds/GROUND_ID/finance", "host": ["localhost:3000"], "path": ["api", "finance", "grounds", "GROUND_ID", "finance"]}
+          }
+        },
+        {
+          "name": "Ground Finance Report (Auth/Owner)",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {"raw": "http://localhost:3000/api/finance/grounds/GROUND_ID/reports", "host": ["localhost:3000"], "path": ["api", "finance", "grounds", "GROUND_ID", "reports"]}
+          }
+        },
+        {
+          "name": "Open Cash Session (Auth/Staff)",
+          "request": {
+            "method": "POST",
+            "header": [{"key": "Content-Type", "value": "application/json"}],
+            "body": {"mode": "raw", "raw": "{\"openingCash\": 5000}"},
+            "url": {"raw": "http://localhost:3000/api/finance/grounds/GROUND_ID/cash-session/open", "host": ["localhost:3000"], "path": ["api", "finance", "grounds", "GROUND_ID", "cash-session", "open"]}
+          }
+        },
+        {
+          "name": "Close Cash Session (Auth/Staff)",
+          "request": {
+            "method": "POST",
+            "header": [{"key": "Content-Type", "value": "application/json"}],
+            "body": {"mode": "raw", "raw": "{\"closingCash\": 7500}"},
+            "url": {"raw": "http://localhost:3000/api/finance/grounds/GROUND_ID/cash-session/SESSION_ID/close", "host": ["localhost:3000"], "path": ["api", "finance", "grounds", "GROUND_ID", "cash-session", "SESSION_ID", "close"]}
+          }
+        },
+        {
+          "name": "List Cash Sessions (Auth/Owner)",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {"raw": "http://localhost:3000/api/finance/grounds/GROUND_ID/cash-sessions", "host": ["localhost:3000"], "path": ["api", "finance", "grounds", "GROUND_ID", "cash-sessions"]}
+          }
+        }
+      ]
+    },
+    {
+      "name": "Chat",
+      "item": [
+        {
+          "name": "Get Messages (Auth, Cursor Paginated)",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {"raw": "http://localhost:3000/api/chat/GROUND_ID/messages", "host": ["localhost:3000"], "path": ["api", "chat", "GROUND_ID", "messages"]}
+          }
+        },
+        {
+          "name": "Send Message (Auth)",
+          "request": {
+            "method": "POST",
+            "header": [{"key": "Content-Type", "value": "application/json"}],
+            "body": {"mode": "raw", "raw": "{\"content\": \"Hello, team!\"}"},
+            "url": {"raw": "http://localhost:3000/api/chat/GROUND_ID/messages", "host": ["localhost:3000"], "path": ["api", "chat", "GROUND_ID", "messages"]}
+          }
+        },
+        {
+          "name": "Mark as Read (Auth)",
+          "request": {
+            "method": "POST",
+            "header": [{"key": "Content-Type", "value": "application/json"}],
+            "body": {"mode": "raw", "raw": ""},
+            "url": {"raw": "http://localhost:3000/api/chat/GROUND_ID/read", "host": ["localhost:3000"], "path": ["api", "chat", "GROUND_ID", "read"]}
+          }
+        },
+        {
+          "name": "Get Unread Counts (Auth)",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {"raw": "http://localhost:3000/api/chat/unread", "host": ["localhost:3000"], "path": ["api", "chat", "unread"]}
+          }
+        }
+      ]
     }
   ]
 }

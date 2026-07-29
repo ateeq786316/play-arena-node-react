@@ -134,3 +134,40 @@
 - Registered `/api/tournaments` in app.js
 - Created `tests/tournament.test.js` — 29 tests, all passing
 - Tournament endpoints: create, list, my, detail, update, delete, register team, withdraw team, bracket, standings, enter match result, generate bracket
+
+### 2026-07-29 — Finance Module Implementation
+- Extended Prisma schema with PaymentMethod, GroundPaymentMethod, RegionPaymentMethod, CashSession, CashSessionPayment models
+- Added CashSessionStatus enum (open, closed)
+- Added opposite relations to Ground, Region, User, BookingPayment
+- Ran migration `add-finance-module` — database in sync
+- Created `src/repository/finance.repo.js` — payment methods, cash sessions, aggregates
+- Created `src/modules/finance/finance.service.js`:
+  - Payment methods: list active, ground-level enabled/disabled, toggle (owner-only)
+  - Cash sessions: open (one per ground enforced), close with variance calc
+  - Ground finance: booking + payment aggregates, date-filtered reports
+  - RBAC: owner/manager for reports, staff+ for cash sessions
+- Created `src/modules/finance/finance.controller.js` — 9 endpoint handlers
+- Created `src/modules/finance/finance.route.js` — 9 routes under `/api/finance`
+- Registered `/api/finance` in app.js
+- Created `tests/finance.test.js` — 14 tests, all passing
+- Note: POST /api/bookings/:id/payment + GET /api/bookings/:id/finance already exist in booking module
+- Finance endpoints: list payment methods, ground payment methods, toggle method, ground finance, reports, open/close cash session, list sessions
+
+### 2026-07-29 — Chat Module Implementation
+- Extended Prisma schema with ChatMessage, ChatParticipant, UnreadCount models
+- Added chat relations to User model (chatMessages, chatParticipants, unreadCounts)
+- Ran migration `add-chat-module` — database in sync
+- Installed socket.io dependency
+- Created `src/repository/chat.repo.js` — messages (cursor pagination), participants, unread counts with upsert/increment logic
+- Created `src/modules/chat/chat.service.js` — ground-scoped access control, message validation (1-2000 chars), participant tracking, mark-as-read, cursor-based pagination
+- Created `src/modules/chat/chat.controller.js` — 4 endpoint handlers
+- Created `src/modules/chat/chat.route.js` — 4 routes under `/api/chat`
+- Created `src/socket/socket.js` — Socket.IO /chat namespace with JWT auth handshake, ground rooms (ground:{groundId}), sendMessage/newMessage/typing events, access check on join
+- Updated `src/app.js` — use createServer(http) wrapper for Socket.IO, register /api/chat routes, call setupSocket
+- Updated `server.js` — use returned httpServer directly
+- Created `tests/chat.test.js` — 9 tests covering getMessages (access, pagination), sendMessage (content validation, access), markAsRead, getUnreadCounts
+- Updated `tests/setup.js` — added mock methods for chatMessage, chatParticipant, unreadCount
+- Updated Postman collection with 4 chat endpoints
+
+### 2026-07-29 — Updated Anchored Summary
+- Bumped total: 8/14 modules done, 150+ tests, 49+ Prisma models

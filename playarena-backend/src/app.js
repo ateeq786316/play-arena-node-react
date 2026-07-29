@@ -1,4 +1,5 @@
 import express from "express";
+import { createServer } from "http";
 import securityMiddleware from "./middlewares/security.middleware.js";
 import GoogleMiddleware from "./middlewares/googleOauth.middleware.js";
 import authRoutes from "./modules/auth/auth.route.js";
@@ -8,14 +9,18 @@ import BookingController from "./modules/booking/booking.controller.js";
 import teamRoutes from "./modules/team/team.route.js";
 import matchRoutes from "./modules/match/match.route.js";
 import tournamentRoutes from "./modules/tournament/tournament.route.js";
+import financeRoutes from "./modules/finance/finance.route.js";
+import chatRoutes from "./modules/chat/chat.route.js";
 import asyncHandler from "./utils/asyncHandler.js";
 import authMiddleware from "./middlewares/auth.middleware.js";
 import errorHandler from "./middlewares/errorHandler.middleware.js";
+import { setupSocket } from "./socket/socket.js";
 
 const bookingController = new BookingController();
 
 export default function createApp() {
   const app = express();
+  const server = createServer(app);
 
   securityMiddleware(app);
   GoogleMiddleware();
@@ -26,11 +31,16 @@ export default function createApp() {
   app.use("/api/teams", teamRoutes);
   app.use("/api/matches", matchRoutes);
   app.use("/api/tournaments", tournamentRoutes);
+  app.use("/api/finance", financeRoutes);
+  app.use("/api/chat", chatRoutes);
 
   app.post("/api/grounds/:groundId/walkin", authMiddleware, asyncHandler(bookingController.walkinBooking.bind(bookingController)));
 
   app.get("/api/grounds/:groundId/bookings", authMiddleware, asyncHandler(bookingController.getGroundBookings.bind(bookingController)));
 
   app.use(errorHandler);
-  return app;
+
+  setupSocket(server);
+
+  return server;
 }

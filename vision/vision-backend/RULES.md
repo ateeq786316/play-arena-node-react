@@ -16,6 +16,12 @@
 
 7. **Must update Postman after every API** — After creating every single endpoint, immediately add its test request to `vision/postman-collection.json`. Never move to the next endpoint without the Postman entry. The Postman collection must always be in sync with the implemented endpoints.
 
+8. **Commit after every module** — After completing a module (code + tests + docs + Postman + all MD files updated), run `git add -A`, then `git commit -m "4 word sensible summary"`, then `git push`. The commit message must be exactly 4 words describing what was done (e.g., `feat: implement finance module`). Never batch multiple modules in one commit.
+
+9. **Run full test suite before each commit** — Before every `git commit`, run `npm test` and verify all tests pass. If any test fails, fix it before committing.
+
+10. **Only committed code is done** — A module is not marked complete in tracking docs until its code is committed and pushed. Uncommitted work is considered "in progress".
+
 ---
 
 ## Commands I Must Follow

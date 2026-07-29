@@ -1,7 +1,7 @@
 # PlayArena — Project Status
 
 > **Sports community platform** for Pakistan — ground booking, team management, matchmaking, tournaments, ratings.
-> Audit date: 2026-07-02
+> Audit date: 2026-07-29
 
 ---
 
@@ -9,7 +9,7 @@
 
 | Layer | Technology |
 |-------|-----------|
-| **Backend** | NestJS 11 + Prisma 7 + PostgreSQL (Bull queues + Redis + AWS S3) |
+| **Backend** | Express 5 + Prisma 7 + PostgreSQL (Socket.IO) |
 | **Frontend** | Next.js 15 (App Router) + Tailwind v4 + Zustand + TanStack Query |
 | **Auth** | JWT + OTP via email (PBKDF2 hashing) |
 | **WebSocket** | Socket.IO (chat + notifications) |
@@ -19,43 +19,36 @@
 
 ## What's COMPLETE
 
-### Backend (NestJS) — 16 modules, ~5,000+ lines of real implementation
+### Backend (Express) — 8/14 modules done, ~155+ tests, all passing
 
 | Module | Status | Key Features |
 |--------|--------|-------------|
-| **auth** | ✅ Complete | JWT, OTP, PBKDF2, signup/login/refresh/logout/me |
-| **bookings** | ✅ Complete | State machine (pending→approved/rejected/expired/cancelled/completed), slot conflict detection, walk-in booking |
-| **grounds** | ✅ Complete | Ground CRUD, courts, schedules, RBAC (ground_access), staff invites |
-| **finance** | ✅ Complete | Idempotent payment recording, overpayment protection, cash sessions, payment methods (global/region/ground-level) |
-| **teams** | ✅ Complete | CRUD, roster, invites, join requests, captaincy transfer |
-| **matchmaking** | ✅ Complete | Challenge system, match lifecycle, score entry, ELO rating |
-| **tournaments** | ✅ Complete | Knockout + round-robin bracket generation, standings, registration |
-| **ratings** | ✅ Complete | Match peer reviews, leaderboards, player stats |
-| **chat** | ✅ Complete | REST + WebSocket gateway, unread tracking, cursor pagination |
-| **notifications** | ✅ Complete | CRUD + WebSocket gateway, event-driven push |
-| **cash-management** | ✅ Complete | Session open/close, variance calculation |
-| **admin** | ✅ Complete | Users/grounds/teams management, audit logs, CRUD for regions/cities/sports/payment methods |
-| **users** | ✅ Complete | Profile update, player search |
-| **upload** | ✅ Complete | S3 upload with MIME/size validation, multi-folder (avatar, ground, court, team, tournament, booking-proof, chat) |
-| **health** | ✅ Complete | DB ping with latency |
-| **email** | 🟡 Partial | SMTP with console fallback (no template engine) |
+| **auth** | ✅ Complete | JWT, OTP, signup/login/refresh/logout/profile, password reset, Google OAuth |
+| **grounds** | ✅ Complete | Ground CRUD, courts, schedules, settings, RBAC (owner/manager/staff), regions/cities, staff invites |
+| **bookings** | ✅ Complete | 6-state machine, slot conflict detection (SELECT FOR UPDATE), walk-in, deposits, payments, availability grid |
+| **teams** | ✅ Complete | CRUD, roster (captain/co-captain/player), invites, join requests, captaincy transfer, ELO history |
+| **matchmaking** | ✅ Complete | Challenge system, dual-confirmation scoring, ELO (K=32/24, floor 100), match lifecycle |
+| **tournaments** | ✅ Complete | 3 bracket formats (knockout/round_robin/group_knockout), auto-advance, standings (W=3/D=1) |
+| **finance** | ✅ Complete | Payment methods (global/ground level), cash sessions (open/close/variance), ground finance, reports |
+| **chat** | ✅ Complete | REST (4 endpoints) + Socket.IO WebSocket, ground rooms, cursor pagination, typing indicators, unread tracking |
+| **notifications** | ❌ Not started | CRUD + WebSocket, event-driven |
+| **ratings** | ❌ Not started | Peer reviews, leaderboards, player stats |
+| **admin** | ❌ Not started | User/ground/team management, audit logs |
+| **upload** | ❌ Not started | S3 with MIME/size validation |
+| **health** | ❌ Not started | DB ping with latency |
 
 ### Common Infrastructure
 
 | Layer | Details |
 |-------|---------|
-| **Guards** | JWT (public route bypass), Roles (ground-level + user-level), Throttle (IP tracking, 100 req/min) |
-| **Decorators** | `@Public()`, `@CurrentUser()`, `@Roles()`, `@GroundAccess()` |
-| **Filters** | AllExceptionsFilter (structured errors, correlation IDs) |
-| **Interceptors** | Logging (correlation ID, duration), Transform (standardized envelope), Timeout (30s) |
-| **Pipes** | ZodValidationPipe (generic schema validation) |
-| **Utils** | RatingUtil (ELO + decay), MoneyUtil (PKR), DateUtil (Asia/Karachi), GeoUtil (Haversine), IdempotencyUtil |
-| **Events** | 5 event modules (booking, payment, team, match, notification) |
-| **Workers** | 7 Bull workers (booking expiry, completion, cash auto-close, chat cleanup, match reminder, notification cleanup, rating decay) |
-| **Queues** | notification, expiry, match-reminder |
-| **Prisma Schema** | 30+ models covering the full domain |
-| **Seed Data** | 4 regions, 17 Pakistan cities, 9 payment methods, 7 sports |
-| **API Docs** | Swagger at `/api/docs` |
+| **Auth** | JWT in httpOnly cookies (accessToken 15min, refreshToken 7d), OTP via email, Google OAuth |
+| **RBAC** | Ground-level (owner/manager/staff), User-level (player/super_admin) |
+| **Security** | Helmet, HPP, CORS, rate limiting (100 req/min) |
+| **Validation** | express-validator + Zod |
+| **Logging** | Pino |
+| **WebSocket** | Socket.IO (/chat namespace, ground rooms) |
+| **Prisma Schema** | 49+ models covering the full domain |
+| **Testing** | Vitest + supertest, 8 test files, 159 passing tests |
 
 ### Frontend (Next.js 15) — 33 page files, ~95% of routes functional
 

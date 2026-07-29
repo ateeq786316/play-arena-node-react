@@ -30,12 +30,12 @@
 - [x] Ground module (CRUD, courts, schedules, settings, RBAC, regions/cities)
 - [x] Created requirement.md — master spec consolidating all module requirements
 - [x] Booking module (create, state machine, conflict detection, walk-in, payments, slots) ✅
-- [ ] Finance module (payments, cash sessions)
+- [x] Finance module (payment methods, cash sessions, ground finance, reports) ✅
 - [x] Teams module (CRUD, roster, invites, join requests, captaincy) ✅
 - [x] Matchmaking module (challenges, ELO, scoring, dual-confirmation) ✅
 - [x] Tournaments module (bracket gen, standings, registration, scoring) ✅
 - [ ] Ratings module (peer reviews, leaderboards)
-- [ ] Chat module (REST + WebSocket)
+- [x] Chat module (REST + WebSocket with Socket.IO)
 - [ ] Notifications module (CRUD + WebSocket)
 - [ ] Admin module (users, grounds, finance, audit)
 - [ ] Upload module (S3, MIME validation)

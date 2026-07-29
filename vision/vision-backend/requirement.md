@@ -17,8 +17,8 @@
 | Teams | ✅ Complete | 20/20 | CRUD, roster, invites, join requests, captaincy, ratings |
 | Matchmaking | ✅ Complete | 11/11 | Challenges, match lifecycle, ELO, dual-confirmation scoring |
 | Tournaments | ✅ Complete | 11/11 | CRUD, bracket gen (knockout/round_robin/group_knockout), registration, standings |
-| Finance | ❌ Not started | 0/10 | Payments, idempotency, cash sessions, payment methods |
-| Chat | ❌ Not started | 0/4 | Messages (REST), WebSocket gateway |
+| Finance | ✅ Complete | 9/11 | Payment methods, cash sessions, ground finance, reports (booking payment + finance exist in booking module) |
+| Chat | ✅ Complete | 4/4 | Messages (REST), WebSocket gateway with Socket.IO |
 | Notifications | ❌ Not started | 0/5 | CRUD, WebSocket, event-driven |
 | Ratings | ❌ Not started | 0/5 | Peer reviews, leaderboard, player stats |
 | Admin | ❌ Not started | 0/15 | Users, grounds, finance, audit, reference data CRUD |
@@ -26,7 +26,7 @@
 | Health | ❌ Not started | 0/1 | DB ping with latency |
 | Email | ❌ Not started | 0/0 | SMTP with nodemailer (exists but no separate module) |
 
-**Total: 6/14 modules complete, ~82/130+ endpoints implemented**
+**Total: 8/14 modules complete, ~95/134+ endpoints implemented**
 
 ---
 
@@ -232,7 +232,7 @@ approved → cancelled (player)
 
 ---
 
-### 2.7 Finance & Cash Module ❌ (NOT STARTED)
+### 2.7 Finance & Cash Module ✅ (COMPLETE)
 
 **Endpoints Needed:**
 | Method | Path | Auth | Description |
@@ -264,9 +264,9 @@ Cash, JazzCash, Easypaisa, Bank Transfer, Credit/Debit Card
 
 ---
 
-### 2.8 Chat Module ❌ (NOT STARTED)
+### 2.8 Chat Module ✅ (COMPLETE)
 
-**Endpoints Needed:**
+**Endpoints:**
 | Method | Path | Auth | Description |
 |--------|------|------|-------------|
 | GET | /api/chat/:id/messages | JWT | Cursor-based paginated messages |
@@ -450,11 +450,11 @@ Cash, JazzCash, Easypaisa, Bank Transfer, Credit/Debit Card
 | 11 | Booking | ✅ Done | Booking |
 | 12 | BookingFinance | ✅ Done | Booking |
 | 13 | BookingPayment | ✅ Done | Finance |
-| 14 | PaymentMethod | ❌ | Finance |
-| 15 | GroundPaymentMethod | ❌ | Finance |
-| 16 | RegionPaymentMethod | ❌ | Finance |
-| 17 | CashSession | ❌ | Finance |
-| 18 | CashSessionPayment | ❌ | Finance |
+| 14 | PaymentMethod | ✅ Done | Finance |
+| 15 | GroundPaymentMethod | ✅ Done | Finance |
+| 16 | RegionPaymentMethod | ✅ Done | Finance |
+| 17 | CashSession | ✅ Done | Finance |
+| 18 | CashSessionPayment | ✅ Done | Finance |
 | 19 | Team | ✅ Done | Teams |
 | 20 | TeamMember | ✅ Done | Teams |
 | 21 | TeamInvite | ✅ Done | Teams |
@@ -469,9 +469,9 @@ Cash, JazzCash, Easypaisa, Bank Transfer, Credit/Debit Card
 | 30 | PlayerStat | ❌ | Ratings |
 | 31 | PlayerMatchStat | ❌ | Ratings |
 | 32 | Notification | ❌ | Notifications |
-| 33 | ChatMessage | ❌ | Chat |
-| 34 | ChatParticipant | ❌ | Chat |
-| 35 | UnreadCount | ❌ | Chat |
+| 33 | ChatMessage | ✅ Done | Chat |
+| 34 | ChatParticipant | ✅ Done | Chat |
+| 35 | UnreadCount | ✅ Done | Chat |
 | 36 | AuditLog | ❌ | Admin |
 | 37 | AppLog | ❌ | Admin |
 | 38 | SportCategory | ❌ | Teams/Reference |
@@ -496,7 +496,7 @@ Phase 4: Matchmaking ✅
 Phase 5: Tournaments ✅
 Phase 6: Finance + Cash
 Phase 7: Ratings + Leaderboard (requires Matchmaking)
-Phase 8: Chat + Notifications (WebSocket)
+Phase 8: Chat ✅ → Notifications (WebSocket)
 Phase 9: Admin + Audit
 Phase 10: Upload (S3)
 Phase 11: Health

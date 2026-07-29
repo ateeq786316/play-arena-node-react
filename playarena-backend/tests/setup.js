@@ -8,13 +8,6 @@ vi.mock("../src/database/db.js", () => {
       findMany: vi.fn(),
       update: vi.fn(),
     },
-    booking: {
-      create: vi.fn(),
-      findUnique: vi.fn(),
-      findFirst: vi.fn(),
-      findMany: vi.fn(),
-      update: vi.fn(),
-    },
     bookingFinance: {
       create: vi.fn(),
       findUnique: vi.fn(),
@@ -26,6 +19,14 @@ vi.mock("../src/database/db.js", () => {
       create: vi.fn(),
       findUnique: vi.fn(),
       findMany: vi.fn(),
+      aggregate: vi.fn(),
+    },
+    booking: {
+      create: vi.fn(),
+      findUnique: vi.fn(),
+      findFirst: vi.fn(),
+      findMany: vi.fn(),
+      update: vi.fn(),
       aggregate: vi.fn(),
     },
     court: {
@@ -133,6 +134,36 @@ vi.mock("../src/database/db.js", () => {
       findUnique: vi.fn(),
       findMany: vi.fn(),
       update: vi.fn(),
+    },
+    paymentMethod: {
+      findMany: vi.fn(),
+      findUnique: vi.fn(),
+    },
+    groundPaymentMethod: {
+      findMany: vi.fn(),
+      findUnique: vi.fn(),
+      upsert: vi.fn(),
+    },
+    cashSession: {
+      create: vi.fn(),
+      findUnique: vi.fn(),
+      findFirst: vi.fn(),
+      findMany: vi.fn(),
+      update: vi.fn(),
+    },
+    chatMessage: {
+      create: vi.fn(),
+      findMany: vi.fn(),
+    },
+    chatParticipant: {
+      findUnique: vi.fn(),
+      upsert: vi.fn(),
+      findMany: vi.fn(),
+    },
+    unreadCount: {
+      findUnique: vi.fn(),
+      findMany: vi.fn(),
+      upsert: vi.fn(),
     },
     $transaction: vi.fn((fn) => fn(mockPrisma)),
     $disconnect: vi.fn(),
