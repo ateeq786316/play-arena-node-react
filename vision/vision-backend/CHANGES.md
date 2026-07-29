@@ -183,5 +183,22 @@
 - Updated `tests/setup.js` — added notification mock + socket module mock
 - Updated Postman collection with 5 notification endpoints
 
+### 2026-07-29 — Ratings Module Implementation
+- Extended Prisma schema with MatchRating, PlayerStat, PlayerMatchStat models
+- Added rating relations to User (matchRatings, playerStats, playerMatchStats) and TeamMatch (ratings, playerStats)
+- Ran migration `add-ratings-module` — database in sync
+- Created `src/repository/rating.repo.js` — match ratings, team queries for leaderboard, player stats upsert, player match stats, team member checks
+- Created `src/modules/rating/rating.service.js`:
+  - submitRating: captain-only, completed matches only, ratings 1-5, duplicate prevention
+  - getLeaderboard: global or sport-filtered teams sorted by ELO
+  - getPlayerStats: aggregate stats with zero defaults
+  - recordPlayerStats: captain-only, per-match stats with auto-upsert of player aggregates
+- Created `src/modules/rating/rating.controller.js` — 4 endpoint handlers
+- Created `src/modules/rating/rating.route.js` — 5 routes under `/api/` (leaderboard, player-stats, match-rating, match-player-stats)
+- Updated `src/app.js` — registered /api rating routes
+- Created `tests/rating.test.js` — 12 tests (submitRating valid/not-found/not-completed/not-captain/duplicate/out-of-range, leaderboard global/sport-filtered, playerStats found/empty, recordPlayerStats valid/not-captain)
+- Updated `tests/setup.js` — added matchRating, playerStat, playerMatchStat mocks
+- Updated Postman collection with 5 rating endpoints
+
 ### 2026-07-29 — Updated Anchored Summary
 - Bumped total: 8/14 modules done, 150+ tests, 49+ Prisma models

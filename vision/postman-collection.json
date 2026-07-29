@@ -891,6 +891,53 @@
           }
         }
       ]
+    },
+    {
+      "name": "Ratings",
+      "item": [
+        {
+          "name": "Global Leaderboard (Public)",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {"raw": "http://localhost:3000/api/leaderboard", "host": ["localhost:3000"], "path": ["api", "leaderboard"]}
+          }
+        },
+        {
+          "name": "Sport Leaderboard (Public)",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {"raw": "http://localhost:3000/api/leaderboard/cricket", "host": ["localhost:3000"], "path": ["api", "leaderboard", "cricket"]}
+          }
+        },
+        {
+          "name": "Player Stats (Public)",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {"raw": "http://localhost:3000/api/players/PLAYER_ID/stats", "host": ["localhost:3000"], "path": ["api", "players", "PLAYER_ID", "stats"]}
+          }
+        },
+        {
+          "name": "Submit Match Rating (Auth/Captain)",
+          "request": {
+            "method": "POST",
+            "header": [{"key": "Content-Type", "value": "application/json"}],
+            "body": {"mode": "raw", "raw": "{\"skillRating\": 4,\"sportsmanshipRating\": 5,\"punctualityRating\": 3,\"reviewText\": \"Great match!\"}"},
+            "url": {"raw": "http://localhost:3000/api/matches/MATCH_ID/rating", "host": ["localhost:3000"], "path": ["api", "matches", "MATCH_ID", "rating"]}
+          }
+        },
+        {
+          "name": "Record Player Stats (Auth/Captain)",
+          "request": {
+            "method": "POST",
+            "header": [{"key": "Content-Type", "value": "application/json"}],
+            "body": {"mode": "raw", "raw": "{\"playerId\": \"PLAYER_ID\",\"goals\": 2,\"assists\": 1}"},
+            "url": {"raw": "http://localhost:3000/api/matches/MATCH_ID/player-stats", "host": ["localhost:3000"], "path": ["api", "matches", "MATCH_ID", "player-stats"]}
+          }
+        }
+      ]
     }
   ]
 }

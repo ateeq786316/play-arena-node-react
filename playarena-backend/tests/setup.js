@@ -171,6 +171,18 @@ vi.mock("../src/database/db.js", () => {
       count: vi.fn(),
       updateMany: vi.fn(),
     },
+    matchRating: {
+      create: vi.fn(),
+      findUnique: vi.fn(),
+    },
+    playerStat: {
+      findUnique: vi.fn(),
+      upsert: vi.fn(),
+    },
+    playerMatchStat: {
+      create: vi.fn(),
+      findUnique: vi.fn(),
+    },
     $transaction: vi.fn((fn) => fn(mockPrisma)),
     $disconnect: vi.fn(),
     $connect: vi.fn(),

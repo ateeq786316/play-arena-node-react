@@ -34,7 +34,7 @@
 - [x] Teams module (CRUD, roster, invites, join requests, captaincy) ✅
 - [x] Matchmaking module (challenges, ELO, scoring, dual-confirmation) ✅
 - [x] Tournaments module (bracket gen, standings, registration, scoring) ✅
-- [ ] Ratings module (peer reviews, leaderboards)
+- [x] Ratings module (peer reviews, leaderboards)
 - [x] Chat module (REST + WebSocket with Socket.IO)
 - [x] Notifications module (CRUD + WebSocket)
 - [ ] Admin module (users, grounds, finance, audit)

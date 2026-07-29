@@ -126,6 +126,9 @@ model User {
   chatParticipants    ChatParticipant[]
   unreadCounts        UnreadCount[]
   notifications       Notification[]
+  playerStats         PlayerStat[]
+  matchRatings        MatchRating[]   @relation("Reviewer")
+  playerMatchStats    PlayerMatchStat[]
 
   @@map("users")
 }
@@ -657,10 +660,69 @@ model TeamMatch {
   challenger   Team          @relation("MatchChallenger", fields: [challengerTeamId], references: [id])
   opponent     Team          @relation("MatchOpponent", fields: [opponentTeamId], references: [id])
 
+  ratings      MatchRating[]
+  playerStats  PlayerMatchStat[]
+
   @@index([challengerTeamId])
   @@index([opponentTeamId])
   @@index([status])
   @@map("team_matches")
+}
+
+model MatchRating {
+  id                 String   @id @default(uuid()) @db.Uuid
+  matchId            String   @db.Uuid
+  reviewerId         String   @db.Uuid
+  skillRating        Int
+  sportsmanshipRating Int
+  punctualityRating  Int
+  reviewText         String?
+
+  createdAt DateTime @default(now())
+
+  match    TeamMatch @relation(fields: [matchId], references: [id])
+  reviewer User      @relation("Reviewer", fields: [reviewerId], references: [id])
+
+  @@unique([matchId, reviewerId])
+  @@map("match_ratings")
+}
+
+model PlayerStat {
+  id             String   @id @default(uuid()) @db.Uuid
+  userId         String   @unique @db.Uuid
+  matchesPlayed  Int      @default(0)
+  wins           Int      @default(0)
+  losses         Int      @default(0)
+  draws          Int      @default(0)
+  goalsScored    Int      @default(0)
+  goalsConceded  Int      @default(0)
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  user User @relation(fields: [userId], references: [id])
+
+  @@map("player_stats")
+}
+
+model PlayerMatchStat {
+  id        String @id @default(uuid()) @db.Uuid
+  matchId   String @db.Uuid
+  playerId  String @db.Uuid
+  teamId    String @db.Uuid
+  goals     Int    @default(0)
+  assists   Int    @default(0)
+  yellowCards Int  @default(0)
+  redCards  Int    @default(0)
+  motm      Boolean @default(false)
+
+  createdAt DateTime @default(now())
+
+  match TeamMatch @relation(fields: [matchId], references: [id])
+  player User     @relation(fields: [playerId], references: [id])
+
+  @@unique([matchId, playerId])
+  @@map("player_match_stats")
 }
 
 model Tournament {
