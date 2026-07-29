@@ -41,6 +41,18 @@ enum PaymentStatus {
   overpaid
 }
 
+enum TeamRole {
+  captain
+  co_captain
+  player
+}
+
+enum JoinRequestStatus {
+  pending
+  accepted
+  rejected
+}
+
 model User {
   id           String       @id @default(uuid()) @db.Uuid
   name         String?
@@ -65,6 +77,11 @@ model User {
   settingUpdates  GroundSetting[] @relation("SettingUpdater")
   bookings        Booking[]
   payments        BookingPayment[]
+  ownedTeams      Team[]              @relation("TeamCaptain")
+  teamMemberships TeamMember[]
+  teamInvites     TeamInvite[]        @relation("InviteRecipient")
+  sentInvites     TeamInvite[]        @relation("InviteSender")
+  joinRequests    JoinRequest[]
 
   @@map("users")
 }
@@ -300,4 +317,104 @@ model BookingPayment {
 
   @@index([bookingId])
   @@map("booking_payments")
+}
+
+model SportCategory {
+  id       String  @id @default(uuid()) @db.Uuid
+  name     String  @unique
+  slug     String  @unique
+  icon     String?
+  isActive Boolean @default(true)
+
+  @@map("sport_categories")
+}
+
+model Team {
+  id        String    @id @default(uuid()) @db.Uuid
+  name      String
+  sport     String
+  cityId    String?   @db.Uuid
+  logo      String?
+  description String?
+  elo       Int       @default(1200)
+  captainId String    @db.Uuid
+  deletedAt DateTime?
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  captain User             @relation("TeamCaptain", fields: [captainId], references: [id])
+  members TeamMember[]
+  invites TeamInvite[]
+  joinRequests JoinRequest[]
+  ratingHistory TeamRatingHistory[]
+
+  @@index([sport])
+  @@index([captainId])
+  @@map("teams")
+}
+
+model TeamMember {
+  id       String   @id @default(uuid()) @db.Uuid
+  teamId   String   @db.Uuid
+  userId   String   @db.Uuid
+  role     TeamRole @default(player)
+  joinedAt DateTime @default(now())
+
+  team Team @relation(fields: [teamId], references: [id])
+  user User @relation(fields: [userId], references: [id])
+
+  @@unique([teamId, userId])
+  @@map("team_members")
+}
+
+model TeamInvite {
+  id           String       @id @default(uuid()) @db.Uuid
+  teamId       String       @db.Uuid
+  invitedById  String       @db.Uuid
+  userId       String       @db.Uuid
+  status       InviteStatus @default(pending)
+  expiresAt    DateTime?
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  team      Team @relation(fields: [teamId], references: [id])
+  invitedBy User @relation("InviteSender", fields: [invitedById], references: [id])
+  user      User @relation("InviteRecipient", fields: [userId], references: [id])
+
+  @@unique([teamId, userId])
+  @@map("team_invites")
+}
+
+model JoinRequest {
+  id        String            @id @default(uuid()) @db.Uuid
+  teamId    String            @db.Uuid
+  userId    String            @db.Uuid
+  status    JoinRequestStatus @default(pending)
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  team Team @relation(fields: [teamId], references: [id])
+  user User @relation(fields: [userId], references: [id])
+
+  @@unique([teamId, userId])
+  @@map("join_requests")
+}
+
+model TeamRatingHistory {
+  id        String   @id @default(uuid()) @db.Uuid
+  teamId    String   @db.Uuid
+  eloBefore Int
+  eloAfter  Int
+  reason    String
+  matchId   String?
+
+  createdAt DateTime @default(now())
+
+  team Team @relation(fields: [teamId], references: [id])
+
+  @@index([teamId])
+  @@map("team_rating_history")
 }
