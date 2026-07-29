@@ -9,10 +9,20 @@
 5. **Verify docs match code** — After implementation, verify that what's written in documentation matches what was actually done in code. Fix any discrepancies.
 6. **Keep RULES.md in memory** — Re-read this file at the start of every session/task.
 7. **Must update Postman after every API** — After creating every single endpoint, immediately add its test request to `vision/postman-collection.json`. Never move to the next endpoint without the Postman entry. The Postman collection must always be in sync with the implemented endpoints.
-8. **Commit and push after every file change** — After every single file edit/addition that achieves a logical checkpoint (new endpoint working, test passing, doc updated), run `git add -A`, `git commit -m "4 word sensible summary"`, and `git push`. Never let uncommitted changes accumulate across multiple files or sessions.
+8. **Commit and push after every file change** — After every single file edit/addition that achieves a logical checkpoint (new endpoint working, test passing, doc updated), run `git add -A`, `git commit -m "<prefix>: 4 word summary"`, and `git push`. Never let uncommitted changes accumulate across multiple files or sessions.
 9. **Run full test suite before each commit** — Before every `git commit`, run `npm test` and verify all tests pass. If any test fails, fix it before committing.
 
 10. **Flag contradictory rules immediately** — If two rules conflict or seem to contradict each other, stop and ask the user for clarification before proceeding. Never silently pick one side when the rules are ambiguous.
+
+11. **Data isolation in tests** — Every test suite must create its own data inline or via factories. Tests must never depend on run order, shared global state, or data created by another test suite.
+
+12. **Input validation at entry** — All API inputs (body, params, query) must pass schema validation (Zod, express-validator, or DTOs) before reaching service logic. Never trust raw request data.
+
+13. **Standardized API response shape** — All endpoints must return a uniform response format: `{ message?, data? }` for success, `{ message, statusCode }` for errors. Consistent envelope across the entire API.
+
+14. **Zero hardcoded secrets** — Never commit raw credentials, tokens, API keys, or local URLs in code. All secrets go in `.env` (gitignored) and are parsed via Zod in `env.js`.
+
+15. **Structured commit prefixes** — All commits must use a prefix tag with the 4-word summary: `feat:`, `fix:`, `docs:`, `test:`, `refactor:`, `chore:`. (e.g. `feat: add user search endpoint`, `fix: booking conflict detection`, `test: write finance module tests`).
 
 
 
