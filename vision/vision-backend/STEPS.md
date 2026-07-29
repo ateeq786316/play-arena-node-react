@@ -49,6 +49,6 @@
 
 ## Step 4 — Deployment
 
-- [ ] Docker configuration
+- [x] Docker configuration
 - [ ] Production environment setup
 - [ ] CI/CD pipeline

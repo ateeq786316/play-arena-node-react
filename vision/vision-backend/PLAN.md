@@ -42,7 +42,7 @@ PlayArena backend is built with **Express + PostgreSQL (Prisma ORM)** + Node.js.
 
 ## Phase 4 — Deployment
 
-- [ ] Docker setup
+- [x] Docker setup
 - [ ] CI/CD pipeline
 - [ ] Production configuration
 

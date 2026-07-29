@@ -233,5 +233,15 @@
 - Marked Email module as complete (nodemailer already integrated in Auth for OTP + password reset)
 - Updated requirement.md status: 14/14 modules complete ✅
 
+### 2026-07-29 — Docker + CI/CD + CORS Fix
+- Fixed CORS trailing-slash bug (`security.middleware.js`)
+- Made CORS origin configurable via `CORS_ORIGIN` env var (supports comma-separated multiple origins)
+- Created `Dockerfile` — multi-stage Node 20 build with Prisma generate + migrate
+- Created `docker-compose.yml` — PostgreSQL 16 + backend, healthcheck, volume
+- Created `.github/workflows/ci.yml` — GitHub Actions: test, migrate, vitest
+- Created `.dockerignore` — exclude dev/node_modules
+- Created `.env.docker` — Docker-specific env defaults
+- Updated STEPS.md, PLAN.md
+
 ### 2026-07-29 — Updated Anchored Summary
 - Bumped total: 8/14 modules done, 150+ tests, 49+ Prisma models
