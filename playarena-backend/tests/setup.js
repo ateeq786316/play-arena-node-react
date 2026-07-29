@@ -99,6 +99,19 @@ vi.mock("../src/database/db.js", () => {
     sportCategory: {
       findMany: vi.fn(),
     },
+    matchRequest: {
+      create: vi.fn(),
+      findUnique: vi.fn(),
+      findMany: vi.fn(),
+      update: vi.fn(),
+    },
+    teamMatch: {
+      create: vi.fn(),
+      findUnique: vi.fn(),
+      findMany: vi.fn(),
+      update: vi.fn(),
+      count: vi.fn(),
+    },
     $transaction: vi.fn((fn) => fn(mockPrisma)),
     $disconnect: vi.fn(),
     $connect: vi.fn(),

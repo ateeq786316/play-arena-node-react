@@ -535,6 +535,101 @@
           }
         }
       ]
+    },
+    {
+      "name": "Matchmaking",
+      "item": [
+        {
+          "name": "Create Challenge (Auth/Captain)",
+          "request": {
+            "method": "POST",
+            "header": [{"key": "Content-Type", "value": "application/json"}],
+            "body": {"mode": "raw", "raw": "{\"challengerTeamId\": \"TEAM_ID\",\"opponentTeamId\": \"OPPONENT_TEAM_ID\",\"message\": \"Match request\"}"},
+            "url": {"raw": "http://localhost:3000/api/matches/requests/TEAM_ID", "host": ["localhost:3000"], "path": ["api", "matches", "requests", "TEAM_ID"]}
+          }
+        },
+        {
+          "name": "Sent Challenges (Auth)",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {"raw": "http://localhost:3000/api/matches/requests/sent/TEAM_ID", "host": ["localhost:3000"], "path": ["api", "matches", "requests", "sent", "TEAM_ID"]}
+          }
+        },
+        {
+          "name": "Received Challenges (Auth)",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {"raw": "http://localhost:3000/api/matches/requests/received/TEAM_ID", "host": ["localhost:3000"], "path": ["api", "matches", "requests", "received", "TEAM_ID"]}
+          }
+        },
+        {
+          "name": "Accept Challenge (Auth/Captain)",
+          "request": {
+            "method": "PATCH",
+            "header": [],
+            "url": {"raw": "http://localhost:3000/api/matches/requests/REQUEST_ID/accept", "host": ["localhost:3000"], "path": ["api", "matches", "requests", "REQUEST_ID", "accept"]}
+          }
+        },
+        {
+          "name": "Reject Challenge (Auth/Captain)",
+          "request": {
+            "method": "PATCH",
+            "header": [],
+            "url": {"raw": "http://localhost:3000/api/matches/requests/REQUEST_ID/reject", "host": ["localhost:3000"], "path": ["api", "matches", "requests", "REQUEST_ID", "reject"]}
+          }
+        },
+        {
+          "name": "Cancel Challenge (Auth/Captain)",
+          "request": {
+            "method": "PATCH",
+            "header": [],
+            "url": {"raw": "http://localhost:3000/api/matches/requests/REQUEST_ID/cancel", "host": ["localhost:3000"], "path": ["api", "matches", "requests", "REQUEST_ID", "cancel"]}
+          }
+        },
+        {
+          "name": "List Matches (Auth)",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {"raw": "http://localhost:3000/api/matches/TEAM_ID", "host": ["localhost:3000"], "path": ["api", "matches", "TEAM_ID"]}
+          }
+        },
+        {
+          "name": "Match Detail (Auth)",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {"raw": "http://localhost:3000/api/matches/detail/MATCH_ID", "host": ["localhost:3000"], "path": ["api", "matches", "detail", "MATCH_ID"]}
+          }
+        },
+        {
+          "name": "Submit Score (Auth/Captain)",
+          "request": {
+            "method": "PATCH",
+            "header": [{"key": "Content-Type", "value": "application/json"}],
+            "body": {"mode": "raw", "raw": "{\"scoreChallenger\": 3,\"scoreOpponent\": 1}"},
+            "url": {"raw": "http://localhost:3000/api/matches/MATCH_ID/score", "host": ["localhost:3000"], "path": ["api", "matches", "MATCH_ID", "score"]}
+          }
+        },
+        {
+          "name": "Start Match (Auth/Captain)",
+          "request": {
+            "method": "PATCH",
+            "header": [],
+            "url": {"raw": "http://localhost:3000/api/matches/MATCH_ID/start", "host": ["localhost:3000"], "path": ["api", "matches", "MATCH_ID", "start"]}
+          }
+        },
+        {
+          "name": "Cancel Match (Auth/Captain)",
+          "request": {
+            "method": "PATCH",
+            "header": [],
+            "url": {"raw": "http://localhost:3000/api/matches/MATCH_ID/cancel", "host": ["localhost:3000"], "path": ["api", "matches", "MATCH_ID", "cancel"]}
+          }
+        }
+      ]
     }
   ]
 }
