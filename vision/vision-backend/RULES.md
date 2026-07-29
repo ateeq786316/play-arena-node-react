@@ -11,9 +11,8 @@
 7. **Must update Postman after every API** — After creating every single endpoint, immediately add its test request to `vision/postman-collection.json`. Never move to the next endpoint without the Postman entry. The Postman collection must always be in sync with the implemented endpoints.
 8. **Commit and push after every file change** — After every single file edit/addition that achieves a logical checkpoint (new endpoint working, test passing, doc updated), run `git add -A`, `git commit -m "4 word sensible summary"`, and `git push`. Never let uncommitted changes accumulate across multiple files or sessions.
 9. **Run full test suite before each commit** — Before every `git commit`, run `npm test` and verify all tests pass. If any test fails, fix it before committing.
-10. **Only committed code is done** — A module is not marked complete in tracking docs until its code is committed and pushed. Uncommitted work is considered "in progress".
 
----
+10. **Flag contradictory rules immediately** — If two rules conflict or seem to contradict each other, stop and ask the user for clarification before proceeding. Never silently pick one side when the rules are ambiguous.
 
 
 
