@@ -32,7 +32,7 @@
 - [x] Booking module (create, state machine, conflict detection, walk-in, payments, slots) ✅
 - [ ] Finance module (payments, cash sessions)
 - [x] Teams module (CRUD, roster, invites, join requests, captaincy) ✅
-- [ ] Matchmaking module (challenges, ELO, scoring)
+- [x] Matchmaking module (challenges, ELO, scoring, dual-confirmation) ✅
 - [ ] Tournaments module (bracket generation, registration)
 - [ ] Ratings module (peer reviews, leaderboards)
 - [ ] Chat module (REST + WebSocket)

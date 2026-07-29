@@ -68,11 +68,20 @@
 - [x] Team stats — Members count, ELO
 - [x] Sport categories — List active
 
-### ELO Rating
-- [ ] Expected score calculation
-- [ ] Rating update after match
-- [ ] Rating floor (min 100)
-- [ ] Inactivity decay
+### Matchmaking Module
+- [x] Create challenge — Captain/co-captain only, own-team check, duplicate block
+- [x] Sent/received challenges — Filtered by team
+- [x] Accept challenge → creates TeamMatch (scheduled)
+- [x] Reject/cancel challenge — Status update
+- [x] Submit score — First submission stores, matching scores completes, mismatch → score_pending
+- [x] Start/cancel match — Status transition validation
+- [x] ELO calculation — Expected score (0.5 for equal, >0.9 for large gap)
+
+### ELO Rating (System-level)
+- [x] Expected score formula — 1 / (1 + 10^((Rb - Ra) / 400))
+- [x] K-factor — 32 (<30 matches), 24 (30+ matches)
+- [x] Rating floor — min 100
+- [ ] Inactivity decay — 2 ELO/week after 30 days (needs cron job)
 
 ---
 
@@ -89,6 +98,7 @@
 | 2026-07-29 | Ground — All endpoints | 24 | 24 | 0 | CRUD, courts, schedules, settings, RBAC, invites, regions |
 | 2026-07-29 | Booking — All endpoints | 16 | 16 | 0 | Create, conflict, state machine, walk-in, cancel, payment, slots |
 | 2026-07-29 | Teams — All endpoints | 27 | 27 | 0 | CRUD, invites, join requests, captaincy, members, stats |
+| 2026-07-29 | Matchmaking — All endpoints | 15 | 15 | 0 | Challenges, accept/reject, dual-confirmation scoring, ELO calc, match lifecycle |
 
 ---
 
@@ -108,6 +118,7 @@ npm run test:watch  # Watch mode
 | `tests/ground.test.js` | Unit (mocked DB) | CRUD, courts, schedules, settings, RBAC, regions |
 | `tests/booking.test.js` | Unit (mocked DB) | Create, conflict, state machine, walk-in, cancel, payments, slots |
 | `tests/team.test.js` | Unit (mocked DB) | CRUD, invites, join requests, captaincy, members, stats |
+| `tests/match.test.js` | Unit (mocked DB) | Challenges, dual-confirmation scoring, ELO, match lifecycle |
 
 ---
 

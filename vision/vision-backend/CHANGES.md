@@ -102,3 +102,16 @@
 - Registered `/api/teams` in app.js
 - Created `tests/team.test.js` — 27 tests, all passing
 - Team endpoints: create, list, my-teams, detail, update, delete, members (get/update/remove), leave, transfer-captaincy, invite (send/accept/reject), join-request (create/list/accept/reject), stats, rating-history, sport-categories
+
+### 2026-07-29 — Matchmaking Module Implementation
+- Extended Prisma schema with MatchRequest and TeamMatch models
+- Added MatchRequestStatus enum (pending, accepted, rejected, cancelled, expired) and MatchStatus enum (scheduled, in_progress, completed, cancelled, score_pending)
+- Added match relations to Team model
+- Ran migration `add-matchmaking-module` — database in sync
+- Created `src/repository/match.repo.js` — CRUD for requests and matches with team ELO queries
+- Created `src/modules/match/match.service.js` — challenge flow (create/accept/reject/cancel), dual-confirmation scoring (both teams match → complete, mismatch → staff mediation), match lifecycle (start/cancel), ELO calculation (K-factor 32/24, baseline 1200, floor 100)
+- Created `src/modules/match/match.controller.js` — 11 endpoint handlers
+- Created `src/modules/match/match.route.js` — 11 routes under `/api/matches`
+- Registered `/api/matches` in app.js
+- Created `tests/match.test.js` — 15 tests, all passing
+- Match endpoints: create challenge, sent/received challenges, accept/reject/cancel challenge, list matches, match detail, submit score (dual-confirmation), start match, cancel match

@@ -13,9 +13,9 @@
 |--------|--------|----------------|-------|
 | Auth | ✅ Complete | 12/12 | Register, login, OTP, refresh, profile, password reset, Google OAuth |
 | Ground | ✅ Complete | 18/18 | CRUD, courts, schedules, settings, RBAC, regions/cities, images, invites |
-| Booking | ❌ Not started | 0/7 | State machine, conflict detection, walk-in, expiry worker |
-| Teams | ❌ Not started | 0/19 | CRUD, roster, invites, join requests, captaincy |
-| Matchmaking | ❌ Not started | 0/11 | Challenges, match lifecycle, ELO, score entry |
+| Booking | ✅ Complete | 10/10 | State machine, conflict detection, deposit, walk-in, availability |
+| Teams | ✅ Complete | 20/20 | CRUD, roster, invites, join requests, captaincy, ratings |
+| Matchmaking | ✅ Complete | 11/11 | Challenges, match lifecycle, ELO, dual-confirmation scoring |
 | Tournaments | ❌ Not started | 0/12 | CRUD, bracket gen, registration, standings |
 | Finance | ❌ Not started | 0/10 | Payments, idempotency, cash sessions, payment methods |
 | Chat | ❌ Not started | 0/4 | Messages (REST), WebSocket gateway |
@@ -26,7 +26,7 @@
 | Health | ❌ Not started | 0/1 | DB ping with latency |
 | Email | ❌ Not started | 0/0 | SMTP with nodemailer (exists but no separate module) |
 
-**Total: 2/14 modules complete, ~30/120+ endpoints implemented**
+**Total: 5/14 modules complete, ~71/120+ endpoints implemented**
 
 ---
 
@@ -173,7 +173,7 @@ approved → cancelled (player)
 
 ---
 
-### 2.5 Matchmaking Module ❌ (NOT STARTED)
+### 2.5 Matchmaking Module ✅ (COMPLETE)
 
 **Endpoints Needed:**
 | Method | Path | Auth | Description |
