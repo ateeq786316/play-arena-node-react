@@ -53,6 +53,22 @@ enum JoinRequestStatus {
   rejected
 }
 
+enum MatchRequestStatus {
+  pending
+  accepted
+  rejected
+  cancelled
+  expired
+}
+
+enum MatchStatus {
+  scheduled
+  in_progress
+  completed
+  cancelled
+  score_pending
+}
+
 model User {
   id           String       @id @default(uuid()) @db.Uuid
   name         String?
@@ -348,6 +364,10 @@ model Team {
   invites TeamInvite[]
   joinRequests JoinRequest[]
   ratingHistory TeamRatingHistory[]
+  sentMatchRequests  MatchRequest[] @relation("ChallengerTeam")
+  receivedMatchRequests MatchRequest[] @relation("OpponentTeam")
+  matchesAsChallenger TeamMatch[] @relation("MatchChallenger")
+  matchesAsOpponent TeamMatch[] @relation("MatchOpponent")
 
   @@index([sport])
   @@index([captainId])
@@ -417,4 +437,54 @@ model TeamRatingHistory {
 
   @@index([teamId])
   @@map("team_rating_history")
+}
+
+model MatchRequest {
+  id                String             @id @default(uuid()) @db.Uuid
+  challengerTeamId  String             @db.Uuid
+  opponentTeamId    String             @db.Uuid
+  groundId          String?            @db.Uuid
+  proposedDate      DateTime?
+  status            MatchRequestStatus @default(pending)
+  message           String?
+  expiresAt         DateTime?
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  challenger Team @relation("ChallengerTeam", fields: [challengerTeamId], references: [id])
+  opponent   Team @relation("OpponentTeam", fields: [opponentTeamId], references: [id])
+  match           TeamMatch?
+
+  @@index([challengerTeamId])
+  @@index([opponentTeamId])
+  @@index([status])
+  @@map("match_requests")
+}
+
+model TeamMatch {
+  id                String      @id @default(uuid()) @db.Uuid
+  matchRequestId    String?     @unique @db.Uuid
+  challengerTeamId  String      @db.Uuid
+  opponentTeamId    String      @db.Uuid
+  groundId          String?     @db.Uuid
+  scheduledDate     DateTime?
+  status            MatchStatus @default(scheduled)
+  scoreChallenger   Int?
+  scoreOpponent     Int?
+  scoreSubmittedBy  String?
+  startedAt         DateTime?
+  completedAt       DateTime?
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  matchRequest MatchRequest? @relation(fields: [matchRequestId], references: [id])
+  challenger   Team          @relation("MatchChallenger", fields: [challengerTeamId], references: [id])
+  opponent     Team          @relation("MatchOpponent", fields: [opponentTeamId], references: [id])
+
+  @@index([challengerTeamId])
+  @@index([opponentTeamId])
+  @@index([status])
+  @@map("team_matches")
 }
