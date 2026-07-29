@@ -15,6 +15,7 @@ import notificationRoutes from "./modules/notification/notification.route.js";
 import ratingRoutes from "./modules/rating/rating.route.js";
 import adminRoutes from "./modules/admin/admin.route.js";
 import uploadRoutes from "./modules/upload/upload.route.js";
+import healthRoutes from "./modules/health/health.route.js";
 import asyncHandler from "./utils/asyncHandler.js";
 import authMiddleware from "./middlewares/auth.middleware.js";
 import errorHandler from "./middlewares/errorHandler.middleware.js";
@@ -41,6 +42,7 @@ export default function createApp() {
   app.use("/api", ratingRoutes);
   app.use("/api/admin", adminRoutes);
   app.use("/api/upload", uploadRoutes);
+  app.use("/api/health", healthRoutes);
 
   app.post("/api/grounds/:groundId/walkin", authMiddleware, asyncHandler(bookingController.walkinBooking.bind(bookingController)));
 

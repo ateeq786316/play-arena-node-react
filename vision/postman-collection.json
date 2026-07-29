@@ -1036,6 +1036,15 @@
           "request": {"method": "POST", "header": [], "url": {"raw": "http://localhost:3000/api/upload/general", "host": ["localhost:3000"], "path": ["api", "upload", "general"]}}
         }
       ]
+    },
+    {
+      "name": "Health",
+      "item": [
+        {
+          "name": "Health Check (Public)",
+          "request": {"method": "GET", "header": [], "url": {"raw": "http://localhost:3000/api/health", "host": ["localhost:3000"], "path": ["api", "health"]}}
+        }
+      ]
     }
   ]
 }

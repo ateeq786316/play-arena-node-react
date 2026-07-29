@@ -214,6 +214,7 @@ vi.mock("../src/database/db.js", () => {
       delete: vi.fn(),
     },
     $transaction: vi.fn((fn) => fn(mockPrisma)),
+    $queryRaw: vi.fn().mockResolvedValue([{ 1: 1 }]),
     $disconnect: vi.fn(),
     $connect: vi.fn(),
   };

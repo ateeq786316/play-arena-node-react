@@ -23,10 +23,10 @@
 | Ratings | ✅ Complete | 5/5 | Peer reviews, leaderboard, player stats |
 | Admin | ✅ Complete | 15/15 | Users, grounds, finance, audit, reference data CRUD |
 | Upload | ✅ Complete | 6/6 | S3 with MIME/size validation |
-| Health | ❌ Not started | 0/1 | DB ping with latency |
-| Email | ❌ Not started | 0/0 | SMTP with nodemailer (exists but no separate module) |
+| Health | ✅ Complete | 1/1 | DB ping with latency |
+| Email | ✅ Complete (in Auth) | 0/0 | SMTP with nodemailer (integrated in Auth module for OTP + password reset) |
 
-**Total: 12/14 modules complete, ~126/165+ endpoints implemented**
+**Total: 14/14 modules complete, ~127/166+ endpoints implemented**
 
 ---
 
@@ -392,7 +392,7 @@ Cash, JazzCash, Easypaisa, Bank Transfer, Credit/Debit Card
 
 ---
 
-### 2.13 Health Module ❌ (NOT STARTED)
+### 2.13 Health Module ✅ (COMPLETE)
 
 | Method | Path | Auth | Description |
 |--------|------|------|-------------|

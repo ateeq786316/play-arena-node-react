@@ -89,6 +89,10 @@
 - [x] Rating floor — min 100
 - [ ] Inactivity decay — 2 ELO/week after 30 days (needs cron job)
 
+### Health Module
+- [x] Health check DB up — Returns 200 with latency
+- [x] Health check DB down — Returns 200 with db status "down"
+
 ### Upload Module
 - [x] Upload valid file — Returns S3 URL with correct type/folder
 - [x] Upload no file — Throws validation error
@@ -181,6 +185,7 @@
 | 2026-07-29 | Ratings — All endpoints | 12 | 12 | 0 | submitRating (validation), leaderboard (global/sport), playerStats (found/empty), recordPlayerStats (captain check) |
 | 2026-07-29 | Admin — All endpoints | 9 | 9 | 0 | super_admin RBAC, users/grounds/teams pagination, verify/suspend with audit, platform finance, audit logs |
 | 2026-07-29 | Upload — All endpoints | 6 | 6 | 0 | MIME validation, size limits, type-specific rules, pdf whitelist |
+| 2026-07-29 | Health — All endpoints | 2 | 2 | 0 | DB ping with latency, graceful down handling |
 
 ---
 
@@ -208,6 +213,7 @@ npm run test:watch  # Watch mode
 | `tests/rating.test.js` | Unit (mocked DB) | Submit rating, leaderboard, player stats, record player stats |
 | `tests/admin.test.js` | Unit (mocked DB) | Users, grounds, teams, finance, audit — super_admin RBAC |
 | `tests/upload.test.js` | Unit (mocked S3) | File validation, MIME whitelist, size limits, type-specific rules |
+| `tests/health.test.js` | Unit (mocked DB) | DB ping up/down, latency measurement |
 
 ---
 

@@ -39,7 +39,7 @@
 - [x] Notifications module (CRUD + WebSocket)
 - [x] Admin module (users, grounds, finance, audit)
 - [x] Upload module (S3, MIME validation)
-- [ ] Health module (DB ping)
+- [x] Health module (DB ping)
 
 ## Step 3 — Testing
 

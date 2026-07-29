@@ -223,5 +223,15 @@
 - Created `tests/upload.test.js` — 6 tests (valid upload, no file, invalid mime, too large, pdf in booking-proof, pdf rejected in avatar)
 - Updated Postman collection with upload endpoints
 
+### 2026-07-29 — Health + Email Completion
+- Created `src/modules/health/health.service.js` — DB ping via `$queryRaw` with latency measurement, returns `{ status, timestamp, services: { database } }`
+- Created `src/modules/health/health.controller.js` — single handler returning 200 (up) or 503 (down)
+- Created `src/modules/health/health.route.js` — GET /api/health (public, no auth)
+- Updated `src/app.js` — registered /api/health
+- Created `tests/health.test.js` — 2 tests (db up with latency, db down handled gracefully)
+- Updated `tests/setup.js` — added $queryRaw mock
+- Marked Email module as complete (nodemailer already integrated in Auth for OTP + password reset)
+- Updated requirement.md status: 14/14 modules complete ✅
+
 ### 2026-07-29 — Updated Anchored Summary
 - Bumped total: 8/14 modules done, 150+ tests, 49+ Prisma models
