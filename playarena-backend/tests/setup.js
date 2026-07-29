@@ -2,6 +2,12 @@ import { vi } from "vitest";
 
 vi.mock("../src/database/db.js", () => {
   const mockPrisma = {
+    user: {
+      create: vi.fn(),
+      findUnique: vi.fn(),
+      findMany: vi.fn(),
+      update: vi.fn(),
+    },
     booking: {
       create: vi.fn(),
       findUnique: vi.fn(),
@@ -23,17 +29,44 @@ vi.mock("../src/database/db.js", () => {
       aggregate: vi.fn(),
     },
     court: {
+      create: vi.fn(),
       findUnique: vi.fn(),
       findMany: vi.fn(),
+      update: vi.fn(),
     },
     ground: {
+      create: vi.fn(),
       findUnique: vi.fn(),
       findMany: vi.fn(),
+      update: vi.fn(),
     },
     groundAccess: {
+      create: vi.fn(),
+      findUnique: vi.fn(),
+      findMany: vi.fn(),
+      update: vi.fn(),
+    },
+    groundInvite: {
+      create: vi.fn(),
+      findUnique: vi.fn(),
+      update: vi.fn(),
+    },
+    groundImage: {
+      create: vi.fn(),
+      findMany: vi.fn(),
+      delete: vi.fn(),
+    },
+    groundSetting: {
+      upsert: vi.fn(),
       findUnique: vi.fn(),
     },
     groundSchedule: {
+      findMany: vi.fn(),
+      create: vi.fn(),
+      update: vi.fn(),
+      upsert: vi.fn(),
+    },
+    region: {
       findMany: vi.fn(),
     },
     $transaction: vi.fn((fn) => fn(mockPrisma)),
