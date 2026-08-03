@@ -230,6 +230,12 @@ docs/
 
 ---
 
+## User Stories
+
+- **All Features User Stories:** `docs/user-stories/all-features-user-stories.md` — Comprehensive user stories (US-A01 through US-H02, 165 stories total) covering every backend API endpoint and frontend page across all 19 modules
+- **Booking Flow User Story:** `docs/user-stories/booking-flow.md` — Detailed player booking journey
+- **Dispute Flow User Story:** `docs/user-stories/dispute-flow.md` — End-to-end dispute resolution flow
+
 ## Gap Analysis Document
 
 For the specific frontend↔backend integration gaps that were recently identified and fixed, see:
