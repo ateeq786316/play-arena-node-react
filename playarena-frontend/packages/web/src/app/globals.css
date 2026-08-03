@@ -25,6 +25,10 @@
   --shadow-card: 0 8px 24px rgba(15, 23, 42, 0.08);
   --shadow-card-hover: 0 12px 32px rgba(15, 23, 42, 0.12);
   --shadow-modal: 0 20px 60px rgba(15, 23, 42, 0.15);
+  --cta: #EA580C;
+  --cta-hover: #C2410C;
+  --cta-pressed: #9A3412;
+  --cta-foreground: #ffffff;
 }
 
 @theme inline {
@@ -45,6 +49,7 @@
   --color-card: var(--card);
   --color-card-foreground: var(--card-foreground);
   --color-sidebar: var(--sidebar);
+  --color-cta: var(--cta);
   --font-sans: var(--font-dm-sans), var(--font-geist-sans), Arial, Helvetica, sans-serif;
   --font-heading: var(--font-bebas-neue), var(--font-geist-sans), Arial, Helvetica, sans-serif;
   --font-mono: var(--font-geist-mono);

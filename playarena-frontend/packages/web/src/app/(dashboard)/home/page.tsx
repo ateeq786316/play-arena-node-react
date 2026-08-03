@@ -92,7 +92,7 @@ export default function HomePage() {
       : grounds;
 
   return (
-    <div className="space-y-8">
+    <div className="space-y-10">
       <PageHeader
         title={<>Welcome{user?.name ? `, ${user.name}` : ""}!</>}
         description="Find grounds, book courts, and compete with teams."

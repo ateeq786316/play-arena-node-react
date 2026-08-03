@@ -452,7 +452,7 @@ export default function GroundDetailPage() {
             description="This ground has not added any courts yet."
           />
         ) : (
-          <div className="grid gap-5 sm:grid-cols-2 lg:grid-cols-3">
+          <div className="grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
             {courts.map((court) => {
               const amenities = Array.isArray(court.amenities) ? (court.amenities as string[]) : [];
               return (
@@ -529,7 +529,7 @@ export default function GroundDetailPage() {
               <p className="text-center text-sm text-muted-foreground mb-3">
                 {calendarDate.toLocaleString("default", { month: "long", year: "numeric" })}
               </p>
-              <div className="grid grid-cols-7 gap-1 text-center">
+              <div className="grid grid-cols-7 gap-2 text-center snap-x snap-mandatory overflow-x-auto pb-2">
                 {dayNames.map((day) => (
                   <div key={day} className="text-xs font-medium text-muted-foreground">
                     {day}
