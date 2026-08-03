@@ -85,6 +85,29 @@ describe("Dispute Service", () => {
     });
   });
 
+  describe("getAllDisputes", () => {
+    it("should return all disputes with filters", async () => {
+      prisma.dispute.findMany.mockResolvedValue([
+        { id: disputeId(), type: "booking_conflict", reason: "Double booked", status: "pending", filedById: userId() },
+        { id: "dispute-2", type: "no_show", reason: "No show", status: "resolved", filedById: userId() },
+      ]);
+
+      const service = new DisputeService();
+      const result = await service.getAllDisputes({ status: "pending" });
+      expect(result).toHaveLength(2);
+    });
+
+    it("should return all disputes without filters", async () => {
+      prisma.dispute.findMany.mockResolvedValue([
+        { id: disputeId(), type: "booking_conflict", reason: "Double booked", status: "pending", filedById: userId() },
+      ]);
+
+      const service = new DisputeService();
+      const result = await service.getAllDisputes();
+      expect(result).toHaveLength(1);
+    });
+  });
+
   describe("resolveDispute", () => {
     it("should resolve a dispute", async () => {
       prisma.dispute.findUnique.mockResolvedValue({

@@ -193,6 +193,10 @@ export default function FinancePage() {
         }
       />
 
+      {error && (
+        <div className="rounded-lg border border-danger/30 bg-danger/5 px-4 py-3 text-sm text-danger">{error}</div>
+      )}
+
       {!selectedGround && !loading ? (
         <EmptyState icon={<Wallet className="h-7 w-7" />} title="No grounds yet" description="Register a ground to see finance data." />
       ) : (

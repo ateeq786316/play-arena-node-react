@@ -170,4 +170,19 @@ describe("Finance Service", () => {
       expect(result).toHaveLength(1);
     });
   });
+
+  describe("getAdminFinance", () => {
+    it("should return platform finance summary", async () => {
+      prisma.booking.aggregate.mockResolvedValue({ _sum: { totalAmount: 50000 }, _count: 100 });
+      prisma.bookingPayment.aggregate.mockResolvedValue({ _sum: { amount: 45000 }, _count: 95 });
+      prisma.ground.count.mockResolvedValue(15);
+
+      const service = new FinanceService();
+      const result = await service.getAdminFinance("any-user-id");
+      expect(result.totalBookings._count).toBe(100);
+      expect(result.totalBookings._sum.totalAmount).toBe(50000);
+      expect(result.totalPayments._count).toBe(95);
+      expect(result.totalGrounds).toBe(15);
+    });
+  });
 });

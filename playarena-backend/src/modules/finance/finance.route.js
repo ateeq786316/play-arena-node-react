@@ -2,6 +2,7 @@ import { Router } from "express";
 import FinanceController from "./finance.controller.js";
 import asyncHandler from "../../utils/asyncHandler.js";
 import authMiddleware from "../../middlewares/auth.middleware.js";
+import requireAdmin from "../../middlewares/requireAdmin.middleware.js";
 
 const financeRoutes = Router();
 const controller = new FinanceController();
@@ -22,6 +23,6 @@ financeRoutes.post("/grounds/:id/cash-session/:sessionId/close", authMiddleware,
 
 financeRoutes.get("/grounds/:id/cash-sessions", authMiddleware, asyncHandler(controller.listCashSessions.bind(controller)));
 
-financeRoutes.get("/admin/finance", authMiddleware, asyncHandler(controller.getAdminFinance.bind(controller)));
+financeRoutes.get("/admin/finance", authMiddleware, requireAdmin, asyncHandler(controller.getAdminFinance.bind(controller)));
 
 export default financeRoutes;
