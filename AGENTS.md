@@ -22,6 +22,10 @@ npm test; npm run lint
 
 JavaScript (ESM) for backend; TypeScript 5.x for frontend: Follow standard conventions
 
+## Skill-First Execution Rule
+
+Before performing any task, identify the best skill for the job. If the skill is already installed globally on the system, use it immediately. If not, find and install it globally before proceeding. This ensures 100% efficient and correct task execution. Never proceed without the right skill.
+
 ## Recent Changes
 
 - **2026-08-03 — Frontend ↔ Backend Integration Fixes:** Fixed upload route shadowing (`/:type` was catching all specific upload routes — reordered so `/avatar`, `/tournament-poster`, `/ground-image/:groundId`, `/booking-proof/:groundId` come before `/:type`). Fixed finance admin endpoint 401 (replaced hardcoded `userId === "admin-placeholder"` check with `requireAdmin` middleware on route). Added `requireAdmin` middleware to dispute `/all` and `/:id/resolve` routes. Fixed React anti-pattern in `disputes/new/page.tsx` (useState→useEffect). Added 3 new tests (296 total, all passing). Updated CHANGES.md, TESTING.md, Postman collection. See `gaps-need-to-fixed.md` for full gap analysis.
