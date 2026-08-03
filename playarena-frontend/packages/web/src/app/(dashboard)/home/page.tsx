@@ -97,7 +97,7 @@ export default function HomePage() {
         title={<>Welcome{user?.name ? `, ${user.name}` : ""}!</>}
         description="Find grounds, book courts, and compete with teams."
         actions={
-          <Button variant="accent" icon={<LocateFixed className="h-4 w-4" />} loading={locating} onClick={handleNearMe}>
+          <Button variant="primary" icon={<LocateFixed className="h-4 w-4" />} loading={locating} onClick={handleNearMe}>
             Near Me
           </Button>
         }
@@ -134,7 +134,7 @@ export default function HomePage() {
       <section className="space-y-4">
         <div className="flex items-center justify-between">
           <h2 className="font-heading text-3xl">{nearby ? "Results" : "Featured Grounds"}</h2>
-          {nearby && <Badge variant="info">{nearby.pagination.total} found</Badge>}
+          {nearby && <Badge variant="primary-light">{nearby.pagination.total} found</Badge>}
         </div>
 
         {loading ? (
@@ -164,13 +164,13 @@ export default function HomePage() {
             }
           />
         ) : (
-          <div className="grid gap-5 sm:grid-cols-2 lg:grid-cols-3">
+          <div className="grid gap-5 sm:grid-cols-2">
             {visibleGrounds.map((ground) => {
               const distance = (ground as NearbySearchResponse["grounds"][number]).distance_km ?? null;
               const sports = Array.from(new Set((ground.courts || []).map((c) => c.sportType)));
               return (
                 <Link key={ground.id} href={`/grounds/${ground.id}`} className="group block">
-                  <Card className="h-full overflow-hidden transition-colors group-hover:border-primary/60">
+                  <Card className="h-full overflow-hidden transition-colors group-hover:shadow-card-hover">
                     <div className="relative aspect-[16/9] w-full overflow-hidden bg-muted">
                       {ground.images && ground.images.length > 0 ? (
                         // eslint-disable-next-line @next/next/no-img-element

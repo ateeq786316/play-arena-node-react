@@ -98,7 +98,7 @@ export default function AnalyticsPage() {
         <input type="date" value={startDate} onChange={(e) => setStartDate(e.target.value)} className="rounded-lg border border-border bg-background px-3 py-1.5 text-sm" />
         <span className="text-muted-foreground">to</span>
         <input type="date" value={endDate} onChange={(e) => setEndDate(e.target.value)} className="rounded-lg border border-border bg-background px-3 py-1.5 text-sm" />
-        <Button onClick={handleDownload} className="ml-auto" variant="secondary">Download CSV</Button>
+        <Button onClick={handleDownload} className="ml-auto" variant="outline">Download CSV</Button>
       </div>
 
       {state === "loading" ? (

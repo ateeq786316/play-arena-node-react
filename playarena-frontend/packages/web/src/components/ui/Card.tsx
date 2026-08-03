@@ -4,7 +4,7 @@ import { cn } from "@playarena/shared/utils";
 export function Card({ className, ...props }: HTMLAttributes<HTMLDivElement>) {
   return (
     <div
-      className={cn("rounded-lg border border-border bg-card text-card-foreground shadow-card", className)}
+      className={cn("rounded-lg bg-card text-card-foreground shadow-card transition-shadow hover:shadow-card-hover", className)}
       {...props}
     />
   );

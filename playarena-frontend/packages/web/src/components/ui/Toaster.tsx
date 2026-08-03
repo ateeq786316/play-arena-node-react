@@ -1,10 +1,10 @@
 "use client";
 
 import { create } from "zustand";
-import { CheckCircle2, Info, AlertCircle, X } from "lucide-react";
+import { CheckCircle2, AlertCircle, X } from "lucide-react";
 import { cn } from "@playarena/shared/utils";
 
-type ToastTone = "success" | "error" | "info";
+type ToastTone = "success" | "error";
 
 interface Toast {
   id: number;
@@ -39,13 +39,11 @@ export function useToast() {
 const toneStyles = {
   success: "border-emerald-200 bg-white text-emerald-800",
   error: "border-red-200 bg-white text-red-800",
-  info: "border-blue-200 bg-white text-blue-800",
 };
 
 const toneIcons = {
   success: <CheckCircle2 className="h-5 w-5 text-emerald-600" />,
   error: <AlertCircle className="h-5 w-5 text-red-600" />,
-  info: <Info className="h-5 w-5 text-blue-600" />,
 };
 
 export function Toaster() {

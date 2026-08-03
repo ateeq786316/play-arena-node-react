@@ -327,7 +327,7 @@ export default function TournamentDetailPage() {
               </Button>
             )}
             {canGenerateBracket && (
-              <Button size="sm" variant="accent" icon={<Swords className="h-4 w-4" />} loading={generating} onClick={handleGenerateBracket}>
+              <Button size="sm" variant="primary" icon={<Swords className="h-4 w-4" />} loading={generating} onClick={handleGenerateBracket}>
                 Generate Bracket
               </Button>
             )}

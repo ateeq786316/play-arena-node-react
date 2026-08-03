@@ -2,7 +2,7 @@ import type { ButtonHTMLAttributes } from "react";
 import { Loader2 } from "lucide-react";
 import { cn } from "@playarena/shared/utils";
 
-type Variant = "primary" | "secondary" | "outline" | "ghost" | "danger" | "accent";
+type Variant = "primary" | "outline" | "ghost" | "danger";
 type Size = "sm" | "md" | "lg" | "icon";
 
 interface ButtonProps extends ButtonHTMLAttributes<HTMLButtonElement> {
@@ -15,11 +15,9 @@ interface ButtonProps extends ButtonHTMLAttributes<HTMLButtonElement> {
 const variants: Record<Variant, string> = {
   primary:
     "bg-primary text-primary-foreground shadow-sm hover:bg-primary-hover active:bg-primary-pressed",
-  secondary: "bg-muted text-foreground hover:bg-muted/80",
   outline: "border border-border bg-card text-foreground hover:bg-muted hover:border-foreground-secondary/30",
   ghost: "text-muted-foreground hover:bg-muted hover:text-foreground",
   danger: "bg-danger text-white shadow-sm hover:bg-red-700 active:bg-red-800",
-  accent: "bg-accent text-white shadow-sm hover:bg-amber-600 active:bg-amber-700",
 };
 
 const sizes: Record<Size, string> = {

@@ -18,17 +18,17 @@ interface AuthShellProps {
 export function AuthShell({ title, subtitle, children }: AuthShellProps) {
   return (
     <div className="flex min-h-screen bg-background">
-      <aside className="relative hidden overflow-hidden bg-gradient-to-br from-emerald-950 via-emerald-900 to-slate-900 lg:block lg:w-[44%] xl:w-[42%]">
+      <aside className="relative hidden overflow-hidden bg-gradient-to-br from-slate-900 via-slate-800 to-slate-900 lg:block lg:w-[44%] xl:w-[42%]">
         <div className="auth-panel-grid absolute inset-0" aria-hidden="true" />
-        <div className="pointer-events-none absolute -left-24 -top-24 h-96 w-96 rounded-full bg-emerald-500/20 blur-3xl" aria-hidden="true" />
-        <div className="pointer-events-none absolute -bottom-32 -right-24 h-96 w-96 rounded-full bg-emerald-400/10 blur-3xl" aria-hidden="true" />
+        <div className="pointer-events-none absolute -left-24 -top-24 h-96 w-96 rounded-full bg-slate-700/30 blur-3xl" aria-hidden="true" />
+        <div className="pointer-events-none absolute -bottom-32 -right-24 h-96 w-96 rounded-full bg-slate-600/20 blur-3xl" aria-hidden="true" />
         <div
-          className="pointer-events-none absolute right-10 top-16 h-44 w-44 rotate-12 rounded-[2rem] border border-emerald-400/30"
+          className="pointer-events-none absolute right-10 top-16 h-44 w-44 rotate-12 rounded-[2rem] border border-slate-600/30"
           aria-hidden="true"
         />
-        <div className="pointer-events-none absolute right-24 top-36 h-6 w-6 rounded-full bg-amber-400/80" aria-hidden="true" />
+        <div className="pointer-events-none absolute right-24 top-36 h-6 w-6 rounded-full bg-slate-500/40" aria-hidden="true" />
         <div
-          className="pointer-events-none absolute bottom-24 right-24 h-28 w-28 rounded-full border-2 border-dashed border-emerald-300/40"
+          className="pointer-events-none absolute bottom-24 right-24 h-28 w-28 rounded-full border-2 border-dashed border-slate-600/30"
           aria-hidden="true"
         />
 
@@ -36,7 +36,7 @@ export function AuthShell({ title, subtitle, children }: AuthShellProps) {
           <AuthLogo tone="light" />
 
           <div className="my-auto max-w-md py-10">
-            <span className="inline-flex items-center gap-1.5 rounded-full border border-emerald-400/30 bg-emerald-400/10 px-3 py-1 text-xs font-medium uppercase tracking-wider text-emerald-200">
+            <span className="inline-flex items-center gap-1.5 rounded-full border border-slate-600/30 bg-slate-700/30 px-3 py-1 text-xs font-medium uppercase tracking-wider text-slate-300">
               <TrophyIcon className="h-3.5 w-3.5" />
               Book · Play · Compete
             </span>
@@ -45,27 +45,27 @@ export function AuthShell({ title, subtitle, children }: AuthShellProps) {
               <br />
               One arena.
             </h1>
-            <p className="mt-4 text-base leading-relaxed text-emerald-100/80">
+            <p className="mt-4 text-base leading-relaxed text-slate-300/80">
               Reserve sports grounds, form teams, and enter tournaments — all in one place.
             </p>
 
             <ul className="mt-10 space-y-5">
               {benefits.map(({ icon: Icon, title: benefitTitle, desc }) => (
                 <li key={benefitTitle} className="flex items-start gap-4">
-                  <span className="flex h-10 w-10 shrink-0 items-center justify-center rounded-xl border border-emerald-400/25 bg-emerald-400/10 text-emerald-300">
+                  <span className="flex h-10 w-10 shrink-0 items-center justify-center rounded-xl border border-slate-600/25 bg-slate-700/30 text-slate-300">
                     <Icon className="h-5 w-5" />
                   </span>
                   <div>
                     <p className="font-semibold text-white">{benefitTitle}</p>
-                    <p className="text-sm text-emerald-100/70">{desc}</p>
+                    <p className="text-sm text-slate-300/70">{desc}</p>
                   </div>
                 </li>
               ))}
             </ul>
           </div>
 
-          <p className="flex items-center gap-2 text-sm text-emerald-100/70">
-            <ShieldCheckIcon className="h-4 w-4 text-emerald-300" />
+          <p className="flex items-center gap-2 text-sm text-slate-300/70">
+            <ShieldCheckIcon className="h-4 w-4 text-slate-400" />
             Secure sign-in · Your data stays protected
           </p>
         </div>

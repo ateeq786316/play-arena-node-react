@@ -156,7 +156,7 @@ export default function SubscriptionsPage() {
                 <Badge className={getStatusColor(subscription.status)}>{subscription.status}</Badge>
               </p>
             </div>
-            <Badge variant="info">{plan.analyticsRetentionDays} days analytics retention</Badge>
+            <Badge variant="primary-light">{plan.analyticsRetentionDays} days analytics retention</Badge>
           </CardHeader>
           <CardContent className="space-y-4">
             <UsageBar label="Grounds" used={usage.grounds} limit={usage.groundsLimit} onUpgrade={scrollToUpgrade} />

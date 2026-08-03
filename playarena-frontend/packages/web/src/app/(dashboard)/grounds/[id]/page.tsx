@@ -425,7 +425,7 @@ export default function GroundDetailPage() {
       )}
 
       {ground.images && ground.images.length > 0 && (
-        <div className="overflow-hidden rounded-xl border border-border">
+        <div className="overflow-hidden rounded-xl">
           <img
             src={ground.images[0].url}
             alt={ground.name}
@@ -611,7 +611,7 @@ export default function GroundDetailPage() {
               )}
 
               {/* Calendar-style grid: hours on left, slots as cells */}
-              <div className="border border-border rounded-xl overflow-hidden bg-background">
+              <div className="rounded-xl overflow-hidden bg-background">
                 <div className="grid grid-cols-[80px_1fr]">
                   {/* Hour column header */}
                   <div className="bg-muted/50 px-3 py-2 text-xs font-medium text-muted-foreground">
@@ -664,7 +664,7 @@ export default function GroundDetailPage() {
 
           {/* Price preview */}
           {selectedCourt && startTime && endTime && (slots.length > 0 || slotsError) && (
-            <div className="space-y-4 rounded-lg border border-border bg-muted/40 p-6">
+            <div className="space-y-4 rounded-lg bg-muted/40 p-6">
               <h3 className="font-heading text-2xl">Price Preview</h3>
 
               {previewLoading ? (
