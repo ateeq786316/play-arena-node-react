@@ -539,7 +539,7 @@ export default function GroundDetailPage() {
                   const dayStr = toDateInputValue(day);
                   const isToday = dayStr === today;
                   const isSelected = dayStr === bookingDate;
-                  const is Past = day < new Date(new Date().setHours(0, 0, 0, 0));
+                  const isPast = day < new Date(new Date().setHours(0, 0, 0, 0));
                   const maxDateObj = maxDate ? new Date(maxDate + "T00:00:00") : null;
                   const isFuture = maxDateObj ? day <= maxDateObj : true;
 
