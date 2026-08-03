@@ -1893,7 +1893,7 @@ Each feature is numbered and organized by module.
 **So that** it can be published and bookable
 
 **Acceptance Criteria:**
-- Changes ground status from `pending` to \`verified`
+- Changes ground status from `pending` to `verified`
 - Owner is notified of verification
 
 **API:** PATCH `api/admin/grounds/:id/verify`
@@ -2065,7 +2065,7 @@ This document covers all user-facing features across the PlayArena platform:
 | 18 | Admin | US-ADM01 to US-ADM13 | 13 | 13 | User/ground/sport/region management |
 | 19 | Health | US-H01 to US-H02 | 2 | 1 | API health check |
 
-**Total: 165 user stories across 19 modules**
+**Total: 173 user stories across 19 modules**
 
 ---
 
@@ -2073,7 +2073,7 @@ This document covers all user-facing features across the PlayArena platform:
 
 - **Frontend Routes:** Many user stories map to Next.js App Router pages in packages/web/src/app/(dashboard)/
 - **Role-based access:** Auth middleware and requireAdmin/requirePlan middleware protect routes
-- **API prefix:** All backend routes are mounted under `api/` prefix in app.js
+- **API prefix:** All backend routes are mounted under `/api/` prefix in `app.js`
 - **Known gaps documented** in docs/gaps-need-to-fixed.md
 
 *Document generated as part of frontend-backend integration documentation.*
