@@ -15,7 +15,9 @@ export default function securityMiddleware(app) {
   app.use(express.urlencoded({ extended: true, limit: "3mb" }));
   app.use(cookieParser());
 
-  const corsOrigins = env.CORS_ORIGIN === "*" ? "*" : env.CORS_ORIGIN.split(",").map((o) => o.trim());
+  const corsOrigins = env.CORS_ORIGIN === "*"
+    ? ["http://localhost:3000", "http://localhost:3001"]
+    : env.CORS_ORIGIN.split(",").map((o) => o.trim());
 
   app.use(
     cors({
@@ -30,9 +32,10 @@ export default function securityMiddleware(app) {
   app.use(
     rateLimit({
       windowMs: 15 * 60 * 1000,
-      message: "too much devices",
-      limit: 100,
-      legacyHeaders: true,
+      message: "Too many requests, please try again later",
+      limit: 500,
+      standardHeaders: true,
+      legacyHeaders: false,
     }),
   );
 }

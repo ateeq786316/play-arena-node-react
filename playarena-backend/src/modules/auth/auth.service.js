@@ -160,7 +160,8 @@ export default class AuthService {
     if (!user) throw new error.NOTFOUNDERROR("user not found");
 
     const rawToken = token.generateRawToken(user.id);
-    const link = `${env.CORS_ORIGIN === "*" ? "http://localhost:3000" : env.CORS_ORIGIN.split(",")[0].trim()}/api/user/reset-password/${rawToken}`;
+    const frontendUrl = env.FRONTEND_URL || "http://localhost:3001";
+    const link = `${frontendUrl}/reset-password?token=${rawToken}`;
 
     try {
       await sendEmail(email, "Reset your password", resetPasswordEmail(link));
@@ -191,5 +192,21 @@ export default class AuthService {
 
     const hashPassword = await bcrypt.hash(password, 10);
     return await this.authService.updatePassword(userId, hashPassword);
+  }
+
+  async setNewPasswordService(data) {
+    let { token, password } = data;
+    if (!token || !password) throw new error.NOTFOUNDERROR("token and password are required");
+
+    const decode = jwt.verify(token, env.ACCESSTOKEN);
+    if (!decode) throw new error.UNAUTHORIZED("Invalid or expired token");
+
+    const user = await this.authService.findById(decode.id);
+    if (!user) throw new error.NOTFOUNDERROR("user not found");
+
+    const hashPassword = await bcrypt.hash(password, 10);
+    await this.authService.updatePassword(user.id, hashPassword);
+
+    return { message: "Password updated successfully" };
   }
 }

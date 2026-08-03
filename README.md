@@ -108,7 +108,7 @@ http://localhost:3000/api/user
 
 | Method | Endpoint | Auth | Description |
 |--------|----------|------|-------------|
-> Full endpoint reference in `vision/vision-backend/requirement.md` and `vision/postman-collection.json`.
+> Full endpoint reference in `docs/vision/vision-backend/requirement.md` and `docs/vision/postman-collection.json`.
 
 **Modules registered at:** `/api/user`, `/api/grounds`, `/api/bookings`, `/api/teams`, `/api/matches`, `/api/tournaments`, `/api/finance`
 
@@ -126,14 +126,14 @@ npm run test:watch
 
 | File | Purpose |
 |------|---------|
-| `vision/project-scope.md` | Full platform specification |
-| `vision/PROJECT_STATUS.md` | Current audit & progress |
-| `vision/postman-collection.json` | Postman API tests |
-| `vision/vision-backend/PLAN.md` | Backend dev plan |
-| `vision/vision-backend/CHANGES.md` | Change log |
-| `vision/vision-backend/STEPS.md` | Step tracker |
-| `vision/vision-backend/TESTING.md` | Test strategy & history |
-| `vision/vision-backend/RULES.md` | Coding rules |
+| `docs/vision/project-scope.md` | Full platform specification |
+| `docs/vision/PROJECT_STATUS.md` | Current audit & progress |
+| `docs/vision/postman-collection.json` | Postman API tests |
+| `docs/vision/vision-backend/PLAN.md` | Backend dev plan |
+| `docs/vision/vision-backend/CHANGES.md` | Change log |
+| `docs/vision/vision-backend/STEPS.md` | Step tracker |
+| `docs/vision/vision-backend/TESTING.md` | Test strategy & history |
+| `docs/vision/vision-backend/RULES.md` | Coding rules |
 
 ---
 

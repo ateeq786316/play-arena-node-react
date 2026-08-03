@@ -7,12 +7,16 @@
     "test": "vitest run",
     "test:watch": "vitest",
     "start": "tsx server.js",
-    "dev": "tsx watch server.js"
+    "dev": "tsx watch server.js",
+    "prisma:seed": "tsx prisma/seed.js"
   },
   "keywords": [],
   "author": "",
   "license": "ISC",
   "type": "module",
+  "prisma": {
+    "seed": "tsx prisma/seed.js"
+  },
   "dependencies": {
     "@aws-sdk/client-s3": "^3.1097.0",
     "@aws-sdk/lib-storage": "^3.1097.0",
@@ -32,6 +36,7 @@
     "jsonwebtoken": "^9.0.3",
     "morgan": "^1.11.0",
     "multer": "^2.2.0",
+    "node-cron": "^4.6.0",
     "nodemailer": "^9.0.3",
     "passport": "^0.7.0",
     "passport-google-oauth20": "^2.0.0",
