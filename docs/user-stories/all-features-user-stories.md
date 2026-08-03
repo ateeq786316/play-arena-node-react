@@ -33,52 +33,54 @@ Each feature is numbered and organized by module.
 
 ### US-A01: Player Registration
 **As a** New User (Player)
-**I want** to register for a PlayArena account using my phone number
+**I want** to register for a PlayArena account using my email address
 **So that** I can book courts and manage my profile
 
 **Acceptance Criteria:**
-- User provides valid phone number
-- System sends OTP via SMS
-- User verifies OTP
-- Account is created with \pending\ status until additional profile setup
-- User receives confirmation email/SMS
+- User provides name, email, mobile, and password (min 8 chars, 1 uppercase, 1 number, 1 special character)
+- System sends 6-digit OTP via email
+- OTP is stored in `pendingEmail` localStorage on frontend
+- After OTP verification, redirect to home page
 
-**API:** POST \pi/auth/register\ (with validation rules)
+**API:** POST `api/user/register` (with validation rules)
 
 ### US-A02: OTP Verification
 **As a** Registered User
-**I want** to verify my phone number using an OTP code
+**I want** to verify my email using an OTP code sent to my email
 **So that** my account is fully activated
 
 **Acceptance Criteria:**
 - OTP is 6-digit numeric code
-- OTP expires after 10 minutes
-- User can request new OTP if expired
-- After successful verification, account status becomes \ctive
-**API:** POST \pi/auth/verify-otp
+- OTP sent to the email provided during registration
+- After successful verification, user is redirected to home page
+- Frontend reads email from localStorage `pendingEmail`
+**API:** POST `api/user/verify-otp`
+
 ### US-A03: Resend OTP
 **As a** Registered User
 **I want** to request a new OTP code if the previous one expires or is not received
 **So that** I can complete my verification
 
 **Acceptance Criteria:**
-- User can request resend up to 3 times within 10 minutes
-- Rate limiting prevents spam
-- New OTP is sent to the registered phone number
+- Email is read from localStorage `pendingEmail`
+- User can request resend multiple times
+- Success message shown after resend
 
-**API:** POST \pi/auth/resend-otp
+**API:** POST `api/user/resend-otp`
+
 ### US-A04: User Login
 **As a** Registered User
-**I want** to log in to my account using my phone number and password
+**I want** to log in to my account using my email and password
 **So that** I can access my account and use PlayArena features
 
 **Acceptance Criteria:**
-- User provides phone number and password
+- User provides email and password
 - System validates credentials
 - Invalid credentials show clear error message
-- Login is rate-limited to prevent brute force
+- Login includes email/password validation rules
+- On success, redirect to \/home or ?redirect=\ param
 
-**API:** POST \pi/auth/login\ (with validation rules)
+**API:** POST `api/user/login` (with validation rules)
 
 ### US-A05: Refresh Access Token
 **As a** Authenticated User
@@ -86,44 +88,48 @@ Each feature is numbered and organized by module.
 **So that** I don't have to log in again frequently
 
 **Acceptance Criteria:**
-- Access token expires after 1 hour
-- Refresh token valid for 7 days
-- User automatically gets new access token on token expiry
-- User is redirected to login if refresh token also expires
+- API client auto-refreshes on 401 with token refresh
+- If refresh fails, user is redirected to login
+- Uses HTTP-only cookies for token storage
 
-**API:** POST \pi/auth/refresh
+**API:** POST `api/user/refresh`
+
 ### US-A06: Logout
 **As a** Logged-in User
 **I want** to log out of my account
 **So that** my session is securely terminated
 
 **Acceptance Criteria:**
-- Refresh token is invalidated on logout
-- User cannot perform authenticated actions after logout
+- Refresh token is invalidated on the backend
 - User is redirected to login page
+- Auth store state is cleared
 
-**API:** POST \pi/auth/logout
+**API:** POST `api/user/logout`
+
 ### US-A07: Get User Profile
 **As a** Authenticated User
 **I want** to view my profile information
 **So that** I can see and manage my account details
 
 **Acceptance Criteria:**
-- Shows name, phone number, email (if provided), role, and subscription status
+- Shows name, email, mobile, avatar, role, verification status
 - Only authenticated users can access their own profile
+- Used for session initialization
 
-**API:** GET \pi/auth/profile
+**API:** GET `api/user/profile`
+
 ### US-A08: Update User Profile
 **As a** Authenticated User
-**I want** to update my profile information (name, avatar, preferences)
+**I want** to update my profile information (name, avatar)
 **So that** my profile stays current
 
 **Acceptance Criteria:**
-- User can update name, email, and avatar
+- User can update name
+- Email and mobile are read-only
 - Changes are validated before save
-- Avatar upload handled via upload module
 
-**API:** PATCH \pi/auth/profile
+**API:** PATCH `api/user/profile`
+
 ### US-A09: Password Management
 **As a** Authenticated User
 **I want** to forgot/reset/update my password
@@ -132,10 +138,11 @@ Each feature is numbered and organized by module.
 **Acceptance Criteria:**
 - Forgot password sends reset link to email
 - Reset link expires after 24 hours
-- Can update password from profile page
-- Password must meet complexity requirements
+- Password must meet complexity requirements (min 8 chars, 1 uppercase, 1 number, 1 special character)
+- User can update password from profile page
 
-**APIs:** POST \pi/auth/forgot-password\, GET \pi/auth/reset-password/:token\, POST \pi/auth/reset-password/confirm\, POST \pi/auth/update-password
+**APIs:** POST `api/user/forgot-password`, GET `api/user/reset-password/:token`, POST `api/user/reset-password/confirm`, POST `api/user/update-password`
+
 ### US-A10: Google OAuth Login
 **As a** User
 **I want** to log in using my Google account
@@ -145,8 +152,9 @@ Each feature is numbered and organized by module.
 - User is redirected to Google OAuth consent screen
 - After authentication, user is redirected back to PlayArena
 - New Google users get auto-registered accounts
+- Session is established automatically
 
-**APIs:** GET \pi/auth/google\, GET \pi/auth/google/callback
+**APIs:** GET `api/user/google`, GET `api/user/google/callback`
 ---
 
 ## 2. Ground Module (US-G01 to US-G19)
@@ -161,7 +169,8 @@ Each feature is numbered and organized by module.
 - Pagination is supported for large result sets
 - Search and filter options available by sport, location, amenities
 
-**API:** GET \pi/grounds/
+**API:** GET `api/grounds/`
+
 ### US-G02: List Featured Grounds
 **As a** Visitor
 **I want** to see featured/popular grounds on the home page
@@ -172,7 +181,8 @@ Each feature is numbered and organized by module.
 - Maximum 12 featured grounds displayed
 - Sorted by popularity and rating
 
-**API:** GET \pi/grounds/featured
+**API:** GET `api/grounds/featured`
+
 ### US-G03: View Ground Details
 **As a** Player
 **I want** to view detailed information about a specific ground
@@ -183,7 +193,8 @@ Each feature is numbered and organized by module.
 - Displays ground rating and reviews
 - Shows available facilities (parking, lighting, etc.)
 
-**API:** GET \pi/grounds/:id
+**API:** GET `api/grounds/:id`
+
 ### US-G04: List My Grounds
 **As a** Ground Owner
 **I want** to see only the grounds I own/manage
@@ -193,7 +204,8 @@ Each feature is numbered and organized by module.
 - Only grounds owned by the authenticated user are shown
 - Requires authentication
 
-**API:** GET \pi/grounds/my
+**API:** GET `api/grounds/my`
+
 ### US-G05: Create a Ground
 **As a** Ground Owner
 **I want** to add a new sports ground to the platform
@@ -201,10 +213,11 @@ Each feature is numbered and organized by module.
 
 **Acceptance Criteria:**
 - Must provide name, address, city, region, latitude, longitude, sport type, and description
-- Ground is created in \pending\ verification status
+- Ground is created in `pending` verification status
 - Owner receives confirmation
 
-**API:** POST \pi/grounds/
+**API:** POST `api/grounds/`
+
 ### US-G06: Update Ground Details
 **As a** Ground Owner
 **I want** to edit my ground's information
@@ -215,7 +228,8 @@ Each feature is numbered and organized by module.
 - Requires authentication and ownership verification
 - All fields can be updated except id and createdAt
 
-**API:** PATCH \pi/grounds/:id
+**API:** PATCH `api/grounds/:id`
+
 ### US-G07: Delete a Ground
 **As a** Ground Owner
 **I want** to delete a ground I no longer manage
@@ -226,7 +240,8 @@ Each feature is numbered and organized by module.
 - Soft delete (ground is marked as deleted)
 - Associated bookings and schedules are preserved
 
-**API:** DELETE \pi/grounds/:id
+**API:** DELETE `api/grounds/:id`
+
 ### US-G08: List Courts for a Ground
 **As a** Player or Ground Owner
 **I want** to see all courts available at a specific ground
@@ -236,7 +251,8 @@ Each feature is numbered and organized by module.
 - Shows court name, type (e.g., court 1, court 2), and surface type
 - Courts are associated with their parent ground
 
-**API:** GET \pi/grounds/:groundId/courts
+**API:** GET `api/grounds/:groundId/courts`
+
 ### US-G09: Create a Court
 **As a** Ground Owner
 **I want** to add courts to my ground
@@ -246,7 +262,8 @@ Each feature is numbered and organized by module.
 - Requires ground ownership
 - Must specify court name, sport type, and any special attributes
 
-**API:** POST \pi/grounds/:groundId/courts
+**API:** POST `api/grounds/:groundId/courts`
+
 ### US-G10: Update a Court
 **As a** Ground Owner
 **I want** to edit court details
@@ -256,7 +273,8 @@ Each feature is numbered and organized by module.
 - Only the ground owner can update courts
 - Requires authentication and ownership
 
-**API:** PATCH \pi/grounds/courts/:id
+**API:** PATCH `api/grounds/courts/:id`
+
 ### US-G11: Delete a Court
 **As a** Ground Owner
 **I want** to remove a court that no longer exists
@@ -266,7 +284,8 @@ Each feature is numbered and organized by module.
 - Only the ground owner can delete courts
 - Future bookings for this court remain but cannot be modified
 
-**API:** DELETE \pi/grounds/courts/:id
+**API:** DELETE `api/grounds/courts/:id`
+
 ### US-G12: List Schedules for a Ground
 **As a** Ground Owner or Player
 **I want** to view the operating schedule for a ground
@@ -277,7 +296,8 @@ Each feature is numbered and organized by module.
 - Displays opening and closing times
 - Shows if the ground is closed on specific days
 
-**API:** GET \pi/grounds/:groundId/schedules
+**API:** GET `api/grounds/:groundId/schedules`
+
 ### US-G13: Upsert Schedule for a Day
 **As a** Ground Owner
 **I want** to set or update the operating schedule for specific days
@@ -288,7 +308,8 @@ Each feature is numbered and organized by module.
 - Schedule includes open time, close time, and isClosed flag
 - Requires ground ownership
 
-**API:** PUT \pi/grounds/:groundId/schedules/:dayOfWeek
+**API:** PUT `api/grounds/:groundId/schedules/:dayOfWeek`
+
 ### US-G14: Delete Schedule Entry
 **As a** Ground Owner
 **I want** to remove a schedule entry for a specific day
@@ -298,7 +319,8 @@ Each feature is numbered and organized by module.
 - Only the ground owner can delete schedules
 - Ground is marked as closed for that day
 
-**API:** DELETE \pi/grounds/:groundId/schedules/:dayOfWeek
+**API:** DELETE `api/grounds/:groundId/schedules/:dayOfWeek`
+
 ### US-G15: Update Ground Settings
 **As a** Ground Owner
 **I want** to update operational settings for my ground
@@ -308,7 +330,8 @@ Each feature is numbered and organized by module.
 - Settings include auto-approval thresholds, advance booking limits, etc.
 - Requires ground ownership
 
-**API:** PATCH \pi/grounds/:groundId/settings
+**API:** PATCH `api/grounds/:groundId/settings`
+
 ### US-G16: Add Image to Ground
 **As a** Ground Owner
 **I want** to upload and associate images with my ground
@@ -319,7 +342,8 @@ Each feature is numbered and organized by module.
 - Requires ground ownership
 - Images are processed and stored
 
-**API:** POST \pi/grounds/:groundId/images
+**API:** POST `api/grounds/:groundId/images`
+
 ### US-G17: Remove Image from Ground
 **As a** Ground Owner
 **I want** to remove an image from my ground listing
@@ -329,7 +353,8 @@ Each feature is numbered and organized by module.
 - Only the ground owner can remove images
 - Image is deleted from storage
 
-**API:** DELETE \pi/grounds/:groundId/images/:imageId
+**API:** DELETE `api/grounds/:groundId/images/:imageId`
+
 ### US-G18: Invite Staff Member
 **As a** Ground Owner
 **I want** to invite staff members to help manage my ground
@@ -340,7 +365,8 @@ Each feature is numbered and organized by module.
 - Invitee receives an invitation to create/join
 - Staff member can view ground details and manage bookings
 
-**API:** POST \pi/grounds/:groundId/invites
+**API:** POST `api/grounds/:groundId/invites`
+
 ### US-G19: List Regions
 **As a** User
 **I want** to see available regions for filtering grounds
@@ -349,7 +375,7 @@ Each feature is numbered and organized by module.
 **Acceptance Criteria:**
 - Returns a list of all active regions
 
-**API:** GET \pi/grounds/regions
+**API:** GET `api/grounds/regions`
 ---
 
 ## 3. Booking Module (US-B01 to US-B10)
@@ -364,7 +390,7 @@ Each feature is numbered and organized by module.
 - System returns available slots (not already booked)
 - Shows slot duration and any restrictions
 
-**API:** GET \pi/bookings/courts/:courtId/slots\
+**API:** GET `api/bookings/courts/:courtId/slots`
 
 ### US-B02: Create a Booking
 **As a** Player
@@ -374,10 +400,10 @@ Each feature is numbered and organized by module.
 **Acceptance Criteria:**
 - Must provide courtId, groundId, date, startTime, endTime, playerInfo
 - System validates court availability
-- Booking is created in \pending\ status
+- Booking is created in `pending` status
 - Requires authentication
 
-**API:** POST \pi/bookings/\
+**API:** POST `api/bookings/\`
 
 ### US-B03: View My Bookings
 **As a** Player
@@ -389,7 +415,7 @@ Each feature is numbered and organized by module.
 - Each booking shows ground name, court, date, time, and status
 - Can click through to see booking details
 
-**API:** GET \pi/bookings/my\
+**API:** GET `api/bookings/my`
 
 ### US-B04: View Booking Details
 **As a** Player or Ground Owner
@@ -400,7 +426,7 @@ Each feature is numbered and organized by module.
 - Shows full booking details: ground, court, players, time, status, payment info
 - Only the booking owner or ground owner can view
 
-**API:** GET \pi/bookings/:id\
+**API:** GET `api/bookings/:id`
 
 ### US-B05: Cancel a Booking
 **As a** Player
@@ -413,7 +439,7 @@ Each feature is numbered and organized by module.
 - Refund processed according to cancellation policy
 - Ground owner notified of cancellation
 
-**API:** PATCH \pi/bookings/:id/cancel\
+**API:** PATCH `api/bookings/:id/cancel`
 
 ### US-B06: Record Payment for Booking
 **As a** Ground Owner
@@ -425,7 +451,7 @@ Each feature is numbered and organized by module.
 - Payment method and amount are recorded
 - Booking status updated accordingly
 
-**API:** POST \pi/bookings/:id/payment\
+**API:** POST `api/bookings/:id/payment`
 
 ### US-B07: View Booking Finance Details
 **As a** Ground Owner
@@ -436,7 +462,7 @@ Each feature is numbered and organized by module.
 - Shows payment method, amount, commission, and owner payout
 - Only ground owner can view
 
-**API:** GET \pi/bookings/:id/finance\
+**API:** GET `api/bookings/:id/finance`
 
 ### US-B08: Update Booking Status
 **As a** Ground Owner
@@ -447,7 +473,7 @@ Each feature is numbered and organized by module.
 - Can update status to confirmed, rejected, completed, or cancelled
 - Booking owner is notified of status change
 
-**API:** PATCH \pi/bookings/:id/status\
+**API:** PATCH `api/bookings/:id/status`
 
 ### US-B09: Player Views Booking from Player Perspective
 **As a** Player
@@ -458,7 +484,7 @@ Each feature is numbered and organized by module.
 - Shows court, ground, date, time, booking code, and status
 - Shows payment method used
 
-**API:** GET \pi/bookings/:id\ (authenticated as booking owner)
+**API:** GET `api/bookings/:id` (authenticated as booking owner)
 
 ### US-B10: Ground Owner Views Booking from Owner Perspective
 **As a** Ground Owner
@@ -469,7 +495,7 @@ Each feature is numbered and organized by module.
 - Shows customer info, booking details, payment breakdown, and commission
 - Can update status and record payments
 
-**API:** GET \pi/bookings/:id\ (authenticated as ground owner)
+**API:** GET `api/bookings/:id` (authenticated as ground owner)
 
 ---
 
@@ -484,7 +510,7 @@ Each feature is numbered and organized by module.
 - Returns all active sport categories
 - Each category shows id, name, and icon
 
-**API:** GET \pi/teams/sports\
+**API:** GET `api/teams/sports`
 
 ### US-T02: List All Teams
 **As a** User
@@ -496,7 +522,7 @@ Each feature is numbered and organized by module.
 - Searchable by sport and team name
 - Pagination supported
 
-**API:** GET \pi/teams/\
+**API:** GET `api/teams/\`
 
 ### US-T03: List My Teams
 **As a** Player
@@ -507,7 +533,7 @@ Each feature is numbered and organized by module.
 - Shows teams where user is owner or member
 - Indicates user's role (captain, member)
 
-**API:** GET \pi/teams/my\
+**API:** GET `api/teams/my`
 
 ### US-T04: View Team Details
 **As a** Player or Team Captain
@@ -519,7 +545,7 @@ Each feature is numbered and organized by module.
 - Members listed with roles (captain, player)
 - Non-members can see public info only
 
-**API:** GET \pi/teams/:id\
+**API:** GET `api/teams/:id`
 
 ### US-T05: Create a Team
 **As a** Player
@@ -531,7 +557,7 @@ Each feature is numbered and organized by module.
 - Creator automatically becomes team captain
 - Requires authentication
 
-**API:** POST \pi/teams/\
+**API:** POST `api/teams/\`
 
 ### US-T06: Update Team Information
 **As a** Team Captain
@@ -541,7 +567,7 @@ Each feature is numbered and organized by module.
 **Acceptance Criteria:**
 - Only team captain can update team details
 
-**API:** PATCH \pi/teams/:id\
+**API:** PATCH `api/teams/:id`
 
 ### US-T07: Delete a Team
 **As a** Team Captain
@@ -552,7 +578,7 @@ Each feature is numbered and organized by module.
 - Only team captain can delete the team
 - Team must have no active bookings or matches
 
-**API:** DELETE \pi/teams/:id\
+**API:** DELETE `api/teams/:id`
 
 ### US-T08: View Team Members
 **As a** Player or Team Captain
@@ -563,7 +589,7 @@ Each feature is numbered and organized by module.
 - Shows member name, role, and join date
 - Captain can update member roles and remove members
 
-**API:** GET \pi/teams/:id/members\
+**API:** GET `api/teams/:id/members`
 
 ### US-T09: Update Member Role
 **As a** Team Captain
@@ -574,7 +600,7 @@ Each feature is numbered and organized by module.
 - Only captain can change roles
 - Role can be changed to captain or player
 
-**API:** PATCH \pi/teams/:id/members/:uid\
+**API:** PATCH `api/teams/:id/members/:uid`
 
 ### US-T10: Remove Member from Team
 **As a** Team Captain
@@ -585,7 +611,7 @@ Each feature is numbered and organized by module.
 - Only captain can remove members
 - Member receives notification
 
-**API:** DELETE \pi/teams/:id/members/:uid\
+**API:** DELETE `api/teams/:id/members/:uid`
 
 ### US-T11: Leave Team
 **As a** Player
@@ -596,7 +622,7 @@ Each feature is numbered and organized by module.
 - Can only leave as a regular member (captain must transfer captaincy first)
 - Team must have at least 1 member remaining
 
-**API:** DELETE \pi/teams/:id/members/me\
+**API:** DELETE `api/teams/:id/members/me`
 
 ### US-T12: Transfer Captaincy
 **As a** Team Captain
@@ -607,7 +633,7 @@ Each feature is numbered and organized by module.
 - Only current captain can transfer captaincy
 - New captain must be a current team member
 
-**API:** PATCH \pi/teams/:id/transfer-captaincy/:uid\
+**API:** PATCH `api/teams/:id/transfer-captaincy/:uid`
 
 ### US-T13: Invite Player to Team
 **As a** Team Captain
@@ -618,7 +644,7 @@ Each feature is numbered and organized by module.
 - Invited player receives notification
 - Player can accept or decline invitation
 
-**API:** POST \pi/teams/:id/invite\
+**API:** POST `api/teams/:id/invite`
 
 ### US-T14: Request to Join a Team
 **As a** Player
@@ -629,7 +655,7 @@ Each feature is numbered and organized by module.
 - Team captain receives join request
 - Captain can accept or reject
 
-**API:** POST \pi/teams/:id/join-request\
+**API:** POST `api/teams/:id/join-request`
 
 ### US-T15: List Join Requests
 **As a** Team Captain
@@ -640,7 +666,7 @@ Each feature is numbered and organized by module.
 - Only captain can see join requests
 - Shows requesting player's info
 
-**API:** GET \pi/teams/:id/join-requests\
+**API:** GET `api/teams/:id/join-requests`
 
 ### US-T16: Accept Join Request
 **As a** Team Captain
@@ -651,7 +677,7 @@ Each feature is numbered and organized by module.
 - Player is added to team members
 - Player receives notification
 
-**API:** POST \pi/teams/:id/join-requests/:uid/accept\
+**API:** POST `api/teams/:id/join-requests/:uid/accept`
 
 ### US-T17: Reject Join Request
 **As a** Team Captain
@@ -662,7 +688,7 @@ Each feature is numbered and organized by module.
 - Player receives notification of rejection
 - No changes to team membership
 
-**API:** POST \pi/teams/:id/join-requests/:uid/reject\
+**API:** POST `api/teams/:id/join-requests/:uid/reject`
 
 ### US-T18: View Team Stats
 **As a** Player
@@ -672,7 +698,7 @@ Each feature is numbered and organized by module.
 **Acceptance Criteria:**
 - Shows win/loss record, rating, and recent matches
 
-**API:** GET \pi/teams/:id/stats\
+**API:** GET `api/teams/:id/stats`
 
 ### US-T19: Accept Team Invitation
 **As a** Player
@@ -683,7 +709,7 @@ Each feature is numbered and organized by module.
 - Player must be authenticated
 - Invitation must be valid and not expired
 
-**API:** POST \pi/teams/join/:id\
+**API:** POST `api/teams/join/:id`
 
 ### US-T20: Decline Team Invitation
 **As a** Player
@@ -693,7 +719,7 @@ Each feature is numbered and organized by module.
 **Acceptance Criteria:**
 - Invitation is marked as declined
 
-**API:** DELETE \pi/teams/join/:id\
+**API:** DELETE `api/teams/join/:id`
 
 ---
 
@@ -708,7 +734,7 @@ Each feature is numbered and organized by module.
 - Shows teamId parameter (the team I sent challenges from)
 - Lists challenges with status (pending, accepted, rejected, cancelled)
 
-**API:** GET \pi/matches/requests/sent/:teamId\
+**API:** GET `api/matches/requests/sent/:teamId`
 
 ### US-M02: View Received Challenges
 **As a** Team Captain
@@ -719,7 +745,7 @@ Each feature is numbered and organized by module.
 - Shows challenges sent to my team
 - Lists with status and requesting team info
 
-**API:** GET \pi/matches/requests/received/:teamId\
+**API:** GET `api/matches/requests/received/:teamId`
 
 ### US-M03: Send Match Challenge
 **As a** Team Captain
@@ -731,7 +757,7 @@ Each feature is numbered and organized by module.
 - Requires authentication
 - Challenge is sent with pending status
 
-**API:** POST \pi/matches/requests/:teamId\
+**API:** POST `api/matches/requests/:teamId`
 
 ### US-M04: Accept Challenge
 **As a** Team Captain
@@ -742,7 +768,7 @@ Each feature is numbered and organized by module.
 - Only relevant team captain can accept
 - Match status changes to accepted
 
-**API:** PATCH \pi/matches/requests/:id/accept\
+**API:** PATCH `api/matches/requests/:id/accept`
 
 ### US-M05: Reject Challenge
 **As a** Team Captain
@@ -752,7 +778,7 @@ Each feature is numbered and organized by module.
 **Acceptance Criteria:**
 - Match status changes to rejected
 
-**API:** PATCH \pi/matches/requests/:id/reject\
+**API:** PATCH `api/matches/requests/:id/reject`
 
 ### US-M06: Cancel Challenge
 **As a** Team Captain
@@ -763,7 +789,7 @@ Each feature is numbered and organized by module.
 - Only the sender can cancel
 - Match status changes to cancelled
 
-**API:** PATCH \pi/matches/requests/:id/cancel\
+**API:** PATCH `api/matches/requests/:id/cancel`
 
 ### US-M07: List Matches for Team
 **As a** Player
@@ -774,7 +800,7 @@ Each feature is numbered and organized by module.
 - Shows upcoming and past matches
 - Includes opponent, date/time, and status
 
-**API:** GET \pi/matches/:teamId\
+**API:** GET `api/matches/:teamId`
 
 ### US-M08: View Match Details
 **As a** Player or Team Captain
@@ -784,7 +810,7 @@ Each feature is numbered and organized by module.
 **Acceptance Criteria:**
 - Shows teams, ground, court, date, time, status, and score
 
-**API:** GET \pi/matches/detail/:id\
+**API:** GET `api/matches/detail/:id`
 
 ### US-M09: Submit Match Score
 **As a** Team Captain or Player
@@ -795,7 +821,7 @@ Each feature is numbered and organized by module.
 - Only teams involved in the match can submit scores
 - Match status changes to completed after score submission
 
-**API:** PATCH \pi/matches/:id/score\
+**API:** PATCH `api/matches/:id/score`
 
 ### US-M10: Start/End Match
 **As a** Team Captain
@@ -806,7 +832,7 @@ Each feature is numbered and organized by module.
 - Start is only possible for scheduled matches
 - Cancel can be done by either team captain
 
-**APIs:** PATCH \pi/matches/:id/start\, PATCH \pi/matches/:id/cancel\
+**APIs:** PATCH `api/matches/:id/start`, PATCH `api/matches/:id/cancel`
 
 ---
 
@@ -819,10 +845,10 @@ Each feature is numbered and organized by module.
 
 **Acceptance Criteria:**
 - Must provide name, description, sport, start/end dates, max teams, registration deadline
-- Tournament is created in \draft\ or \upcoming\ status
+- Tournament is created in `draft` or `upcoming` status
 - Requires authentication
 
-**API:** POST \pi/tournaments/\
+**API:** POST `api/tournaments/\`
 
 ### US-TO02: List All Tournaments
 **As a** User
@@ -833,7 +859,7 @@ Each feature is numbered and organized by module.
 - Shows upcoming, ongoing, and completed tournaments
 - Searchable by sport and date range
 
-**API:** GET \pi/tournaments/\
+**API:** GET `api/tournaments/\`
 
 ### US-TO03: List My Tournaments
 **As a** User
@@ -844,7 +870,7 @@ Each feature is numbered and organized by module.
 - Shows both owned and registered tournaments
 - Requires authentication
 
-**API:** GET \pi/tournaments/my\
+**API:** GET `api/tournaments/my`
 
 ### US-TO04: View Tournament Details
 **As a** User
@@ -854,7 +880,7 @@ Each feature is numbered and organized by module.
 **Acceptance Criteria:**
 - Shows tournament info, registered teams, schedule, and bracket
 
-**API:** GET \pi/tournaments/:id\
+**API:** GET `api/tournaments/:id`
 
 ### US-TO05: Update Tournament
 **As a** Tournament Organizer
@@ -865,7 +891,7 @@ Each feature is numbered and organized by module.
 - Only organizer can update
 - Cannot change details once tournament has started
 
-**API:** PATCH \pi/tournaments/:id\
+**API:** PATCH `api/tournaments/:id`
 
 ### US-TO06: Delete Tournament
 **As a** Tournament Organizer
@@ -876,7 +902,7 @@ Each feature is numbered and organized by module.
 - Only organizer can delete
 - Tournament must not have started
 
-**API:** DELETE \pi/tournaments/:id\
+**API:** DELETE `api/tournaments/:id`
 
 ### US-TO07: Register Team for Tournament
 **As a** Team Captain
@@ -888,7 +914,7 @@ Each feature is numbered and organized by module.
 - Team must meet eligibility criteria
 - Registration deadline must not have passed
 
-**API:** POST \pi/tournaments/:id/register\
+**API:** POST `api/tournaments/:id/register`
 
 ### US-TO08: Withdraw from Tournament
 **As a** Tournament Organizer or Team Captain
@@ -899,7 +925,7 @@ Each feature is numbered and organized by module.
 - Can only withdraw before tournament starts or before match is played
 - Team is removed from bracket
 
-**API:** POST \pi/tournaments/:id/withdraw\
+**API:** POST `api/tournaments/:id/withdraw`
 
 ### US-TO09: Tournament Bracket and Standings
 **As a** User
@@ -910,7 +936,7 @@ Each feature is numbered and organized by module.
 - Bracket shows matchups and results
 - Standings show team rankings
 
-**APIs:** GET \pi/tournaments/:id/bracket\, GET \pi/tournaments/:id/standings\
+**APIs:** GET `api/tournaments/:id/bracket`, GET `api/tournaments/:id/standings`
 
 ### US-TO10: Enter Match Result in Tournament
 **As a** Tournament Organizer or Authorized User
@@ -921,7 +947,7 @@ Each feature is numbered and organized by module.
 - Result entry updates bracket progression
 - Requires tournament authorization
 
-**API:** POST \pi/tournaments/:id/matches/:matchId/result\
+**API:** POST `api/tournaments/:id/matches/:matchId/result`
 
 ### US-TO11: Generate Tournament Bracket
 **As a** Tournament Organizer
@@ -932,7 +958,7 @@ Each feature is numbered and organized by module.
 - Bracket generation respects seeding and constraints
 - Only available before tournament starts
 
-**API:** POST \pi/tournaments/:id/generate-bracket\
+**API:** POST `api/tournaments/:id/generate-bracket`
 
 ---
 
@@ -947,7 +973,7 @@ Each feature is numbered and organized by module.
 - Shows count per conversation and total
 - Updates in real-time
 
-**API:** GET \pi/chat/unread\
+**API:** GET `api/chat/unread`
 
 ### US-CH02: View Messages in a Conversation
 **As a** User
@@ -959,7 +985,7 @@ Each feature is numbered and organized by module.
 - Shows sender info and timestamps
 - Only participants can view conversation
 
-**API:** GET \pi/chat/:id/messages\
+**API:** GET `api/chat/:id/messages`
 
 ### US-CH03: Send a Message
 **As a** User
@@ -970,7 +996,7 @@ Each feature is numbered and organized by module.
 - Real-time delivery to recipient
 - Requires authentication
 
-**API:** POST \pi/chat/:id/messages\
+**API:** POST `api/chat/:id/messages`
 
 ### US-CH04: Mark Messages as Read
 **As a** User
@@ -981,7 +1007,7 @@ Each feature is numbered and organized by module.
 - All messages from the other participant are marked as read
 - Updates unread count
 
-**API:** POST \pi/chat/:id/read\
+**API:** POST `api/chat/:id/read`
 
 ### US-CH05: Real-time Chat via Socket
 **As a** User
@@ -1007,7 +1033,7 @@ Each feature is numbered and organized by module.
 - Unread notifications are highlighted
 - Pagination supported
 
-**API:** GET \pi/notifications/\
+**API:** GET `api/notifications/\`
 
 ### US-N02: View Unread Count
 **As a** User
@@ -1018,7 +1044,7 @@ Each feature is numbered and organized by module.
 - Shows count of unread notifications
 - Updates in real-time
 
-**API:** GET \pi/notifications/unread-count\
+**API:** GET `api/notifications/unread-count`
 
 ### US-N03: Mark All Notifications as Read
 **As a** User
@@ -1029,7 +1055,7 @@ Each feature is numbered and organized by module.
 - All unread notifications are marked as read
 - Unread count updates
 
-**API:** PATCH \pi/notifications/read-all\
+**API:** PATCH `api/notifications/read-all`
 
 ### US-N04: Mark Single Notification as Read
 **As a** User
@@ -1039,7 +1065,7 @@ Each feature is numbered and organized by module.
 **Acceptance Criteria:**
 - Only the notification owner can mark as read
 
-**API:** PATCH \pi/notifications/:id/read\
+**API:** PATCH `api/notifications/:id/read`
 
 ### US-N05: Delete Notification
 **As a** User
@@ -1050,7 +1076,7 @@ Each feature is numbered and organized by module.
 - Only the notification owner can delete
 - Notification is soft-deleted
 
-**API:** DELETE \pi/notifications/:id\
+**API:** DELETE `api/notifications/:id`
 
 ### US-N06: Real-time Notifications
 **As a** User
@@ -1073,7 +1099,7 @@ Each feature is numbered and organized by module.
 **Acceptance Criteria:**
 - Shows all active payment methods (cash, card, etc.)
 
-**API:** GET \pi/finance/payment-methods\
+**API:** GET `api/finance/payment-methods`
 
 ### US-F02: Get Ground Payment Methods
 **As a** Ground Owner
@@ -1084,7 +1110,7 @@ Each feature is numbered and organized by module.
 - Shows payment methods and whether each is enabled
 - Requires authentication
 
-**API:** GET \pi/finance/payment-methods/ground/:id\
+**API:** GET `api/finance/payment-methods/ground/:id`
 
 ### US-F03: Toggle Ground Payment Method
 **As a** Ground Owner
@@ -1095,7 +1121,7 @@ Each feature is numbered and organized by module.
 - Can toggle methods on/off
 - Requires ground ownership
 
-**API:** PATCH \pi/finance/grounds/:id/payment-methods/:methodId\
+**API:** PATCH `api/finance/grounds/:id/payment-methods/:methodId`
 
 ### US-F04: View Ground Finance Overview
 **As a** Ground Owner
@@ -1106,7 +1132,7 @@ Each feature is numbered and organized by module.
 - Shows total revenue, commission, and net payout
 - Filters by date range
 
-**API:** GET \pi/finance/grounds/:id/finance\
+**API:** GET `api/finance/grounds/:id/finance`
 
 ### US-F05: Generate Ground Finance Report
 **As a** Ground Owner
@@ -1117,7 +1143,7 @@ Each feature is numbered and organized by module.
 - Shows all bookings, payments, and commissions for the period
 - Exportable as CSV
 
-**API:** GET \pi/finance/grounds/:id/reports\
+**API:** GET `api/finance/grounds/:id/reports`
 
 ### US-F06: Open Cash Session
 **As a** Ground Owner
@@ -1129,7 +1155,7 @@ Each feature is numbered and organized by module.
 - Session remains open until explicitly closed
 - Requires ground ownership
 
-**API:** POST \pi/finance/grounds/:id/cash-session/open\
+**API:** POST `api/finance/grounds/:id/cash-session/open`
 
 ### US-F07: Close Cash Session
 **As a** Ground Owner
@@ -1140,7 +1166,7 @@ Each feature is numbered and organized by module.
 - Shows total cash collected during session
 - Ending amount may differ from expected (recorded as variance)
 
-**API:** POST \pi/finance/grounds/:id/cash-session/:sessionId/close\
+**API:** POST `api/finance/grounds/:id/cash-session/:sessionId/close`
 
 ### US-F08: List Cash Sessions
 **As a** Ground Owner
@@ -1150,7 +1176,7 @@ Each feature is numbered and organized by module.
 **Acceptance Criteria:**
 - Shows session open/close times, starting/ending amounts, variance
 
-**API:** GET \pi/finance/grounds/:id/cash-sessions\
+**API:** GET `api/finance/grounds/:id/cash-sessions`
 
 ### US-F09: Admin Finance Overview
 **As a** Platform Admin
@@ -1161,7 +1187,7 @@ Each feature is numbered and organized by module.
 - Shows total platform revenue, commissions, and payouts
 - Requires admin role
 
-**API:** GET \pi/finance/admin/finance\
+**API:** GET `api/finance/admin/finance`
 
 ### US-F10: Ground Owner Views Booking Finance
 **As a** Ground Owner
@@ -1171,7 +1197,7 @@ Each feature is numbered and organized by module.
 **Acceptance Criteria:**
 - Shows payment method, amount, and owner payout
 
-**API:** GET \pi/bookings/:id/finance\ (existing endpoint, used in different context)
+**API:** GET `api/bookings/:id/finance` (existing endpoint, used in different context)
 
 ### US-F11: Record Payment for Booking
 **As a** Ground Owner
@@ -1182,7 +1208,7 @@ Each feature is numbered and organized by module.
 - Can record payment method and amount
 - Booking status updates accordingly
 
-**API:** POST \pi/bookings/:id/payment\ (existing endpoint)
+**API:** POST `api/bookings/:id/payment` (existing endpoint)
 
 ### US-F12: Financial Reporting for Admin Dashboard
 **As a** Platform Admin
@@ -1193,7 +1219,7 @@ Each feature is numbered and organized by module.
 - Reports include revenue, bookings, churn, and LTV metrics
 - Exportable in CSV format
 
-**API:** GET \pi/analytics/platform/summary\ (platform analytics)
+**API:** GET `api/analytics/platform/summary` (platform analytics)
 
 ---
 
@@ -1208,7 +1234,7 @@ Each feature is numbered and organized by module.
 - Shows current preferences for email, SMS, push notifications
 - Toggle on/off for different notification types
 
-**API:** GET \pi/crm/preferences\
+**API:** GET `api/crm/preferences`
 
 ### US-CRM02: Update Notification Preferences
 **As a** User
@@ -1219,7 +1245,7 @@ Each feature is numbered and organized by module.
 - Changes are saved immediately
 - Requires authentication
 
-**API:** PATCH \pi/crm/preferences\
+**API:** PATCH `api/crm/preferences`
 
 ### US-CRM03: View Broadcasts for Ground
 **As a** Player
@@ -1230,7 +1256,7 @@ Each feature is numbered and organized by module.
 - Shows active broadcasts for the ground
 - Filterable by date range
 
-**API:** GET \pi/crm/ground/:groundId\
+**API:** GET `api/crm/ground/:groundId`
 
 ### US-CRM04: Create Broadcast Message
 **As a** Ground Owner
@@ -1241,7 +1267,7 @@ Each feature is numbered and organized by module.
 - Must specify title, content, and target audience
 - Can schedule for future delivery
 
-**API:** POST \pi/crm/broadcast\
+**API:** POST `api/crm/broadcast`
 
 ### US-CRM05: View Broadcast Details
 **As a** Ground Owner or Player
@@ -1251,7 +1277,7 @@ Each feature is numbered and organized by module.
 **Acceptance Criteria:**
 - Shows full message, creation date, and status
 
-**API:** GET \pi/crm/broadcast/:id\
+**API:** GET `api/crm/broadcast/:id`
 
 ### US-CRM06: Send Broadcast to Audience
 **As a** Ground Owner
@@ -1262,7 +1288,7 @@ Each feature is numbered and organized by module.
 - Sends via selected channels (email, SMS, push)
 - Tracks delivery status
 
-**API:** POST \pi/crm/broadcast/:id/send\
+**API:** POST `api/crm/broadcast/:id/send`
 
 ---
 
@@ -1278,7 +1304,7 @@ Each feature is numbered and organized by module.
 - Requires analytics subscription plan
 - Date range filter available
 
-**API:** GET \pi/analytics/:groundId/dashboard\
+**API:** GET `api/analytics/:groundId/dashboard`
 
 ### US-AN02: View Heatmap Analytics
 **As a** Ground Owner
@@ -1289,7 +1315,7 @@ Each feature is numbered and organized by module.
 - Shows hourly/daily occupancy patterns
 - Color-coded by popularity
 
-**API:** GET \pi/analytics/:groundId/heatmap\
+**API:** GET `api/analytics/:groundId/heatmap`
 
 ### US-AN03: Generate Analytics Report
 **As a** Ground Owner or Admin
@@ -1301,7 +1327,7 @@ Each feature is numbered and organized by module.
 - Exportable as CSV
 - Requires analytics subscription
 
-**API:** GET \pi/analytics/:groundId/report\
+**API:** GET `api/analytics/:groundId/report`
 
 ### US-AN04: View Platform Summary
 **As a** Platform Admin
@@ -1312,7 +1338,7 @@ Each feature is numbered and organized by module.
 - Shows total users, grounds, bookings, and revenue
 - Requires admin role
 
-**API:** GET \pi/analytics/platform/summary\
+**API:** GET `api/analytics/platform/summary`
 
 ### US-AN05: View Platform Expiring Subscriptions
 **As a** Platform Admin
@@ -1323,7 +1349,7 @@ Each feature is numbered and organized by module.
 - Filterable by days until expiry
 - Shows user, plan, and expiry date
 
-**API:** GET \pi/analytics/platform/expiring\
+**API:** GET `api/analytics/platform/expiring`
 
 ### US-AN06: View Platform Trends
 **As a** Platform Admin
@@ -1334,7 +1360,7 @@ Each feature is numbered and organized by module.
 - Shows trends by day, week, or month
 - Metrics include bookings, revenue, and new users
 
-**API:** GET \pi/analytics/platform/trends\
+**API:** GET `api/analytics/platform/trends`
 
 ---
 
@@ -1350,7 +1376,7 @@ Each feature is numbered and organized by module.
 - Shows pricing source (peak hours, weekday, etc.)
 - Returns PricePreview object directly (no wrapper)
 
-**API:** GET \pi/pricing/preview\
+**API:** GET `api/pricing/preview`
 
 ### US-P02: Validate Coupon Code
 **As a** Player
@@ -1361,7 +1387,7 @@ Each feature is numbered and organized by module.
 - Returns valid/invalid, discount amount, and final price
 - Returns CouponValidation object directly
 
-**API:** POST \pi/pricing/coupon/validate\
+**API:** POST `api/pricing/coupon/validate`
 
 ### US-P03: View Ground Pricing Rules
 **As a** Ground Owner
@@ -1372,7 +1398,7 @@ Each feature is numbered and organized by module.
 - Shows time-based and day-based rules
 - Requires ground ownership
 
-**API:** GET \pi/pricing/ground/:groundId/rules\
+**API:** GET `api/pricing/ground/:groundId/rules`
 
 ### US-P04: Create Pricing Rule
 **As a** Ground Owner
@@ -1383,7 +1409,7 @@ Each feature is numbered and organized by module.
 - Rule can be time-based (peak/off-peak) or day-based
 - Must specify price multiplier and conditions
 
-**API:** POST \pi/pricing/rules\
+**API:** POST `api/pricing/rules`
 
 ### US-P05: Update Pricing Rule
 **As a** Ground Owner
@@ -1393,35 +1419,35 @@ Each feature is numbered and organized by module.
 **Acceptance Criteria:**
 - Only rule owner can update
 
-**API:** PATCH \pi/pricing/rules/:id\
+**API:** PATCH `api/pricing/rules/:id`
 
 ### US-P06: Delete Pricing Rule
 **As a** Ground Owner
 **I want** to remove a pricing rule that is no longer needed
 **So that** I can keep my pricing simple
 
-**API:** DELETE \pi/pricing/rules/:id\
+**API:** DELETE `api/pricing/rules/:id`
 
 ### US-P07: Create Holiday Exception
 **As a** Ground Owner
 **I want** to set special pricing for holidays
 **So that** I can charge appropriately on public holidays
 
-**API:** POST \pi/pricing/holidays\
+**API:** POST `api/pricing/holidays`
 
 ### US-P08: Delete Holiday Exception
 **As a** Ground Owner
 **I want** to remove a holiday exception
 **So that** normal pricing applies again
 
-**API:** DELETE \pi/pricing/holidays/:id\
+**API:** DELETE `api/pricing/holidays/:id`
 
 ### US-P09: View Available Coupons
 **As a** Ground Owner
 **I want** to see all coupons I have created for my ground
 **So that** I can manage discounts
 
-**API:** GET \pi/pricing/ground/:groundId/coupons\
+**API:** GET `api/pricing/ground/:groundId/coupons`
 
 ### US-P10: Create Coupon
 **As a** Ground Owner
@@ -1432,7 +1458,7 @@ Each feature is numbered and organized by module.
 - Must specify discount type (fixed or percentage) and amount
 - Can set expiry date and usage limits
 
-**API:** POST \pi/pricing/coupons\
+**API:** POST `api/pricing/coupons`
 
 ---
 
@@ -1447,7 +1473,7 @@ Each feature is numbered and organized by module.
 - Shows plan name, features, price, and billing cycle
 - Highlights differences between plans
 
-**API:** GET \pi/subscriptions/plans\
+**API:** GET `api/subscriptions/plans`
 
 ### US-SUB02: View My Subscription
 **As a** User
@@ -1458,7 +1484,7 @@ Each feature is numbered and organized by module.
 - Shows current plan, status, and expiry date
 - Requires authentication
 
-**API:** GET \pi/subscriptions/my\
+**API:** GET `api/subscriptions/my`
 
 ### US-SUB03: Upgrade Subscription
 **As a** User
@@ -1471,7 +1497,7 @@ Each feature is numbered and organized by module.
 - Invoice created and must be paid
 - Requires admin confirmation for payment
 
-**API:** POST \pi/subscriptions/upgrade\
+**API:** POST `api/subscriptions/upgrade`
 
 ### US-SUB04: Downgrade Subscription
 **As a** User
@@ -1483,7 +1509,7 @@ Each feature is numbered and organized by module.
 - User loses access to higher-tier features immediately
 - No refund for unused portion of current billing period
 
-**API:** POST \pi/subscriptions/downgrade\
+**API:** POST `api/subscriptions/downgrade`
 
 ### US-SUB05: Cancel Subscription
 **As a** User
@@ -1495,7 +1521,7 @@ Each feature is numbered and organized by module.
 - User gets notification of cancellation
 - Can be reactivated before period ends
 
-**API:** POST \pi/subscriptions/cancel\
+**API:** POST `api/subscriptions/cancel`
 
 ### US-SUB06: View My Invoices
 **As a** User
@@ -1505,7 +1531,7 @@ Each feature is numbered and organized by module.
 **Acceptance Criteria:**
 - Shows invoice date, amount, status, and plan
 
-**API:** GET \pi/subscriptions/invoices\
+**API:** GET `api/subscriptions/invoices`
 
 ### US-SUB07: Confirm Payment for Subscription (Admin)
 **As a** Platform Admin
@@ -1513,10 +1539,10 @@ Each feature is numbered and organized by module.
 **So that** the user\'s subscription is fully activated
 
 **Acceptance Criteria:**
-- Changes subscription from \pending_payment\ to \ctive\
+- Changes subscription from `pending_payment` to `active`
 - Requires admin role
 
-**API:** POST \pi/subscriptions/:id/confirm-payment\
+**API:** POST `api/admin/subscriptions/:id/confirm-payment`
 
 ### US-SUB08: List Expiring Subscriptions (Admin)
 **As a** Platform Admin
@@ -1527,7 +1553,7 @@ Each feature is numbered and organized by module.
 - Filterable by days until expiry
 - Shows user, plan, and expiry date
 
-**API:** GET \pi/subscriptions/expiring\
+**API:** GET `api/admin/subscriptions/expiring`
 
 ### US-SUB09: Pending Payment Banner
 **As a** User
@@ -1566,7 +1592,7 @@ Each feature is numbered and organized by module.
 - Shows ARR, MRR, churn rate, LTV, and customer count
 - Filterable by date range and plan
 
-**API:** GET \pi/analytics/platform/summary\ (platform analytics)
+**API:** GET `api/analytics/platform/summary` (platform analytics)
 
 ---
 
@@ -1582,7 +1608,7 @@ Each feature is numbered and organized by module.
 - Returns grounds with distance and court info
 - Pagination supported
 
-**API:** GET \pi/geo/nearby\
+**API:** GET `api/geo/nearby`
 
 ### US-GEO02: View Nearby Grounds on Map
 **As a** Player
@@ -1594,7 +1620,7 @@ Each feature is numbered and organized by module.
 - Shows markers for each ground with distance
 - Clicking a marker shows ground details
 
-**API:** GET \pi/geo/nearby\ (same endpoint, map visualization on frontend)
+**API:** GET `api/geo/nearby` (same endpoint, map visualization on frontend)
 
 ### US-GEO03: Clear Nearby Search
 **As a** Player
@@ -1617,7 +1643,7 @@ Each feature is numbered and organized by module.
 - Shows disputes the user has filed
 - Lists status, date filed, and related booking
 
-**API:** GET \pi/disputes/my\
+**API:** GET `api/disputes/my`
 
 ### US-D02: View All Disputes (Admin)
 **As a** Platform Admin
@@ -1628,7 +1654,7 @@ Each feature is numbered and organized by module.
 - Filterable by status (pending, under_review, resolved, dismissed)
 - Requires admin role
 
-**API:** GET \pi/disputes/all\
+**API:** GET `api/disputes/all`
 
 ### US-D03: File a Dispute
 **As a** Player
@@ -1638,9 +1664,9 @@ Each feature is numbered and organized by module.
 **Acceptance Criteria:**
 - Must provide related booking ID, reason, and description
 - Can upload evidence (photos, receipts)
-- Dispute starts in \pending\ status
+- Dispute starts in `pending` status
 
-**API:** POST \pi/disputes/file\
+**API:** POST `api/disputes/file`
 
 ### US-D04: File Damage Claim
 **As a** Ground Owner
@@ -1651,7 +1677,7 @@ Each feature is numbered and organized by module.
 - Must provide booking ID, description, and evidence
 - Requires ground ownership verification
 
-**API:** POST \pi/disputes/damage-claim\
+**API:** POST `api/disputes/damage-claim`
 
 ### US-D05: View Dispute Details
 **As a** User or Admin
@@ -1662,7 +1688,7 @@ Each feature is numbered and organized by module.
 - Shows all evidence, status, resolution, and parties involved
 - Only relevant parties can view
 
-**API:** GET \pi/disputes/:id\
+**API:** GET `api/disputes/:id`
 
 ### US-D06: Resolve Dispute (Admin)
 **As a** Platform Admin
@@ -1673,7 +1699,7 @@ Each feature is numbered and organized by module.
 - Can resolve as: resolved, no_show_penalty, or dismissed
 - Creates penalty if no_show_penalty is selected
 
-**API:** PATCH \pi/disputes/:id/resolve\
+**API:** PATCH `api/disputes/:id/resolve`
 
 ### US-D07: New Dispute Form
 **As a** User
@@ -1712,7 +1738,7 @@ Each feature is numbered and organized by module.
 - Shows ranked players or teams with ratings
 - Can filter by sport category
 
-**API:** GET \pi/ratings/leaderboard\, GET \pi/ratings/leaderboard/:sportId\
+**API:** GET `api/leaderboard`, GET `api/leaderboard/:sportId`
 
 ### US-R02: View Player Stats
 **As a** User
@@ -1722,7 +1748,7 @@ Each feature is numbered and organized by module.
 **Acceptance Criteria:**
 - Shows win/loss record, rating, and match history
 
-**API:** GET \pi/ratings/players/:id/stats\
+**API:** GET `api/players/:id/stats`
 
 ### US-R03: Submit Match Rating
 **As a** Player
@@ -1733,7 +1759,7 @@ Each feature is numbered and organized by module.
 - Only players in the match can submit ratings
 - Rating reflects match outcome
 
-**API:** POST \pi/ratings/matches/:id/rating\
+**API:** POST `api/matches/:id/rating`
 
 ### US-R04: Record Player Stats
 **As a** Player or Captain
@@ -1743,7 +1769,7 @@ Each feature is numbered and organized by module.
 **Acceptance Criteria:**
 - Only participants or team captains can record stats
 
-**API:** POST \pi/ratings/matches/:id/player-stats\
+**API:** POST `api/matches/:id/player-stats`
 
 ### US-R05: Team Rating History
 **As a** User
@@ -1753,7 +1779,7 @@ Each feature is numbered and organized by module.
 **Acceptance Criteria:**
 - Shows rating changes with dates and match results
 
-**API:** GET \pi/teams/:id/rating-history\ (in team module)
+**API:** GET `api/teams/:id/rating-history` (in team module)
 
 ### US-R06: Match Result Recording
 **As a** Player
@@ -1777,7 +1803,7 @@ Each feature is numbered and organized by module.
 - Max file size 10MB
 - Image is resized and optimized
 
-**API:** POST \pi/uploads/avatar\
+**API:** POST `api/uploads/avatar`
 
 ### US-U02: Upload Tournament Poster
 **As a** Tournament Organizer
@@ -1788,7 +1814,7 @@ Each feature is numbered and organized by module.
 - Requires ground access (organizer must own a ground)
 - Image is processed and stored
 
-**API:** POST \pi/uploads/tournament-poster\
+**API:** POST `api/uploads/tournament-poster`
 
 ### US-U03: Upload Ground Image
 **As a** Ground Owner
@@ -1799,7 +1825,7 @@ Each feature is numbered and organized by module.
 - Multiple images can be uploaded
 - Requires ground ownership
 
-**API:** POST \pi/uploads/ground-image/:groundId\
+**API:** POST `api/uploads/ground-image/:groundId`
 
 ### US-U04: Upload Booking Proof
 **As a** Ground Owner
@@ -1809,7 +1835,7 @@ Each feature is numbered and organized by module.
 **Acceptance Criteria:**
 - Must specify groundId for access control
 
-**API:** POST \pi/uploads/booking-proof/:groundId\
+**API:** POST `api/uploads/booking-proof/:groundId`
 
 ### US-U05: Generic File Upload
 **As a** User
@@ -1817,11 +1843,11 @@ Each feature is numbered and organized by module.
 **So that** I can attach documents to my records
 
 **Acceptance Criteria:**
-- File type is specified via URL param: \:type\
+- File type is specified via URL param: `:type`
 - Requires authentication
 - Max file size 10MB
 
-**API:** POST \pi/uploads/:type\
+**API:** POST `api/uploads/:type`
 
 > **Note:** Route ordering fix applied - /:type catch-all route is placed AFTER specific routes (avatar, tournament-poster, ground-image, booking-proof) to prevent shadowing.
 
@@ -1839,7 +1865,7 @@ Each feature is numbered and organized by module.
 - Filterable by role and search by name/email
 - Requires admin role
 
-**API:** GET \pi/admin/users\
+**API:** GET `api/admin/users`
 
 ### US-ADM02: View User Details
 **As a** Platform Admin
@@ -1849,7 +1875,7 @@ Each feature is numbered and organized by module.
 **Acceptance Criteria:**
 - Shows all user data including bookings, teams, and subscriptions
 
-**API:** GET \pi/admin/users/:id\
+**API:** GET `api/admin/users/:id`
 
 ### US-ADM03: List All Grounds
 **As a** Platform Admin
@@ -1859,7 +1885,7 @@ Each feature is numbered and organized by module.
 **Acceptance Criteria:**
 - Shows ground name, owner, location, status, verification status
 
-**API:** GET \pi/admin/grounds\
+**API:** GET `api/admin/grounds`
 
 ### US-ADM04: Verify Ground
 **As a** Platform Admin
@@ -1867,10 +1893,10 @@ Each feature is numbered and organized by module.
 **So that** it can be published and bookable
 
 **Acceptance Criteria:**
-- Changes ground status from \pending\ to \erified\
+- Changes ground status from `pending` to \`verified`
 - Owner is notified of verification
 
-**API:** PATCH \pi/admin/grounds/:id/verify\
+**API:** PATCH `api/admin/grounds/:id/verify`
 
 ### US-ADM05: Suspend Ground
 **As a** Platform Admin
@@ -1881,7 +1907,7 @@ Each feature is numbered and organized by module.
 - Ground is hidden from public until unsuspended
 - Owner is notified
 
-**API:** PATCH \pi/admin/grounds/:id/suspend\
+**API:** PATCH `api/admin/grounds/:id/suspend`
 
 ### US-ADM06: List All Teams
 **As a** Platform Admin
@@ -1891,7 +1917,7 @@ Each feature is numbered and organized by module.
 **Acceptance Criteria:**
 - Shows team name, sport, member count, and creation date
 
-**API:** GET \pi/admin/teams\
+**API:** GET `api/admin/teams`
 
 ### US-ADM07: View Platform Finance (Admin)
 **As a** Platform Admin
@@ -1902,7 +1928,7 @@ Each feature is numbered and organized by module.
 - Shows total revenue, commissions, and payouts
 - Requires both authentication and admin role
 
-**API:** GET \pi/admin/finance\
+**API:** GET `api/admin/finance`
 
 ### US-ADM08: View Audit Logs
 **As a** Platform Admin
@@ -1913,7 +1939,7 @@ Each feature is numbered and organized by module.
 - Shows user actions with timestamps
 - Filterable by action type and date range
 
-**API:** GET \pi/admin/audit-logs\
+**API:** GET `api/admin/audit-logs`
 
 ### US-ADM09: Manage Regions
 **As a** Platform Admin
@@ -1923,7 +1949,7 @@ Each feature is numbered and organized by module.
 **Acceptance Criteria:**
 - Can list, create, activate, deactivate, and delete regions
 
-**API:** GET/POST \pi/admin/regions\, GET \pi/admin/regions/:action/:id\
+**API:** GET/POST `api/admin/regions`, GET `api/admin/regions/:action/:id`
 
 ### US-ADM10: Manage Cities
 **As a** Platform Admin
@@ -1933,7 +1959,7 @@ Each feature is numbered and organized by module.
 **Acceptance Criteria:**
 - Can list, create, activate, deactivate, and delete cities
 
-**API:** GET/POST \pi/admin/cities\, GET \pi/admin/cities/:action/:id\
+**API:** GET/POST `api/admin/cities`, GET `api/admin/cities/:action/:id`
 
 ### US-ADM11: Manage Sports
 **As a** Platform Admin
@@ -1943,7 +1969,7 @@ Each feature is numbered and organized by module.
 **Acceptance Criteria:**
 - Can list, create, activate, deactivate, and delete sports
 
-**API:** GET/POST \pi/admin/sports\, GET \pi/admin/sports/:action/:id\
+**API:** GET/POST `api/admin/sports`, GET `api/admin/sports/:action/:id`
 
 ### US-ADM12: Manage Payment Methods
 **As a** Platform Admin
@@ -1953,7 +1979,7 @@ Each feature is numbered and organized by module.
 **Acceptance Criteria:**
 - Can list, create, activate, deactivate, and delete payment methods
 
-**API:** GET/POST \pi/admin/payment-methods\, GET \pi/admin/payment-methods/:action/:id\
+**API:** GET/POST `api/admin/payment-methods`, GET `api/admin/payment-methods/:action/:id`
 
 ### US-ADM13: Admin Dashboard Overview
 **As a** Platform Admin
@@ -1978,7 +2004,7 @@ Each feature is numbered and organized by module.
 **Acceptance Criteria:**
 - Returns simple status indicating server is responsive
 
-**API:** GET \pi/health\
+**API:** GET `api/health`
 
 ---
 
@@ -2047,7 +2073,7 @@ This document covers all user-facing features across the PlayArena platform:
 
 - **Frontend Routes:** Many user stories map to Next.js App Router pages in packages/web/src/app/(dashboard)/
 - **Role-based access:** Auth middleware and requireAdmin/requirePlan middleware protect routes
-- **API prefix:** All backend routes are mounted under /api/* prefix in pp.js
+- **API prefix:** All backend routes are mounted under `api/` prefix in app.js
 - **Known gaps documented** in docs/gaps-need-to-fixed.md
 
 *Document generated as part of frontend-backend integration documentation.*
