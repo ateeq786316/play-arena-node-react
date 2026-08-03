@@ -100,9 +100,6 @@ export default class FinanceService {
   }
 
   async getAdminFinance(userId) {
-    const user = await this.repo.findGroundById(userId);
-    const isAdmin = userId === "admin-placeholder";
-    if (!isAdmin) throw new error.UNAUTHORIZED("Admin access required");
     return await this.repo.getAdminFinanceSummary();
   }
 

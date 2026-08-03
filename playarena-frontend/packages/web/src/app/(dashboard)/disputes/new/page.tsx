@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { useRouter } from "next/navigation";
 import { api } from "@playarena/shared/api";
 import type { Booking } from "@playarena/shared/types";
@@ -16,7 +16,7 @@ export default function NewDisputePage() {
   const [evidence, setEvidence] = useState("");
   const [sending, setSending] = useState(false);
 
-  useState(() => {
+  useEffect(() => {
     api.get<{ bookings: Booking[] }>("/api/bookings/my")
       .then((res) => {
         setBookings(res.bookings);
@@ -24,7 +24,7 @@ export default function NewDisputePage() {
       })
       .catch(() => {})
       .finally(() => setLoadingBookings(false));
-  });
+  }, []);
 
   const handleSubmit = async () => {
     if (!bookingId || !reason) { alert("Booking and reason are required"); return; }

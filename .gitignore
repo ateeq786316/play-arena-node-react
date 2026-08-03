@@ -38,7 +38,7 @@ test-*.mjs
 docs/
 
 #opencode settings
-.opencode/
+# .opencode/
 .specify/
 .vscode/
 
