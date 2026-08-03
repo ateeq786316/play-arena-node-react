@@ -3,10 +3,13 @@ node_modules/
 
 # Environment
 .env
+.env.local
+.env.*.local
 
 # Build / Generated
 dist/
 **/src/generated/
+**/*.tsbuildinfo
 
 # IDE
 .vscode/
@@ -34,14 +37,14 @@ test-*.mjs
 # Misc
 .blackboxrules
 
-#documentation
-docs/
-
 #opencode settings
 # .opencode/
 .specify/
-.vscode/
-
 
 #design-system
 design-system/
+
+# E2E test artifacts
+tests/e2e/test-results/
+tests/e2e/.cache/
+tests/e2e/node_modules/
