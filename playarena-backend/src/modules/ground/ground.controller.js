@@ -67,7 +67,7 @@ export default class GroundController {
     const schedule = await this.service.upsertSchedule(
       req.params.groundId,
       req.userId,
-      req.params.dayOfWeek,
+      parseInt(req.params.dayOfWeek),
       req.body,
     );
     res.status(200).json({ message: "Schedule updated", schedule });

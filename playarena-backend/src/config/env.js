@@ -20,6 +20,7 @@ const envSchema = z.object({
   SMTP_USER: z.string().optional(),
   SMTP_PASS: z.string().optional(),
   SMTP_FROM: z.string().optional(),
+  FRONTEND_URL: z.string().default("http://localhost:3001"),
   CORS_ORIGIN: z.string().default("*"),
   LOG_LEVEL: z.string().default("info"),
   BOOKING_EXPIRY_MINUTES: z.coerce.number().default(30),

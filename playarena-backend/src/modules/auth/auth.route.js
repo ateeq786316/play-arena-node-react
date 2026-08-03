@@ -23,6 +23,7 @@ authRoutes.get("/google/callback", passport.authenticate("google", { failureRedi
 
 authRoutes.post("/forgot-password", asyncHandler(authController.forgotPasswordController.bind(authController)));
 authRoutes.get("/reset-password/:token", asyncHandler(authController.resetPasswordController.bind(authController)));
+authRoutes.post("/reset-password/confirm", asyncHandler(authController.setNewPasswordController.bind(authController)));
 authRoutes.post("/update-password", authMiddleware, asyncHandler(authController.updatePasswordController.bind(authController)));
 
 export default authRoutes;

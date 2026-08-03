@@ -2,6 +2,7 @@ import createApp from "./src/app.js";
 import { connectDB } from "./src/database/db.js";
 import logger from "./src/config/logger.js";
 import env from "./src/config/env.js";
+import { startAnalyticsAggregationJob } from "./src/jobs/analytics-aggregation.job.js";
 
 process.on("uncaughtException", (error) => {
   logger.error({ error: error.message, stack: error.stack }, "Uncaught exception");
@@ -14,6 +15,7 @@ process.on("unhandledRejection", (reason) => {
 
 (async function startServer() {
   await connectDB();
+  startAnalyticsAggregationJob();
   const httpServer = createApp();
   httpServer.listen(env.PORT, () => {
     logger.info({ port: env.PORT }, "Server is running");

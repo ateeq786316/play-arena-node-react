@@ -1,0 +1,20 @@
+{
+  "name": "playarena-e2e",
+  "private": true,
+  "version": "0.0.0",
+  "type": "module",
+  "description": "End-to-end user journey tests for PlayArena (spec docs/specs/006-e2e-user-journey-tests)",
+  "scripts": {
+    "test": "playwright test",
+    "test:api": "node src/bootstrap.js",
+    "test:reporter": "playwright show-report"
+  },
+  "dependencies": {
+    "jsonwebtoken": "^9.0.2",
+    "pg": "^8.13.1",
+    "socket.io-client": "^4.8.1"
+  },
+  "devDependencies": {
+    "@playwright/test": "^1.49.1"
+  }
+}

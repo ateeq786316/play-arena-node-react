@@ -74,4 +74,9 @@ export default class AuthController {
     const user = await this.authController.updatePasswordService(req.userId, req.body);
     res.json({ message: "Password updated successfully", userId: user.id });
   }
+
+  async setNewPasswordController(req, res) {
+    const result = await this.authController.setNewPasswordService(req.body);
+    res.json(result);
+  }
 }

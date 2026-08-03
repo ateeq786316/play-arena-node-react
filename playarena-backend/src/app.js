@@ -16,6 +16,12 @@ import ratingRoutes from "./modules/rating/rating.route.js";
 import adminRoutes from "./modules/admin/admin.route.js";
 import uploadRoutes from "./modules/upload/upload.route.js";
 import healthRoutes from "./modules/health/health.route.js";
+import subscriptionRoutes, { adminSubscriptionRoutes } from "./modules/subscription/subscription.route.js";
+import analyticsRoutes from "./modules/analytics/analytics.route.js";
+import crmRoutes from "./modules/crm/crm.route.js";
+import pricingRoutes from "./modules/pricing/pricing.route.js";
+import disputeRoutes from "./modules/dispute/dispute.route.js";
+import geoRoutes from "./modules/geo/geo.route.js";
 import asyncHandler from "./utils/asyncHandler.js";
 import authMiddleware from "./middlewares/auth.middleware.js";
 import errorHandler from "./middlewares/errorHandler.middleware.js";
@@ -43,6 +49,13 @@ export default function createApp() {
   app.use("/api/admin", adminRoutes);
   app.use("/api/upload", uploadRoutes);
   app.use("/api/health", healthRoutes);
+  app.use("/api/subscriptions", subscriptionRoutes);
+  app.use("/api/admin/subscriptions", adminSubscriptionRoutes);
+  app.use("/api/analytics", analyticsRoutes);
+  app.use("/api/crm", crmRoutes);
+  app.use("/api/pricing", pricingRoutes);
+  app.use("/api/disputes", disputeRoutes);
+  app.use("/api/geo", geoRoutes);
 
   app.post("/api/grounds/:groundId/walkin", authMiddleware, asyncHandler(bookingController.walkinBooking.bind(bookingController)));
 

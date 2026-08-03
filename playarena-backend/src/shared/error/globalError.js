@@ -11,6 +11,11 @@ export class UNAUTHORIZED extends ApiError {
     super(message, StatusCodes.UNAUTHORIZED);
   }
 }
+export class FORBIDDEN extends ApiError {
+  constructor(message, statusCode) {
+    super(message, StatusCodes.FORBIDDEN);
+  }
+}
 export class ALLREADYEXIST extends ApiError {
   constructor(message, statusCode) {
     super(message, StatusCodes.CONFLICT);

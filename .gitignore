@@ -33,3 +33,15 @@ test-*.mjs
 
 # Misc
 .blackboxrules
+
+#documentation
+docs/
+
+#opencode settings
+.opencode/
+.specify/
+.vscode/
+
+
+#design-system
+design-system/
