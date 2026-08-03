@@ -26,6 +26,45 @@ JavaScript (ESM) for backend; TypeScript 5.x for frontend: Follow standard conve
 
 Before performing any task, identify the best skill for the job. If the skill is already installed globally on the system, use it immediately. If not, find and install it globally before proceeding. This ensures 100% efficient and correct task execution. Never proceed without the right skill.
 
+## GitHub Flow
+
+### Branch Strategy
+- **Create a new branch** for each feature/fix task (never commit directly to `main`)
+- Branch naming: `feature/<short-description>` or `fix/<short-description>`
+- Base branch: `main` (always branch from latest `main`)
+
+### Commit Process
+1. Run tests: `npm test` (must pass)
+2. Stage changes: `git add -A`
+3. Commit with structured prefix: `git commit -m "prefix: 4-word summary"`
+4. Push branch: `git push -u origin <branch-name>`
+
+### Pull Request Process
+1. Create PR from feature branch → `main`
+2. PR title matches commit message format
+3. PR description includes:
+   - What was changed and why
+   - Test results (passing/failing counts)
+   - Any breaking changes
+4. Wait for user approval before merging
+5. After approval, merge using **Squash and Merge** (keeps clean history)
+6. Delete the feature branch after merge
+
+### Conflict Resolution
+- If conflicts arise during PR, I will:
+  1. Fetch latest `main`: `git fetch origin main`
+  2. Rebase feature branch onto main: `git rebase origin/main`
+  3. Resolve conflicts manually
+  4. Run tests again
+  5. Force push: `git push --force-with-lease`
+  6. Notify user of conflicts that need review
+
+### What I DON'T Do Without Asking
+- Merge PRs without explicit user approval
+- Delete branches without confirmation
+- Use `--force` except for rebasing feature branches
+- Skip CI/test checks
+
 ## Recent Changes
 
 - **2026-08-03 — Frontend ↔ Backend Integration Fixes:** Fixed upload route shadowing (`/:type` was catching all specific upload routes — reordered so `/avatar`, `/tournament-poster`, `/ground-image/:groundId`, `/booking-proof/:groundId` come before `/:type`). Fixed finance admin endpoint 401 (replaced hardcoded `userId === "admin-placeholder"` check with `requireAdmin` middleware on route). Added `requireAdmin` middleware to dispute `/all` and `/:id/resolve` routes. Fixed React anti-pattern in `disputes/new/page.tsx` (useState→useEffect). Added 3 new tests (296 total, all passing). Updated CHANGES.md, TESTING.md, Postman collection. See `gaps-need-to-fixed.md` for full gap analysis.
