@@ -18,6 +18,7 @@ import {
   Button,
   Card,
   CardContent,
+  CardGridSkeleton,
   EmptyState,
   Input,
   Modal,
@@ -29,6 +30,9 @@ import {
 import {
   AlertCircle,
   CalendarDays,
+  ChevronDown,
+  ChevronLeft,
+  ChevronRight,
   CheckCircle2,
   Clock,
   MapPin,
@@ -60,7 +64,26 @@ function minutesOf(time: string): number {
   return h * 60 + m;
 }
 
-const dayNames = ["Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday"];
+function formatHour(hour: number): string {
+  const h = hour % 12;
+  const ampm = hour < 12 ? "AM" : "PM";
+  return `${h === 0 ? 12 : h} ${ampm}`;
+}
+
+function addDays(date: Date, days: number): Date {
+  const result = new Date(date);
+  result.setDate(result.getDate() + days);
+  return result;
+}
+
+function startOfWeek(date: Date): Date {
+  const day = date.getDay();
+  const diff = date.getDate() - day + (day === 0 ? -6 : 1);
+  const sunday = new Date(date.setDate(diff));
+  return new Date(sunday);
+}
+
+const dayNames = ["Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat"];
 
 export default function GroundDetailPage() {
   const { id } = useParams<{ id: string }>();
@@ -78,6 +101,8 @@ export default function GroundDetailPage() {
 
   const [selectedCourt, setSelectedCourt] = useState("");
   const [bookingDate, setBookingDate] = useState(() => toDateInputValue(new Date()));
+  const [calendarDate, setCalendarDate] = useState(new Date());
+
   const [slots, setSlots] = useState<Slot[]>([]);
   const [slotSchedule, setSlotSchedule] = useState<GroundSchedule | null>(null);
   const [slotsLoading, setSlotsLoading] = useState(false);
@@ -177,8 +202,10 @@ export default function GroundDetailPage() {
     setCouponCode("");
   };
 
-  const handleDateChange = (date: string) => {
-    setBookingDate(date);
+  const handleDateSelect = (date: Date) => {
+    const dateStr = toDateInputValue(date);
+    setBookingDate(dateStr);
+    setCalendarDate(new Date(date));
     setSlots([]);
     setSlotSchedule(null);
     setSlotsMessage("");
@@ -253,6 +280,27 @@ export default function GroundDetailPage() {
     }
   };
 
+  // Calendar helpers
+  const weekStart = startOfWeek(new Date(calendarDate));
+  const weekDays = [];
+  for (let i = 0; i < 7; i++) {
+    const day = addDays(weekStart, i);
+    weekDays.push(day);
+  }
+
+  const goToPreviousWeek = () => {
+    setCalendarDate(addDays(calendarDate, -7));
+  };
+
+  const goToNextWeek = () => {
+    setCalendarDate(addDays(calendarDate, 7));
+  };
+
+  const goToToday = () => {
+    const today = new Date();
+    setCalendarDate(today);
+  };
+
   if (loading) {
     return (
       <div className="space-y-6">
@@ -261,11 +309,7 @@ export default function GroundDetailPage() {
         <Skeleton className="h-64 w-full rounded-xl" />
         <div className="space-y-3">
           <Skeleton className="h-6 w-40" />
-          <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
-            {Array.from({ length: 3 }).map((_, index) => (
-              <Skeleton key={index} className="h-44 w-full rounded-xl" />
-            ))}
-          </div>
+          <CardGridSkeleton count={3} />
         </div>
       </div>
     );
@@ -314,6 +358,18 @@ export default function GroundDetailPage() {
   })();
   const durationMins = startTime && endTime ? minutesOf(endTime) - minutesOf(startTime) : 0;
   const totalPrice = couponResult ? couponResult.finalAmount : preview?.finalPrice ?? 0;
+
+  // Generate time grid (6AM to 11PM = 17 hours)
+  const timeGridHours = Array.from({ length: 17 }, (_, i) => i + 6);
+
+  // Group slots by hour for calendar view
+  const slotsByStartHour: Record<string, Slot | null> = {};
+  slots.forEach((slot) => {
+    const hour = slot.start.split(":")[0];
+    if (!slotsByStartHour[hour]) {
+      slotsByStartHour[hour] = slot;
+    }
+  });
 
   return (
     <div className="space-y-8">
@@ -370,7 +426,6 @@ export default function GroundDetailPage() {
 
       {ground.images && ground.images.length > 0 && (
         <div className="overflow-hidden rounded-xl border border-border">
-          {/* eslint-disable-next-line @next/next/no-img-element */}
           <img
             src={ground.images[0].url}
             alt={ground.name}
@@ -401,7 +456,7 @@ export default function GroundDetailPage() {
             {courts.map((court) => {
               const amenities = Array.isArray(court.amenities) ? (court.amenities as string[]) : [];
               return (
-                <Card key={court.id} className="flex flex-col">
+                <Card key={court.id} className="flex flex-col transition-shadow hover:shadow-lg">
                   <CardContent className="flex flex-1 flex-col gap-3 p-5">
                     <div className="flex items-start justify-between gap-3">
                       <div>
@@ -419,16 +474,20 @@ export default function GroundDetailPage() {
                       <Users className="h-4 w-4" />
                       Up to {court.maxPlayers} players
                     </p>
-                    {amenities.length > 0 && <p className="text-sm text-muted-foreground">{amenities.join(", ")}</p>}
+                    {amenities.length > 0 && (
+                      <p className="text-sm text-muted-foreground">
+                        Amenities: {amenities.join(", ")}
+                      </p>
+                    )}
                     <div className="mt-auto pt-2">
                       <Button
-                        variant="outline"
+                        variant={selectedCourt === court.id ? "primary" : "outline"}
                         size="sm"
                         className="w-full"
                         disabled={!bookingEnabled}
                         onClick={() => handleBookFromCard(court.id)}
                       >
-                        Book this court
+                        {selectedCourt === court.id ? "Selected" : "Book this court"}
                       </Button>
                     </div>
                   </CardContent>
@@ -439,213 +498,270 @@ export default function GroundDetailPage() {
         )}
       </section>
 
-      <section ref={bookingRef} className="scroll-mt-24 space-y-4">
-        <h2 className="font-heading text-3xl">Book a Court</h2>
+      {selectedCourt && (
+        <section ref={bookingRef} className="scroll-mt-24 space-y-6">
+          <div className="flex items-center justify-between">
+            <h2 className="font-heading text-3xl">Book {selectedCourtObj?.name || "Court"}</h2>
+            {selectedCourtObj && (
+              <Badge variant="outline">
+                {selectedCourtObj.sportType} · {formatCurrency(selectedCourtObj.pricePerHour)}/hr
+              </Badge>
+            )}
+          </div>
 
-        {!bookingEnabled ? (
+          {/* Calendar-style date selector */}
           <Card>
-            <CardContent className="p-6">
-              <p className="text-sm text-muted-foreground">
-                {ground.isActive
-                  ? "Online booking is currently disabled for this ground."
-                  : "Online booking is unavailable while this ground is inactive."}
-              </p>
-            </CardContent>
-          </Card>
-        ) : courts.length === 0 ? (
-          <EmptyState
-            icon={<CalendarDays className="h-6 w-6" />}
-            title="Nothing to book yet"
-            description="This ground has no active courts available for booking."
-          />
-        ) : (
-          <Card>
-            <CardContent className="space-y-6 p-6">
-              <div className="grid gap-4 md:grid-cols-2">
-                <Select label="Court" value={selectedCourt} onChange={(e) => handleSelectCourt(e.target.value)}>
-                  <option value="">Select a court</option>
-                  {courts.map((court) => (
-                    <option key={court.id} value={court.id}>
-                      {court.name} — {court.sportType}
-                    </option>
-                  ))}
-                </Select>
-                <Input
-                  label="Date"
-                  type="date"
-                  min={today}
-                  max={maxDate}
-                  value={bookingDate}
-                  onChange={(e) => handleDateChange(e.target.value)}
-                />
+            <CardContent className="p-4">
+              <div className="flex items-center justify-between mb-3">
+                <Button variant="ghost" size="sm" onClick={goToPreviousWeek}>
+                  <ChevronLeft className="h-4 w-4" />
+                </Button>
+                <button
+                  onClick={goToToday}
+                  className="px-3 py-1 text-sm font-medium text-primary hover:bg-muted rounded-lg"
+                >
+                  Today
+                </button>
+                <Button variant="ghost" size="sm" onClick={goToNextWeek}>
+                  <ChevronRight className="h-4 w-4" />
+                </Button>
               </div>
-
-              {slotsLoading ? (
-                <div className="grid grid-cols-4 gap-2 sm:grid-cols-6 md:grid-cols-8">
-                  {Array.from({ length: 8 }).map((_, index) => (
-                    <Skeleton key={index} className="h-10 rounded-md" />
-                  ))}
-                </div>
-              ) : slotsError ? (
-                <div className="flex flex-col items-start gap-3">
-                  <p className="text-sm text-danger">{slotsError}</p>
-                  <Button variant="outline" size="sm" onClick={handleRetrySlots}>
-                    Retry
-                  </Button>
-                </div>
-              ) : slots.length === 0 && selectedCourt ? (
-                <EmptyState
-                  icon={<CalendarDays className="h-6 w-6" />}
-                  title={slotsMessage || "No slots available"}
-                  description="Try a different date or court."
-                />
-              ) : slots.length > 0 ? (
-                <div className="space-y-3">
-                  {slotSchedule && (
-                    <p className="flex flex-wrap items-center gap-x-4 gap-y-1 text-sm text-muted-foreground">
-                      <span className="inline-flex items-center gap-1.5">
-                        <Clock className="h-4 w-4" />
-                        {formatTime(slotSchedule.openTime)} – {formatTime(slotSchedule.closeTime)}
-                      </span>
-                      <span className="inline-flex items-center gap-1.5">
-                        <CalendarDays className="h-4 w-4" />
-                        {slotSchedule.slotDuration} min slots
-                      </span>
-                    </p>
-                  )}
-                  <div className="grid grid-cols-3 gap-2 sm:grid-cols-4 md:grid-cols-6 lg:grid-cols-8">
-                    {slots.map((slot) => {
-                      const selected = startTime === slot.start && endTime === slot.end;
-                      return (
-                        <Button
-                          key={slot.start}
-                          variant={selected ? "primary" : "outline"}
-                          size="sm"
-                          disabled={!slot.available}
-                          onClick={() => handleSlotSelect(slot)}
-                        >
-                          {formatTime(slot.start)}
-                        </Button>
-                      );
-                    })}
+              <p className="text-center text-sm text-muted-foreground mb-3">
+                {calendarDate.toLocaleString("default", { month: "long", year: "numeric" })}
+              </p>
+              <div className="grid grid-cols-7 gap-1 text-center">
+                {dayNames.map((day) => (
+                  <div key={day} className="text-xs font-medium text-muted-foreground">
+                    {day}
                   </div>
-                </div>
-              ) : null}
+                ))}
+                {weekDays.map((day, i) => {
+                  const dayStr = toDateInputValue(day);
+                  const isToday = dayStr === today;
+                  const isSelected = dayStr === bookingDate;
+                  const is Past = day < new Date(new Date().setHours(0, 0, 0, 0));
+                  const maxDateObj = maxDate ? new Date(maxDate + "T00:00:00") : null;
+                  const isFuture = maxDateObj ? day <= maxDateObj : true;
 
-              {selectedCourt && startTime && endTime && (
-                <div className="space-y-4 rounded-lg border border-border bg-muted/40 p-5">
-                  <h3 className="font-heading text-2xl">Price Preview</h3>
-
-                  {previewLoading ? (
-                    <div className="space-y-2">
-                      <Skeleton className="h-4 w-40" />
-                      <Skeleton className="h-4 w-32" />
-                      <Skeleton className="h-5 w-48" />
-                    </div>
-                  ) : previewError ? (
-                    <p className="text-sm text-danger">{previewError}</p>
-                  ) : preview ? (
-                    <div className="space-y-4">
-                      <div className="space-y-2 text-sm">
-                        <div className="flex items-center justify-between gap-4">
-                          <span className="text-muted-foreground">Slot</span>
-                          <span className="text-right font-medium">
-                            {formatDate(bookingDate)} · {formatTime(startTime)} – {formatTime(endTime)}
-                          </span>
-                        </div>
-                        <div className="flex items-center justify-between gap-4">
-                          <span className="text-muted-foreground">Base price</span>
-                          <span>{formatCurrency(preview.basePrice)}</span>
-                        </div>
-                        <div className="flex items-center justify-between gap-4">
-                          <span className="text-muted-foreground">Pricing</span>
-                          <span>
-                            ×{preview.multiplier}
-                            {preview.source !== "base" ? ` (${preview.source})` : ""}
-                          </span>
-                        </div>
-                        <div className="flex items-center justify-between gap-4 border-t border-border pt-2 font-semibold">
-                          <span>Subtotal</span>
-                          <span>{formatCurrency(preview.finalPrice)}</span>
-                        </div>
-                      </div>
-
-                      <div className="flex flex-col gap-2 sm:flex-row sm:items-end">
-                        <div className="flex-1">
-                          <Input
-                            label="Coupon"
-                            icon={<Ticket className="h-4 w-4" />}
-                            placeholder="Enter coupon code"
-                            value={couponCode}
-                            onChange={(e) => {
-                              setCouponCode(e.target.value.toUpperCase());
-                              setCouponResult(null);
-                              setCouponError("");
-                            }}
-                          />
-                        </div>
-                        <Button
-                          variant="outline"
-                          onClick={handleApplyCoupon}
-                          disabled={!couponCode}
-                          loading={couponLoading}
-                        >
-                          Apply
-                        </Button>
-                      </div>
-                      {couponError && <p className="text-sm text-danger">{couponError}</p>}
-                      {couponResult && (
-                        <div className="space-y-1 text-sm">
-                          <div className="flex items-center justify-between gap-4 text-emerald-700">
-                            <span>Coupon {couponResult.coupon.code}</span>
-                            <span>−{formatCurrency(couponResult.discount)}</span>
-                          </div>
-                          <div className="flex items-center justify-between gap-4 border-t border-border pt-2 font-semibold">
-                            <span>Total</span>
-                            <span>{formatCurrency(couponResult.finalAmount)}</span>
-                          </div>
-                        </div>
+                  return (
+                    <button
+                      key={i}
+                      onClick={() => !isPast && isFuture && handleDateSelect(day)}
+                      disabled={isPast || !isFuture}
+                      className={`
+                        relative flex h-10 w-full items-center justify-center text-sm font-medium rounded-lg
+                        ${isSelected ? "bg-primary text-primary-foreground" : ""}
+                        ${isToday && !isSelected ? "ring-2 ring-primary/50" : ""}
+                        ${isPast ? "text-muted-foreground/30 cursor-not-allowed" : "hover:bg-muted"}
+                        ${!isFuture ? "text-muted-foreground/30 cursor-not-allowed" : ""}
+                      `}
+                    >
+                      {day.getDate()}
+                      {isToday && !isSelected && (
+                        <span className="absolute -bottom-1 h-1 w-1 rounded-full bg-primary" />
                       )}
-
-                      <Button
-                        className="w-full"
-                        size="lg"
-                        icon={<CalendarDays className="h-4 w-4" />}
-                        onClick={() => setConfirmOpen(true)}
-                      >
-                        Confirm Booking
-                      </Button>
-                    </div>
-                  ) : null}
-                </div>
-              )}
+                    </button>
+                  );
+                })}
+              </div>
             </CardContent>
           </Card>
-        )}
-      </section>
 
-      {schedules.length > 0 && (
-        <section className="space-y-4">
-          <h2 className="font-heading text-3xl">Weekly Hours</h2>
-          <Card>
-            <div className="divide-y divide-border">
-              {schedules.map((schedule) => (
-                <div key={schedule.id} className="flex items-center justify-between gap-4 px-5 py-3 text-sm">
-                  <span className="font-medium">{dayNames[schedule.dayOfWeek]}</span>
-                  <span className="flex items-center gap-2 text-muted-foreground">
-                    <Clock className="h-4 w-4" />
-                    {formatTime(schedule.openTime)} – {formatTime(schedule.closeTime)}
-                    <Badge variant="outline" className="ml-1">
-                      {schedule.slotDuration} min
-                    </Badge>
-                  </span>
-                </div>
+          {/* Time slot grid */}
+          {!bookingEnabled ? (
+            <Card>
+              <CardContent className="p-6">
+                <p className="text-sm text-muted-foreground">
+                  Online booking is unavailable for this ground.
+                </p>
+              </CardContent>
+            </Card>
+          ) : slotsLoading ? (
+            <div className="grid grid-cols-2 gap-3 sm:grid-cols-3 md:grid-cols-4">
+              {Array.from({ length: 6 }).map((_, index) => (
+                <Skeleton key={index} className="h-14 rounded-lg" />
               ))}
             </div>
-          </Card>
+          ) : slotsError ? (
+            <div className="flex flex-col items-start gap-3">
+              <p className="text-sm text-danger">{slotsError}</p>
+              <Button variant="outline" size="sm" onClick={handleRetrySlots}>
+                Retry
+              </Button>
+            </div>
+          ) : slots.length === 0 ? (
+            <EmptyState
+              icon={<CalendarDays className="h-6 w-6" />}
+              title={slotsMessage || "No slots available"}
+              description="Try a different date."
+            />
+          ) : (
+            <div className="space-y-3">
+              {slotSchedule && (
+                <div className="flex flex-wrap items-center gap-x-4 gap-y-1 text-sm text-muted-foreground">
+                  <span className="inline-flex items-center gap-1.5">
+                    <Clock className="h-4 w-4" />
+                    Open: {formatTime(slotSchedule.openTime)} – {formatTime(slotSchedule.closeTime)}
+                  </span>
+                  <span className="inline-flex items-center gap-1.5">
+                    <CalendarDays className="h-4 w-4" />
+                    {slotSchedule.slotDuration} min slots
+                  </span>
+                </div>
+              )}
+
+              {/* Calendar-style grid: hours on left, slots as cells */}
+              <div className="border border-border rounded-xl overflow-hidden bg-background">
+                <div className="grid grid-cols-[80px_1fr]">
+                  {/* Hour column header */}
+                  <div className="bg-muted/50 px-3 py-2 text-xs font-medium text-muted-foreground">
+                    Time
+                  </div>
+                  <div className="bg-muted/50 px-3 py-2 text-xs font-medium text-muted-foreground">
+                    Available Slots
+                  </div>
+
+                  {timeGridHours.map((hour) => {
+                    const hourStr = String(hour).padStart(2, "0");
+                    const slotForHour = slotsByStartHour[hourStr];
+                    return (
+                      <div key={hour} className="contents">
+                        <div className="border-t border-border px-3 py-3 text-sm font-medium">
+                          {formatHour(hour)}
+                        </div>
+                        <div className="border-t border-border px-3 py-3">
+                          {slotForHour ? (
+                            <button
+                              onClick={() => handleSlotSelect(slotForHour)}
+                              disabled={!slotForHour.available}
+                              className={`
+                                inline-flex items-center rounded-lg border px-3 py-2 text-sm font-medium transition-colors
+                                ${slotForHour.available
+                                  ? startTime === slotForHour.start && endTime === slotForHour.end
+                                    ? "border-primary bg-primary/10 text-primary"
+                                    : "border-border bg-background hover:border-primary/50 hover:bg-muted/30"
+                                  : "cursor-not-allowed opacity-50"}
+                              `}
+                            >
+                              {formatTime(slotForHour.start)} – {formatTime(slotForHour.end)}
+                              {slotForHour.available ? (
+                                <span className="ml-2 inline-flex h-2 w-2 rounded-full bg-green-500" />
+                              ) : (
+                                <span className="ml-2 inline-flex h-2 w-2 rounded-full bg-red-500" />
+                              )}
+                            </button>
+                          ) : (
+                            <span className="text-sm text-muted-foreground/50">—</span>
+                          )}
+                        </div>
+                      </div>
+                    );
+                  })}
+                </div>
+              </div>
+            </div>
+          )}
+
+          {/* Price preview */}
+          {selectedCourt && startTime && endTime && (slots.length > 0 || slotsError) && (
+            <div className="space-y-4 rounded-lg border border-border bg-muted/40 p-6">
+              <h3 className="font-heading text-2xl">Price Preview</h3>
+
+              {previewLoading ? (
+                <div className="space-y-2">
+                  <Skeleton className="h-4 w-40" />
+                  <Skeleton className="h-4 w-32" />
+                  <Skeleton className="h-5 w-48" />
+                </div>
+              ) : previewError ? (
+                <p className="text-sm text-danger">{previewError}</p>
+              ) : preview ? (
+                <div className="space-y-4">
+                  <div className="space-y-2 text-sm">
+                    <div className="flex items-center justify-between gap-4">
+                      <span className="text-muted-foreground">Court</span>
+                      <span className="text-right font-medium">{selectedCourtObj?.name || selectedCourt}</span>
+                    </div>
+                    <div className="flex items-center justify-between gap-4">
+                      <span className="text-muted-foreground">Date & Time</span>
+                      <span className="text-right font-medium">
+                        {formatDate(bookingDate)} · {formatTime(startTime)} – {formatTime(endTime)}
+                      </span>
+                    </div>
+                    <div className="flex items-center justify-between gap-4">
+                      <span className="text-muted-foreground">Duration</span>
+                      <span className="text-right font-medium">{durationMins} minutes</span>
+                    </div>
+                    <div className="flex items-center justify-between gap-4">
+                      <span className="text-muted-foreground">Base price</span>
+                      <span>{formatCurrency(preview.basePrice)}</span>
+                    </div>
+                    <div className="flex items-center justify-between gap-4">
+                      <span className="text-muted-foreground">Pricing multiplier</span>
+                      <span>
+                        ×{preview.multiplier}
+                        {preview.source !== "base" ? ` (${preview.source})` : ""}
+                      </span>
+                    </div>
+                    <div className="flex items-center justify-between gap-4 border-t border-border pt-2 font-semibold">
+                      <span>Subtotal</span>
+                      <span>{formatCurrency(preview.finalPrice)}</span>
+                    </div>
+                  </div>
+
+                  <div className="flex flex-col gap-3 sm:flex-row sm:items-end">
+                    <div className="flex-1">
+                      <Input
+                        label="Coupon code"
+                        icon={<Ticket className="h-4 w-4" />}
+                        placeholder="Enter coupon code"
+                        value={couponCode}
+                        onChange={(e) => {
+                          setCouponCode(e.target.value.toUpperCase());
+                          setCouponResult(null);
+                          setCouponError("");
+                        }}
+                      />
+                    </div>
+                    <Button
+                      variant="outline"
+                      onClick={handleApplyCoupon}
+                      disabled={!couponCode}
+                      loading={couponLoading}
+                    >
+                      Apply
+                    </Button>
+                  </div>
+                  {couponError && <p className="text-sm text-danger">{couponError}</p>}
+                  {couponResult && (
+                    <div className="space-y-1 text-sm">
+                      <div className="flex items-center justify-between gap-4 text-emerald-700">
+                        <span>Coupon {couponResult.coupon.code}</span>
+                        <span>−{formatCurrency(couponResult.discount)}</span>
+                      </div>
+                      <div className="flex items-center justify-between gap-4 border-t border-border pt-2 font-semibold">
+                        <span>Total</span>
+                        <span>{formatCurrency(couponResult.finalAmount)}</span>
+                      </div>
+                    </div>
+                  )}
+
+                  <Button
+                    className="w-full"
+                    size="lg"
+                    icon={<CalendarDays className="h-4 w-4" />}
+                    onClick={() => setConfirmOpen(true)}
+                  >
+                    Confirm Booking
+                  </Button>
+                </div>
+              ) : null}
+            </div>
+          )}
         </section>
       )}
 
+      {/* Booking confirmation modal */}
       <Modal
         open={confirmOpen}
         onClose={() => {
@@ -703,6 +819,29 @@ export default function GroundDetailPage() {
           )}
         </div>
       </Modal>
+
+      {/* Weekly schedule */}
+      {schedules.length > 0 && (
+        <section className="space-y-4">
+          <h2 className="font-heading text-3xl">Weekly Hours</h2>
+          <Card>
+            <div className="divide-y divide-border">
+              {schedules.map((schedule) => (
+                <div key={schedule.id} className="flex items-center justify-between gap-4 px-5 py-3 text-sm">
+                  <span className="font-medium">{dayNames[schedule.dayOfWeek === 0 ? 0 : schedule.dayOfWeek - 1] ?? `Day ${schedule.dayOfWeek}`}</span>
+                  <span className="flex items-center gap-2 text-muted-foreground">
+                    <Clock className="h-4 w-4" />
+                    {formatTime(schedule.openTime)} – {formatTime(schedule.closeTime)}
+                    <Badge variant="outline" className="ml-1">
+                      {schedule.slotDuration} min
+                    </Badge>
+                  </span>
+                </div>
+              ))}
+            </div>
+          </Card>
+        </section>
+      )}
     </div>
   );
 }

@@ -1,6 +1,7 @@
 "use client";
 
 import Link from "next/link";
+import { useRouter } from "next/navigation";
 import { usePathname } from "next/navigation";
 import {
   Home,
@@ -88,6 +89,7 @@ export function Sidebar() {
   const user = useAuthStore((s) => s.user);
   const { role } = useAuthorization();
   const logout = useAuthStore((s) => s.logout);
+  const router = useRouter();
 
   const groups = navGroups
     .map((g) => ({ ...g, items: g.items.filter((i) => roleMatches(i.roles, role)) }))
@@ -157,9 +159,12 @@ export function Sidebar() {
               <p className="truncate text-xs capitalize text-slate-500">{role.replace("_", " ")}</p>
             </div>
           )}
-          {!collapsed && (
+           {!collapsed && (
             <button
-              onClick={logout}
+              onClick={async () => {
+                await logout();
+                router.push("/login");
+              }}
               aria-label="Log out"
               className="text-slate-500 transition-colors hover:text-danger"
             >
